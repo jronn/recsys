@@ -18,7 +18,7 @@ import se.kth.ict.iv1201.recsys.model.HelloEntity;
 @Stateless
 public class HelloEJB {
 
-    @PersistenceContext(unitName = "se.kth.ict.iv1201_recsys_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "recsysDb4freePU")
     private EntityManager em;
     
     public String retrieveMessage() {
