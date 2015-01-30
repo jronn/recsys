@@ -6,7 +6,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.HelloEJB;
 
-
+/**
+ *  Backing bean 
+ * 
+ * @author Christoffer
+ */
 @Named("backingbean")
 @SessionScoped
 public class HelloBean implements Serializable {
