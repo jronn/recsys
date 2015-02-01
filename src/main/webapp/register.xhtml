@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:h="http://java.sun.com/jsf/html">
+ 
+    <h:head>
+        <title>Registration</title>
+    </h:head>
+    <h:body>
+    	<h3>User registration</h3>
+    	<h:form>
+          <h:outputText value='Name: '/>
+          <h:inputText value='#{registerBean.name}' required="true" 
+                       requiredMessage="Please enter a name"/>
+          <br/>
+          
+          <h:outputText value='Surname: '/>
+          <h:inputText value='#{registerBean.surname}' required="true"
+                       requiredMessage="Please enter a surname"/>
+          <br/>
+          
+          <h:outputText value='Email: '/>
+          <h:inputText value='#{registerBean.email}' required="true"
+                       requiredMessage="Please enter an emial"/>
+          <br/>
+          
+          <h:outputText value='Username: '/>
+          <h:inputText value='#{registerBean.username}' required="true"
+                       requiredMessage="Please enter a username"/>
+          <br/>
+          
+          <h:outputText value='Password: '/>
+          <h:inputText value='#{registerBean.password}' required="true"
+                       requiredMessage="Please enter a password"/>
+          <br/>
+          
+          <h:commandButton value="Register" action="#{registerBean.register}"/>
+    	</h:form>
+    </h:body>
+</html>
