@@ -1,11 +1,10 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import se.kth.ict.iv1201.recsys.controller.HelloEJB;
+import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 
 
 @Named("registerBean")
@@ -13,7 +12,7 @@ import se.kth.ict.iv1201.recsys.controller.HelloEJB;
 public class RegisterBean implements Serializable {
     
     @EJB
-    HelloEJB helloEjb;
+    RecSysBean recSysEJB;
 
     private String name;
     private String surname;

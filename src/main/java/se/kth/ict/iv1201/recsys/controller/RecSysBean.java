@@ -7,23 +7,15 @@
 package se.kth.ict.iv1201.recsys.controller;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import se.kth.ict.iv1201.recsys.model.HelloEntity;
 
 /**
  *
  * @author jronn
  */
 @Stateless
-public class HelloEJB {
-
-    @PersistenceContext(unitName = "MyPersistenceUnit")
-    private EntityManager em;
+public class RecSysBean {
     
     public String retrieveMessage() {
-        HelloEntity test = new HelloEntity();
-        em.persist(test);
         return "A message from the E-J-B";
     }
 }
