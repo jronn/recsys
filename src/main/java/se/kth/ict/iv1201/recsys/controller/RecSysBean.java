@@ -12,7 +12,8 @@ import se.kth.ict.iv1201.recsys.model.PersonDao;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 
 /**
- *
+ * EJB containing the business logic of the application
+ * 
  * @author jronn
  */
 @Stateless
@@ -21,7 +22,17 @@ public class RecSysBean {
     @EJB
     PersonDao personDao;
     
-    public String register(String name, String surname, String email, String username, String password) {
+    /**
+     * Registers the user in the system
+     * 
+     * @param name 
+     * @param surname
+     * @param email
+     * @param username
+     * @param password
+     * @return 
+     */
+    public String registerUser(String name, String surname, String email, String username, String password) {
         
         /*Person prevPerson = personDao.findById(Long.MIN_VALUE)
         if(prevPerson != null) {
@@ -37,5 +48,20 @@ public class RecSysBean {
         
         personDao.persist(person);
         return "success";
+    }
+    
+    /**
+     * Checks if the given username already exists in the system. Returns true
+     * if it does.
+     * @param username
+     * @return 
+     */
+    private boolean isRegistered(String username) {
+        //Person person = personDao.findById(Long.MIN_VALUE);
+        //if(person != null)
+        //  return true;
+        //else
+        //  return false;
+        return false;
     }
 }

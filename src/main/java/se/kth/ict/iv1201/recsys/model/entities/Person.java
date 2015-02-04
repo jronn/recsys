@@ -18,7 +18,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- *
+ * Entity class representing a person in the database
+ * 
  * @author jronn
  */
 @Entity

@@ -17,7 +17,8 @@ import javax.validation.constraints.Size;
 
 
 /**
- *
+ * Entity class representing a role in the database
+ * 
  * @author jronn
  */
 @Entity

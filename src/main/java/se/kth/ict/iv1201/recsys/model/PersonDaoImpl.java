@@ -10,7 +10,8 @@ import javax.ejb.Stateless;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 
 /**
- *
+ * Dao implementation for the Person entity
+ * 
  * @author jronn
  */
 @Stateless

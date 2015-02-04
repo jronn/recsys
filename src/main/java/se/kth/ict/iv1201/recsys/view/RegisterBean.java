@@ -6,7 +6,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 
-
+/**
+ * Backing bean for the register.xhtml page
+ * 
+ * @author jronn
+ */
 @Named("registerBean")
 @SessionScoped
 public class RegisterBean implements Serializable {
@@ -20,8 +24,13 @@ public class RegisterBean implements Serializable {
     private String username;
     private String password;
 
+    /**
+     * Attempts to register a new user in the system with the given details.
+     * 
+     * @return 
+     */
     public String register() {
-        String status = recSysEJB.register(name, surname, email, username, password);
+        String status = recSysEJB.registerUser(name, surname, email, username, password);
         return "user/loggedin.xhtml?faces-redirect=true";
     }
     

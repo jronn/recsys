@@ -9,7 +9,9 @@ package se.kth.ict.iv1201.recsys.model;
 import java.io.Serializable;
 
 /**
- *
+ * A generic Dao interface containing base functions, intended to be extended
+ * by more specific interfaces for specific entities.
+ * 
  * @author jronn
  */
 public interface GenericDao<E,ID extends Serializable> {

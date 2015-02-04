@@ -9,7 +9,8 @@ package se.kth.ict.iv1201.recsys.model;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 
 /**
- *
+ * Dao interface for the Person entity
+ * 
  * @author jronn
  */
 public interface PersonDao extends GenericDao<Person, Long> {
