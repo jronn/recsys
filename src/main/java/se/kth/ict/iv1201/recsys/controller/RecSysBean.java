@@ -6,7 +6,10 @@
 
 package se.kth.ict.iv1201.recsys.controller;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import se.kth.ict.iv1201.recsys.model.PersonDao;
+import se.kth.ict.iv1201.recsys.model.entities.Person;
 
 /**
  *
@@ -15,7 +18,24 @@ import javax.ejb.Stateless;
 @Stateless
 public class RecSysBean {
     
-    public String retrieveMessage() {
-        return "A message from the E-J-B";
+    @EJB
+    PersonDao personDao;
+    
+    public String register(String name, String surname, String email, String username, String password) {
+        
+        /*Person prevPerson = personDao.findById(Long.MIN_VALUE)
+        if(prevPerson != null) {
+            return null;
+        } */
+        
+        Person person = new Person();
+        person.setName(name);
+        person.setSurname(surname);
+        person.setEmail(email);
+        person.setUsername(username);
+        person.setPassword(password);
+        
+        personDao.persist(person);
+        return "success";
     }
 }

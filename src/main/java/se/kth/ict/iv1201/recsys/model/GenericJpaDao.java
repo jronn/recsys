@@ -16,10 +16,10 @@ import javax.persistence.PersistenceContext;
  */
 public abstract class GenericJpaDao<E, ID extends Serializable> implements GenericDao<E,ID> {
     
-    protected Class entityClass;
+    protected Class<E> entityClass;
     
     @PersistenceContext(unitName = "MyPersistenceUnit")
-    private EntityManager em;
+    public EntityManager em;
     
     public GenericJpaDao(Class entityClass) {
         this.entityClass = entityClass;

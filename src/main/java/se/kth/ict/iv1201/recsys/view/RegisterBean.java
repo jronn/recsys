@@ -20,8 +20,9 @@ public class RegisterBean implements Serializable {
     private String username;
     private String password;
 
-    public void register() {
-        //TODO
+    public String register() {
+        String status = recSysEJB.register(name, surname, email, username, password);
+        return "user/loggedin.xhtml?faces-redirect=true";
     }
     
     public String getName() {
