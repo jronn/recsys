@@ -23,15 +23,33 @@ public class RegisterBean implements Serializable {
     private String email;
     private String username;
     private String password;
+    
+    private String errorMessage;
+    private boolean successful;
 
+    public RegisterBean() {
+        errorMessage = "";
+        successful = false;
+    }
+    
     /**
      * Attempts to register a new user in the system with the given details.
      * 
      * @return 
      */
-    public String register() {
-        String status = recSysEJB.registerUser(name, surname, email, username, password);
-        return "user/loggedin.xhtml?faces-redirect=true";
+    public void register() {
+        successful = recSysEJB.registerUser(name, surname, email, username, password);
+        if(!successful) {
+            errorMessage = "Could not register user, user already exists";
+        }
+    }
+    
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+    
+    public boolean isSuccessful() {
+        return successful;
     }
     
     public String getName() {

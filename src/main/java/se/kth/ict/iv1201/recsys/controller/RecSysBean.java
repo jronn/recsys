@@ -23,7 +23,8 @@ public class RecSysBean {
     PersonDao personDao;
     
     /**
-     * Registers the user in the system
+     * Registers the user in the system. Returns true if successful or false
+     * if unsuccessful (user already exists)
      * 
      * @param name 
      * @param surname
@@ -32,22 +33,22 @@ public class RecSysBean {
      * @param password
      * @return 
      */
-    public String registerUser(String name, String surname, String email, String username, String password) {
+    public boolean registerUser(String name, String surname, String email, String username, String password) {
         
         /*Person prevPerson = personDao.findById(Long.MIN_VALUE)
         if(prevPerson != null) {
-            return null;
+            return false;
         } */
         
-        Person person = new Person();
+        /*Person person = new Person();
         person.setName(name);
         person.setSurname(surname);
         person.setEmail(email);
         person.setUsername(username);
         person.setPassword(password);
         
-        personDao.persist(person);
-        return "success";
+        personDao.persist(person);*/
+        return true;
     }
     
     /**

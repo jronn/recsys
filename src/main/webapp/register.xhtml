@@ -10,7 +10,7 @@
     </h:head>
     <h:body>
     	<h3>User registration</h3>
-    	<h:form>
+        <h:form rendered='#{!registerBean.successful}'>
           <h:outputText value='Name: '/>
           <h:inputText value='#{registerBean.name}' required="true" 
                        requiredMessage="Please enter a name"/>
@@ -37,6 +37,14 @@
           <br/>
           
           <h:commandButton value="Register" action="#{registerBean.register}"/>
+          
+          <br/>
+          <h:outputText value='#{registerBean.errorMessage}'/>
     	</h:form>
+        
+        <br />
+
+        <h:outputText value="You've been registered as #{registerBean.username}!"
+                      rendered="#{registerBean.successful}"/>
     </h:body>
 </html>
