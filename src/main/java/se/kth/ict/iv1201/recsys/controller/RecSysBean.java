@@ -37,7 +37,7 @@ public class RecSysBean {
      * @param email
      * @param username
      * @param password
-     * @return 
+     * @return Boolean representing success of operation.
      */
     public boolean registerUser(String name, String surname, String email, String username, String password) {
         
@@ -78,7 +78,7 @@ public class RecSysBean {
      * Checks if the given username already exists in the system. Returns true
      * if it does.
      * @param username
-     * @return 
+     * @return Boolean, true means the user is registered.
      */
     private boolean isRegistered(String username) {
         Person person = personDao.findById(username);

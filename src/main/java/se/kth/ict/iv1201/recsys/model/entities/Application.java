@@ -7,6 +7,7 @@
 package se.kth.ict.iv1201.recsys.model.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,6 +44,12 @@ public class Application implements Serializable {
     @Column(name = "person")
     private String person;
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "submit_date")
+    @Temporal(TemporalType.DATE)
+    private Date submitDate;
+    
     public Application() {
     }
 
@@ -48,11 +57,20 @@ public class Application implements Serializable {
         this.id = id;
     }
 
-    public Application(Long id, String person) {
+    public Application(Long id, String person, Date submitDate) {
         this.id = id;
         this.person = person;
+        this.submitDate = submitDate;
     }
 
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+    
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+    
     public Long getId() {
         return id;
     }
