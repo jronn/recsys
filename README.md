@@ -1,3 +1,48 @@
 Glassfish 4 config:
 
 Config -> server-config -> security -> Check Default 'Principal To Role Mapping'
+
+
+
+DB GENERATION:
+
+CREATE TABLE role (
+name VARCHAR(255) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE person (
+name VARCHAR(255) NOT NULL,
+surname VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL UNIQUE,
+password VARCHAR(255) NOT NULL,
+username VARCHAR(255) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE availability (
+id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+application BIGINT NOT NULL REFERENCES application,
+from_date DATE NOT NULL,
+to_date DATE NOT NULL
+);
+
+CREATE TABLE competence (
+name VARCHAR(255) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE competence_profile (
+id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+application BIGINT NOT NULL REFERENCES application,
+competence VARCHAR(255) NOT NULL REFERENCES competence,
+years_of_experience NUMERIC(4,2) NOT NULL
+);
+
+CREATE TABLE user_group (
+id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+role VARCHAR(255) NOT NULL REFERENCES role,
+person VARCHAR(255) NOT NULL REFERENCES person
+);
+
+CREATE TABLE application (
+id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+person VARCHAR(255) NOT NULL UNIQUE REFERENCES person
+);

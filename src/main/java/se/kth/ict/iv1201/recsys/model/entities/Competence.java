@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author jronn
  */
 @Entity
-@Table(name = "role")
-public class Role implements Serializable {
+@Table(name = "competence")
+public class Competence implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -34,10 +34,10 @@ public class Role implements Serializable {
     @Column(name = "name")
     private String name;
 
-    public Role() {
+    public Competence() {
     }
 
-    public Role(String name) {
+    public Competence(String name) {
         this.name = name;
     }
 
@@ -59,10 +59,10 @@ public class Role implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Role)) {
+        if (!(object instanceof Competence)) {
             return false;
         }
-        Role other = (Role) object;
+        Competence other = (Competence) object;
         if ((this.name == null && other.name != null) || (this.name != null && !this.name.equals(other.name))) {
             return false;
         }
@@ -71,7 +71,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "se.kth.ict.iv1201.recsys.model.entities.Role[ name=" + name + " ]";
+        return "se.kth.ict.iv1201.recsys.model.entities.Competence[ name=" + name + " ]";
     }
     
 }

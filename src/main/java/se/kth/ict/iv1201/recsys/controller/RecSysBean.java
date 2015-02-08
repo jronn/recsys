@@ -6,10 +6,13 @@
 
 package se.kth.ict.iv1201.recsys.controller;
 
+import java.security.MessageDigest;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import se.kth.ict.iv1201.recsys.model.PersonDao;
+import se.kth.ict.iv1201.recsys.model.UserGroupDao;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
+import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
 
 /**
  * EJB containing the business logic of the application
@@ -21,6 +24,9 @@ public class RecSysBean {
     
     @EJB
     PersonDao personDao;
+    
+    @EJB
+    UserGroupDao userGroupDao;
     
     /**
      * Registers the user in the system. Returns true if successful or false
@@ -35,20 +41,37 @@ public class RecSysBean {
      */
     public boolean registerUser(String name, String surname, String email, String username, String password) {
         
-        /*Person prevPerson = personDao.findById(Long.MIN_VALUE)
-        if(prevPerson != null) {
+        if(isRegistered(username)) {
             return false;
-        } */
+        }
         
-        /*Person person = new Person();
-        person.setName(name);
-        person.setSurname(surname);
-        person.setEmail(email);
-        person.setUsername(username);
-        person.setPassword(password);
-        
-        personDao.persist(person);*/
-        return true;
+        try {         
+            //Hash password with SHA-256
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes("UTF-8"));
+            
+            //To hex form
+            StringBuilder hashedPw = new StringBuilder();
+            for (int i=0;i<hash.length;i++) {
+    		String hex = Integer.toHexString(0xff & hash[i]);
+   	     	if(hex.length()==1) 
+                    hashedPw.append('0');
+   	     	hashedPw.append(hex);
+            }
+            
+            Person person = new Person(username, name, surname, email, hashedPw.toString());
+            personDao.persist(person);
+            
+            UserGroup userGroup = new UserGroup();
+            userGroup.setPerson(username);
+            userGroup.setRole("applicant");
+            userGroupDao.persist(userGroup);
+            
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+            return false;
+        }
     }
     
     /**
@@ -58,11 +81,10 @@ public class RecSysBean {
      * @return 
      */
     private boolean isRegistered(String username) {
-        //Person person = personDao.findById(Long.MIN_VALUE);
-        //if(person != null)
-        //  return true;
-        //else
-        //  return false;
-        return false;
+        Person person = personDao.findById(username);
+        if(person != null)
+          return true;
+        else
+          return false;
     }
 }

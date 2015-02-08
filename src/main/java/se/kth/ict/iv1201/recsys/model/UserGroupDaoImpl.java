@@ -7,7 +7,7 @@
 package se.kth.ict.iv1201.recsys.model;
 
 import javax.ejb.Stateless;
-import se.kth.ict.iv1201.recsys.model.entities.Person;
+import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
 
 /**
  * Dao implementation for the Person entity
@@ -15,9 +15,9 @@ import se.kth.ict.iv1201.recsys.model.entities.Person;
  * @author jronn
  */
 @Stateless
-public class PersonDaoImpl extends GenericJpaDao<Person,String> implements PersonDao{
+public class UserGroupDaoImpl extends GenericJpaDao<UserGroup,Long> implements UserGroupDao{
 
-    public PersonDaoImpl(){
-        super(Person.class);
+    public UserGroupDaoImpl(){
+        super(UserGroup.class);
     }
 }

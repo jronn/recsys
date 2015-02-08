@@ -7,68 +7,69 @@
 package se.kth.ict.iv1201.recsys.model.entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entity class representing a person in the database
- * 
+ *
  * @author jronn
  */
 @Entity
 @Table(name = "person")
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "name")
+    private String name;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "surname")
+    private String surname;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "email")
+    private String email;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "password")
+    private String password;
+    
     @Id
     @Basic(optional = false)
     @NotNull
-    @GeneratedValue
-    @Column(name = "person_id")
-    private Long personId;
-    @Size(max = 255)
-    @Column(name = "name")
-    private String name;
-    @Size(max = 255)
-    @Column(name = "surname")
-    private String surname;
-    @Size(max = 255)
-    @Column(name = "ssn")
-    private String ssn;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 255)
-    @Column(name = "email")
-    private String email;
-    @Size(max = 255)
-    @Column(name = "password")
-    private String password;
-    @Column(name = "role_id")
-    private BigInteger roleId;
-    @Size(max = 255)
+    @Size(min = 1, max = 255)
     @Column(name = "username")
     private String username;
 
     public Person() {
     }
 
-    public Person(Long personId) {
-        this.personId = personId;
+    public Person(String username, String name, String surname, String email, String password) {
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
     }
-
-    public Long getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(Long personId) {
-        this.personId = personId;
-    }
-
+    
     public String getName() {
         return name;
     }
@@ -83,14 +84,6 @@ public class Person implements Serializable {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public String getSsn() {
-        return ssn;
-    }
-
-    public void setSsn(String ssn) {
-        this.ssn = ssn;
     }
 
     public String getEmail() {
@@ -109,14 +102,6 @@ public class Person implements Serializable {
         this.password = password;
     }
 
-    public BigInteger getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(BigInteger roleId) {
-        this.roleId = roleId;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -128,7 +113,7 @@ public class Person implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (personId != null ? personId.hashCode() : 0);
+        hash += (username != null ? username.hashCode() : 0);
         return hash;
     }
 
@@ -139,7 +124,7 @@ public class Person implements Serializable {
             return false;
         }
         Person other = (Person) object;
-        if ((this.personId == null && other.personId != null) || (this.personId != null && !this.personId.equals(other.personId))) {
+        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
             return false;
         }
         return true;
@@ -147,7 +132,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "se.kth.ict.iv1201.recsys.model.Person[ personId=" + personId + " ]";
+        return "se.kth.ict.iv1201.recsys.model.entities.Person[ username=" + username + " ]";
     }
     
 }
