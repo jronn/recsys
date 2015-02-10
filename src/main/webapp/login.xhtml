@@ -7,14 +7,27 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>TODO supply a title</title>
+        <title>Login page</title>
+        <link rel="stylesheet" type="text/css" href="mystyle.css"/> 
         <meta name="viewport" content="width=device-width"/>
     </head>
     <body>
+        <header>
+            <h2>Login page</h2>
+            <p>Use your username and password to login</p>
+        </header>
+        <nav>
+            <a href="http://localhost:8080/IV1201/faces/login.xhtml">Login page</a> |
+            <a href="http://localhost:8080/IV1201/faces/register.xhtml">Register</a>
+        </nav>
         <form method="POST" action="j_security_check">
             <input type="text" name="j_username"/>
             <input type="password" name="j_password"/>
             <input type="submit"/>
         </form>
+        <footer>
+            <p>Posted by: Josef, Niclas, Christoffer</p>
+            <p>Contact information: <a href="mailto:cyalcin@kth.se">cyalcin@kth.se</a></p>
+        </footer>
     </body>
 </html>
