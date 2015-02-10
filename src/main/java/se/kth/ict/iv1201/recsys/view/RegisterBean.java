@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import se.kth.ict.iv1201.recsys.controller.RecSysBeanImpl;
+import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 
 /**
  * Backing bean for the register.xhtml page
@@ -16,7 +16,7 @@ import se.kth.ict.iv1201.recsys.controller.RecSysBeanImpl;
 public class RegisterBean implements Serializable {
     
     @EJB
-    RecSysBeanImpl recSysEJB;
+    RecSysBean recSysEJB;
 
     private String name;
     private String surname;

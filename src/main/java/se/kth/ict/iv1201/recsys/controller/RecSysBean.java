@@ -13,7 +13,7 @@ import javax.ejb.Remote;
  *
  * @author jronn
  */
-@Remote
+@Local
 public interface RecSysBean {
     
     /**
