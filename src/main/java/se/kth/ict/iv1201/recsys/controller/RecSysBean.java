@@ -7,12 +7,13 @@
 package se.kth.ict.iv1201.recsys.controller;
 
 import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author jronn
  */
-@Local
+@Remote
 public interface RecSysBean {
     
     /**
