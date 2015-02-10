@@ -7,50 +7,58 @@
 package se.kth.ict.iv1201.recsys.model.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity representing a row in the application table in the db
+ * Entity class representing an application
  * @author jronn
  */
 @Entity
 @Table(name = "application")
 public class Application implements Serializable {
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
     
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "person")
-    private String person;
-
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "submit_date")
     @Temporal(TemporalType.DATE)
     private Date submitDate;
     
-    @Basic(optional = true)
     @Column(name = "approved")
     private Boolean approved;
+    @JoinColumn(name = "person", referencedColumnName = "username")
+    @OneToOne(optional = false)
     
+    private Person person;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
+    private Collection<CompetenceProfile> competenceProfileCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
+    private Collection<Availability> availabilityCollection;
+
     public Application() {
     }
 
@@ -58,28 +66,11 @@ public class Application implements Serializable {
         this.id = id;
     }
 
-    public Application(Long id, String person, Date submitDate) {
+    public Application(Long id, Date submitDate) {
         this.id = id;
-        this.person = person;
         this.submitDate = submitDate;
     }
 
-    public Boolean getApproved() {
-        return approved;
-    }
-    
-    public void setApproved(Boolean approved) {
-        this.approved = approved;
-    }
-    
-    public Date getSubmitDate() {
-        return submitDate;
-    }
-    
-    public void setSubmitDate(Date submitDate) {
-        this.submitDate = submitDate;
-    }
-    
     public Long getId() {
         return id;
     }
@@ -88,12 +79,46 @@ public class Application implements Serializable {
         this.id = id;
     }
 
-    public String getPerson() {
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(String person) {
+    public void setPerson(Person person) {
         this.person = person;
+    }
+
+    @XmlTransient
+    public Collection<CompetenceProfile> getCompetenceProfileCollection() {
+        return competenceProfileCollection;
+    }
+
+    public void setCompetenceProfileCollection(Collection<CompetenceProfile> competenceProfileCollection) {
+        this.competenceProfileCollection = competenceProfileCollection;
+    }
+
+    @XmlTransient
+    public Collection<Availability> getAvailabilityCollection() {
+        return availabilityCollection;
+    }
+
+    public void setAvailabilityCollection(Collection<Availability> availabilityCollection) {
+        this.availabilityCollection = availabilityCollection;
     }
 
     @Override

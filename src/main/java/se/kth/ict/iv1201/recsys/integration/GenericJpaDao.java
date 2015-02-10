@@ -27,31 +27,19 @@ public abstract class GenericJpaDao<E, ID extends Serializable> implements Gener
         this.entityClass = entityClass;
     }
     
-    /**
-     * Persists the entity in the database
-     * 
-     * @param entity 
-     */
     public void persist(E entity) {
         em.persist(entity);
     }
     
-    /**
-     * Removes the entity from the database
-     * 
-     * @param entity 
-     */
     public void remove(E entity) {
         em.remove(entity);
     }
     
-    /**
-     * Searches for the entity in the database, based on given primary key
-     * 
-     * @param id Primary key of the entity
-     * @return Entity with primary key matching the given id
-     */
     public E findById(Serializable id) {
         return (E) em.find(entityClass, id);
+    }
+    
+    public void flush () {
+        em.flush();
     }
 }

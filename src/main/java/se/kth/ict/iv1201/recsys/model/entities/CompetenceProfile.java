@@ -14,43 +14,41 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entity representing a row in the competence_profile table in the db
+ * Entity class representing a competenceprofile
  * @author jronn
  */
 @Entity
 @Table(name = "competence_profile")
 public class CompetenceProfile implements Serializable {
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
     
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "application")
-    private long application;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "competence")
-    private String competence;
-    
-    @Max(value=99)  @Min(value=0)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "years_of_experience")
     private BigDecimal yearsOfExperience;
+    
+    @JoinColumn(name = "application", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Application application;
+    
+    @JoinColumn(name = "competence", referencedColumnName = "name")
+    @ManyToOne(optional = false)
+    private Competence competence;
 
     public CompetenceProfile() {
     }
@@ -59,10 +57,8 @@ public class CompetenceProfile implements Serializable {
         this.id = id;
     }
 
-    public CompetenceProfile(Long id, long application, String competence, BigDecimal yearsOfExperience) {
+    public CompetenceProfile(Long id, BigDecimal yearsOfExperience) {
         this.id = id;
-        this.application = application;
-        this.competence = competence;
         this.yearsOfExperience = yearsOfExperience;
     }
 
@@ -74,28 +70,28 @@ public class CompetenceProfile implements Serializable {
         this.id = id;
     }
 
-    public long getApplication() {
-        return application;
-    }
-
-    public void setApplication(long application) {
-        this.application = application;
-    }
-
-    public String getCompetence() {
-        return competence;
-    }
-
-    public void setCompetence(String competence) {
-        this.competence = competence;
-    }
-
     public BigDecimal getYearsOfExperience() {
         return yearsOfExperience;
     }
 
     public void setYearsOfExperience(BigDecimal yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
+    public Competence getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(Competence competence) {
+        this.competence = competence;
     }
 
     @Override
