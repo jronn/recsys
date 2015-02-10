@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- *
+ * Entity representing a row in the user_group table in the db
  * @author jronn
  */
 @Entity

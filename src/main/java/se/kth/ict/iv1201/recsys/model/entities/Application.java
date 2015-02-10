@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Entity representing an application in the database model
+ * Entity representing a row in the application table in the db
  * @author jronn
  */
 @Entity
