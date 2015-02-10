@@ -14,17 +14,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Entity representing an application in the database model
  * @author jronn
  */
 @Entity
@@ -50,6 +47,10 @@ public class Application implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date submitDate;
     
+    @Basic(optional = true)
+    @Column(name = "approved")
+    private Boolean approved;
+    
     public Application() {
     }
 
@@ -63,6 +64,14 @@ public class Application implements Serializable {
         this.submitDate = submitDate;
     }
 
+    public Boolean getApproved() {
+        return approved;
+    }
+    
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+    
     public Date getSubmitDate() {
         return submitDate;
     }

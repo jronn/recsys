@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import se.kth.ict.iv1201.recsys.controller.RecSysBean;
+import se.kth.ict.iv1201.recsys.controller.RecSysBeanImpl;
 
 /**
  * Backing bean for the register.xhtml page
@@ -16,7 +16,7 @@ import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 public class RegisterBean implements Serializable {
     
     @EJB
-    RecSysBean recSysEJB;
+    RecSysBeanImpl recSysEJB;
 
     private String name;
     private String surname;
@@ -32,11 +32,9 @@ public class RegisterBean implements Serializable {
         successful = false;
     }
     
-    /**
-     * Attempts to register a new user in the system with the given details.
-     * 
-     * @return 
-     */
+   /**
+    * Attempt to register a new user through the controller bean
+    */
     public void register() {
         successful = recSysEJB.registerUser(name, surname, email, username, password);
         if(!successful) {
