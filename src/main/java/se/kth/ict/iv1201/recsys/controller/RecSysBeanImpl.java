@@ -9,8 +9,8 @@ package se.kth.ict.iv1201.recsys.controller;
 import java.security.MessageDigest;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import se.kth.ict.iv1201.recsys.model.PersonDao;
-import se.kth.ict.iv1201.recsys.model.UserGroupDao;
+import se.kth.ict.iv1201.recsys.integration.PersonDao;
+import se.kth.ict.iv1201.recsys.integration.UserGroupDao;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
 

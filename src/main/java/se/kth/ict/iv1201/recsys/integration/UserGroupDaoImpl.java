@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package se.kth.ict.iv1201.recsys.model;
+package se.kth.ict.iv1201.recsys.integration;
 
 import javax.ejb.Stateless;
 import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
