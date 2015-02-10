@@ -7,7 +7,6 @@
 package se.kth.ict.iv1201.recsys.controller;
 
 import javax.ejb.Local;
-import javax.ejb.Remote;
 
 /**
  *
@@ -24,8 +23,10 @@ public interface RecSysBean {
      * @param email Users email
      * @param username Users desired username
      * @param password Users desired password
-     * @return Boolean representing success of the operation. False returned
-     * if registration failed.
+     * @return int code representing status of the operation. 
+     *  0 = user already exists. Registration failed.
+     *  1 = Registration successful.
+     *  2 = Registration failed. Unexpected error.
      */
-    public boolean registerUser(String name, String surname, String email, String username, String password);
+    public int registerUser(String name, String surname, String email, String username, String password);
 }
