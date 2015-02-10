@@ -56,7 +56,7 @@ CREATE TABLE user_group (
 id BIGINT NOT NULL AUTO_INCREMENT,
 role VARCHAR(255) NOT NULL,
 person VARCHAR(255) NOT NULL,
-PRIMARY KEY (id).
+PRIMARY KEY (id),
 FOREIGN KEY (role) REFERENCES role(name),
 FOREIGN KEY (person) REFERENCES person(username)
 );
