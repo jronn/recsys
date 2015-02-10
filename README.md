@@ -21,10 +21,11 @@ PRIMARY KEY (username)
 
 CREATE TABLE application (
 id BIGINT NOT NULL AUTO_INCREMENT,
-person VARCHAR(255) NOT NULL UNIQUE REFERENCES person,
+person VARCHAR(255) NOT NULL UNIQUE,
 submit_date DATE NOT NULL,
 approved BOOLEAN,
-PRIMARY KEY (id)
+PRIMARY KEY (id),
+FOREIGN KEY (person) REFERENCES person(username)
 );
 
 CREATE TABLE availability (
@@ -53,8 +54,10 @@ FOREIGN KEY (competence) REFERENCES competence(name)
 
 CREATE TABLE user_group (
 id BIGINT NOT NULL AUTO_INCREMENT,
-role VARCHAR(255) NOT NULL REFERENCES role,
-person VARCHAR(255) NOT NULL REFERENCES person,
-PRIMARY KEY (id)
+role VARCHAR(255) NOT NULL,
+person VARCHAR(255) NOT NULL,
+PRIMARY KEY (id).
+FOREIGN KEY (role) REFERENCES role(name),
+FOREIGN KEY (person) REFERENCES person(username)
 );
 
