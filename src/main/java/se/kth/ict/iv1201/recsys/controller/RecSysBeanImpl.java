@@ -6,7 +6,11 @@
 
 package se.kth.ict.iv1201.recsys.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import se.kth.ict.iv1201.recsys.integration.PersonDao;
@@ -29,11 +33,11 @@ public class RecSysBeanImpl implements RecSysBean {
     UserGroupDao userGroupDao;
     
 
-    public boolean registerUser(String name, String surname, String email, String username, String password) {
+    public int registerUser(String name, String surname, String email, String username, String password) {
         
         // Check if user already exists
         if(isRegistered(username)) {
-            return false;
+            return 0;
         }
         
         try {         
@@ -59,18 +63,18 @@ public class RecSysBeanImpl implements RecSysBean {
             userGroup.setRole("applicant");
             userGroupDao.persist(userGroup);
             
-            return true;
+            return 1;
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
-            return false;
-        }
+            return 2;
+        } 
     }
     
     private boolean isRegistered(String username) {
         Person person = personDao.findById(username);
         if(person != null)
-          return true;
+            return true;
         else
-          return false;
+            return false;
     }
 }
