@@ -61,3 +61,5 @@ FOREIGN KEY (role) REFERENCES role(name),
 FOREIGN KEY (person) REFERENCES person(username)
 );
 
+CERTIFICATE
+http://docs.oracle.com/cd/E26576_01/doc.312/e24940/system-security.htm#GSSCG00105
