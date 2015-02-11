@@ -24,9 +24,10 @@ public interface RecSysBean {
      * @param username Users desired username
      * @param password Users desired password
      * @return int code representing status of the operation. 
-     *  0 = user already exists. Registration failed.
-     *  1 = Registration successful.
-     *  2 = Registration failed. Unexpected error.
+     *  0 = Registration successful
+     *  1 = Registration failed. Invalid input.
+     *  2 = Registration failed. User exists.
+     *  3 = Registration failed. Unexpected error.
      */
     public int registerUser(String name, String surname, String email, String username, String password);
 }

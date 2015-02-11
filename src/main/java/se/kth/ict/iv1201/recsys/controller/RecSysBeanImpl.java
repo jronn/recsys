@@ -34,36 +34,37 @@ public class RecSysBeanImpl implements RecSysBean {
     
 
     public int registerUser(String name, String surname, String email, String username, String password) {
-        
         try {
-            // Check if user already exists
+            // Validate input
+            if(!RecSysUtil.validateString(name, 2, 20, true) ||
+                    !RecSysUtil.validateString(surname, 2, 20, true) ||
+                    !RecSysUtil.validateEmail(email) ||
+                    !RecSysUtil.validateString(username, 2, 20, false) ||
+                    !RecSysUtil.validateString(password, 2, 20, false)) 
+                return 1; 
+            
             Person existingUser = personDao.findById(username);
             if(existingUser != null)
-                return 0;
+                return 2;
             
-            // Create new user
             Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
             personDao.persist(person);
                 
-            // Get applicant role, or create it if it doesnt exist in the db
             Role role = roleDao.findById("applicant");
             if(role == null) {
                 role = new Role("applicant");
                 roleDao.persist(role);
             }
             
-            // Create new usergroup (user and role mapping) in db
             UserGroup userGroup = new UserGroup(person,role);
             userGroupDao.persist(userGroup);
             
-            // Flushes all changes, must be done within try clause to catch
-            // JPA exceptions, or exceptions will be thrown outside clause
-            personDao.flush();
-            
-            return 1;
+            // Flushes all changes, done within clause to catch JPA exceptions
+            personDao.flush();           
+            return 0;
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
-            return 2;
+            return 3;
         } 
     } 
 }
