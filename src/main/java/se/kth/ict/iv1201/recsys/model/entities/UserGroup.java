@@ -49,6 +49,11 @@ public class UserGroup implements Serializable {
         this.id = id;
     }
 
+    public UserGroup(Person person, Role role) {
+        this.person = person;
+        this.role = role;
+    }
+    
     public Long getId() {
         return id;
     }

@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import se.kth.ict.iv1201.recsys.integration.PersonDao;
 import se.kth.ict.iv1201.recsys.integration.RoleDao;
 import se.kth.ict.iv1201.recsys.integration.UserGroupDao;
+import se.kth.ict.iv1201.recsys.model.RecSysUtil;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 import se.kth.ict.iv1201.recsys.model.entities.Role;
 import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
@@ -40,12 +41,8 @@ public class RecSysBeanImpl implements RecSysBean {
             if(existingUser != null)
                 return 0;
             
-            //Hash password with SHA-256
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            
             // Create new user
-            Person person = new Person(username, name, surname, email, byteHashToHex(hash));
+            Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
             personDao.persist(person);
                 
             // Get applicant role, or create it if it doesnt exist in the db
@@ -56,9 +53,7 @@ public class RecSysBeanImpl implements RecSysBean {
             }
             
             // Create new usergroup (user and role mapping) in db
-            UserGroup userGroup = new UserGroup();
-            userGroup.setPerson(person);
-            userGroup.setRole(role);
+            UserGroup userGroup = new UserGroup(person,role);
             userGroupDao.persist(userGroup);
             
             // Flushes all changes, must be done within try clause to catch
@@ -71,15 +66,4 @@ public class RecSysBeanImpl implements RecSysBean {
             return 2;
         } 
     } 
-    
-    private String byteHashToHex(byte[] hash) {
-        StringBuilder hashedPw = new StringBuilder();
-        for (int i=0;i<hash.length;i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
-   	    if(hex.length()==1) 
-                hashedPw.append('0');
-   	    hashedPw.append(hex);
-        }
-        return hashedPw.toString();
-    }
 }
