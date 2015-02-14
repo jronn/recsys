@@ -13,36 +13,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entity representing a row in the user_group table in the db
+ * Entity class representing a usergroup (combination of person and role)
  * @author jronn
  */
 @Entity
 @Table(name = "user_group")
 public class UserGroup implements Serializable {
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
     
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "role")
-    private String role;
+    @JoinColumn(name = "role", referencedColumnName = "name")
+    @ManyToOne(optional = false)
+    private Role role;
     
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "person")
-    private String person;
+    @JoinColumn(name = "person", referencedColumnName = "username")
+    @ManyToOne(optional = false)
+    private Person person;
 
     public UserGroup() {
     }
@@ -51,12 +49,11 @@ public class UserGroup implements Serializable {
         this.id = id;
     }
 
-    public UserGroup(Long id, String role, String person) {
-        this.id = id;
-        this.role = role;
+    public UserGroup(Person person, Role role) {
         this.person = person;
+        this.role = role;
     }
-
+    
     public Long getId() {
         return id;
     }
@@ -65,19 +62,19 @@ public class UserGroup implements Serializable {
         this.id = id;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public String getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(String person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 

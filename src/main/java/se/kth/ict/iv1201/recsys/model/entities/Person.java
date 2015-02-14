@@ -7,23 +7,30 @@
 package se.kth.ict.iv1201.recsys.model.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity representing a row in the person table in the db
+ * Entity class representing a person
  * @author jronn
  */
 @Entity
 @Table(name = "person")
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -36,6 +43,7 @@ public class Person implements Serializable {
     @Column(name = "surname")
     private String surname;
     
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -54,8 +62,17 @@ public class Person implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "username")
     private String username;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+    private Collection<UserGroup> userGroupCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "person")
+    private Application application;
 
     public Person() {
+    }
+
+    public Person(String username) {
+        this.username = username;
     }
 
     public Person(String username, String name, String surname, String email, String password) {
@@ -65,7 +82,7 @@ public class Person implements Serializable {
         this.email = email;
         this.password = password;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -104,6 +121,23 @@ public class Person implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @XmlTransient
+    public Collection<UserGroup> getUserGroupCollection() {
+        return userGroupCollection;
+    }
+
+    public void setUserGroupCollection(Collection<UserGroup> userGroupCollection) {
+        this.userGroupCollection = userGroupCollection;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
     }
 
     @Override

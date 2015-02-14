@@ -6,16 +6,15 @@
 
 package se.kth.ict.iv1201.recsys.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import se.kth.ict.iv1201.recsys.integration.PersonDao;
+import se.kth.ict.iv1201.recsys.integration.RoleDao;
 import se.kth.ict.iv1201.recsys.integration.UserGroupDao;
+import se.kth.ict.iv1201.recsys.model.RecSysUtil;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
+import se.kth.ict.iv1201.recsys.model.entities.Role;
 import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
 
 /**
@@ -28,53 +27,44 @@ public class RecSysBeanImpl implements RecSysBean {
     
     @EJB
     PersonDao personDao;
-    
     @EJB
     UserGroupDao userGroupDao;
+    @EJB
+    RoleDao roleDao;
     
 
     public int registerUser(String name, String surname, String email, String username, String password) {
-        
-        // Check if user already exists
-        if(isRegistered(username)) {
-            return 0;
-        }
-        
-        try {         
-            //Hash password with SHA-256
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes("UTF-8"));
+        try {
+            // Validate input
+            if(!RecSysUtil.validateString(name, 2, 20, true) ||
+                    !RecSysUtil.validateString(surname, 2, 20, true) ||
+                    !RecSysUtil.validateEmail(email) ||
+                    !RecSysUtil.validateString(username, 2, 20, false) ||
+                    !RecSysUtil.validateString(password, 2, 20, false)) 
+                return 1; 
             
-            //To hex form
-            StringBuilder hashedPw = new StringBuilder();
-            for (int i=0;i<hash.length;i++) {
-    		String hex = Integer.toHexString(0xff & hash[i]);
-   	     	if(hex.length()==1) 
-                    hashedPw.append('0');
-   	     	hashedPw.append(hex);
+            Person existingUser = personDao.findById(username);
+            if(existingUser != null)
+                return 2;
+            
+            Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
+            personDao.persist(person);
+                
+            Role role = roleDao.findById("applicant");
+            if(role == null) {
+                role = new Role("applicant");
+                roleDao.persist(role);
             }
             
-            Person person = new Person(username, name, surname, email, hashedPw.toString());
-            personDao.persist(person);
-            
-            // Assign applicant role to the new user
-            UserGroup userGroup = new UserGroup();
-            userGroup.setPerson(username);
-            userGroup.setRole("applicant");
+            UserGroup userGroup = new UserGroup(person,role);
             userGroupDao.persist(userGroup);
             
-            return 1;
+            // Flushes all changes, done within clause to catch JPA exceptions
+            personDao.flush();           
+            return 0;
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
-            return 2;
+            return 3;
         } 
-    }
-    
-    private boolean isRegistered(String username) {
-        Person person = personDao.findById(username);
-        if(person != null)
-            return true;
-        else
-            return false;
-    }
+    } 
 }

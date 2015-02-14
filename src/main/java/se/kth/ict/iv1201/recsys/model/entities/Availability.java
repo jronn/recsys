@@ -14,30 +14,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entity representing a row in the availability table in the db
+ * Entity class representing an availability entry
  * @author jronn
  */
 @Entity
 @Table(name = "availability")
 public class Availability implements Serializable {
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "application")
-    private long application;
     
     @Basic(optional = false)
     @NotNull
@@ -50,6 +49,10 @@ public class Availability implements Serializable {
     @Column(name = "to_date")
     @Temporal(TemporalType.DATE)
     private Date toDate;
+    
+    @JoinColumn(name = "application", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Application application;
 
     public Availability() {
     }
@@ -58,9 +61,8 @@ public class Availability implements Serializable {
         this.id = id;
     }
 
-    public Availability(Long id, long application, Date fromDate, Date toDate) {
+    public Availability(Long id, Date fromDate, Date toDate) {
         this.id = id;
-        this.application = application;
         this.fromDate = fromDate;
         this.toDate = toDate;
     }
@@ -71,14 +73,6 @@ public class Availability implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public long getApplication() {
-        return application;
-    }
-
-    public void setApplication(long application) {
-        this.application = application;
     }
 
     public Date getFromDate() {
@@ -95,6 +89,14 @@ public class Availability implements Serializable {
 
     public void setToDate(Date toDate) {
         this.toDate = toDate;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
     }
 
     @Override

@@ -40,16 +40,18 @@ public class RegisterBean implements Serializable {
     public void register() {
         int statusCode = recSysEJB.registerUser(name, surname, email, username, password);
         
-        if(statusCode != 1)
+        if(statusCode != 0)
             successful = false;
         else
             successful = true;
         
         if(!successful) {
             switch(statusCode) {
-                case 0: errorMessage = "Could not register user, user already exists";
+                case 1: errorMessage = "Could not register user, invalid input";
                     break;
-                case 2: errorMessage = "Could not register user, unexpected error";
+                case 2: errorMessage = "Could not register user, user already exists";
+                    break;
+                case 3: errorMessage = "Could not register, unexpected error.";
                     break;
                 default: errorMessage = "Unkown event occurred";
                     break;
