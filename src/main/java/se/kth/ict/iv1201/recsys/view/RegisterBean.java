@@ -7,7 +7,7 @@ import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 
 /**
- * Backing bean for the register.xhtml page
+ * Backing bean for register.xhtml
  * 
  * @author jronn
  */
