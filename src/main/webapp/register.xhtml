@@ -7,7 +7,8 @@
  
     <h:head>
         <title>Registration</title>
-        <link rel="stylesheet" type="text/css" href="mystyle.css"/> 
+        <link rel="stylesheet" type="text/css" href="mystyle.css"/>
+        <script src="regjs.js"/>
     </h:head>
     <h:body>
         <header>
@@ -16,32 +17,32 @@
             bar below to log in instead.</p>
         </header>
         <nav>
-            <a href="login.xhtml">Login page</a> |
-            <a href="register.xhtml">Register</a>
+            <h:link value="Login" outcome="login"/> |
+            <h:link value="Register" outcome="register"/>
         </nav>
-        <h:form rendered='#{!registerBean.successful}'>
+        <h:form id="myForm" onsubmit="return validate()" rendered='#{!registerBean.successful}'>
           <h:outputText value='Name: '/>
-          <h:inputText value='#{registerBean.name}' required="true" 
+          <h:inputText id="name" value='#{registerBean.name}' required="true" 
                        requiredMessage="Please enter a name"/>
           <br/>
           
           <h:outputText value='Surname: '/>
-          <h:inputText value='#{registerBean.surname}' required="true"
+          <h:inputText id="surname" value='#{registerBean.surname}' required="true"
                        requiredMessage="Please enter a surname"/>
           <br/>
           
           <h:outputText value='Email: '/>
-          <h:inputText value='#{registerBean.email}' required="true"
+          <h:inputText id="email" value='#{registerBean.email}' required="true"
                        requiredMessage="Please enter an emial"/>
           <br/>
           
           <h:outputText value='Username: '/>
-          <h:inputText value='#{registerBean.username}' required="true"
+          <h:inputText id="username" value='#{registerBean.username}' required="true"
                        requiredMessage="Please enter a username"/>
           <br/>
           
           <h:outputText value='Password: '/>
-          <h:inputText value='#{registerBean.password}' required="true"
+          <h:inputSecret id="password" value='#{registerBean.password}' required="true"
                        requiredMessage="Please enter a password"/>
           <br/>
           
