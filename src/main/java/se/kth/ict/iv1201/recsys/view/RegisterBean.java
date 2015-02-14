@@ -26,7 +26,9 @@ public class RegisterBean implements Serializable {
     
     private String errorMessage;
     private boolean successful;
-
+    /**
+     * Called upon creation. Initializes the variables.
+     */
     public RegisterBean() {
         errorMessage = "";
         successful = false;
@@ -54,51 +56,99 @@ public class RegisterBean implements Serializable {
             }
         }
     }
-    
+    /**
+     * Used to get the error message if registration fails.
+     * 
+     * @return String containing information about the error that has occured.
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
-    
+    /**
+     * A method that checks if registration was successful
+     * 
+     * @return boolean that is only true if registration was successful
+     */
     public boolean isSuccessful() {
         return successful;
     }
     
+    /**
+     *
+     * @return string that contains the name of the registered user
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name sets the string name for the user
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return string that contains the surname of the registered user
+     */
     public String getSurname() {
         return surname;
     }
 
+    /**
+     *
+     * @param surname sets the string surname for the user
+     */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     *
+     * @return a string containing the email address of the registered user
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     *
+     * @param email sets the string parameter email for the user
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     *
+     * @return the string username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     *
+     * @param username sets the username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     *
+     * @return the password in string format
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     *
+     * @param password sets the password for the user
+     */
     public void setPassword(String password) {
         this.password = password;
     }
