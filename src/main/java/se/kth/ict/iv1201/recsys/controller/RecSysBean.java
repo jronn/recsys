@@ -29,5 +29,5 @@ public interface RecSysBean {
      *  2 = Registration failed. User exists.
      *  3 = Registration failed. Unexpected error.
      */
-    public void registerUser(String name, String surname, String email, String username, String password);
+    public void registerUser(String name, String surname, String email, String username, String password) throws ControllerException;
 }
