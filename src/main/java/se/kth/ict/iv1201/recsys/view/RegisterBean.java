@@ -1,10 +1,14 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
+import se.kth.ict.iv1201.recsys.model.ExistingUserException;
+import se.kth.ict.iv1201.recsys.model.RecsysException;
 
 /**
  * Backing bean for register.xhtml
@@ -38,24 +42,19 @@ public class RegisterBean implements Serializable {
     * Attempt to register a new user through the controller bean
     */
     public void register() {
-        int statusCode = recSysEJB.registerUser(name, surname, email, username, password);
-        
-        if(statusCode != 0)
-            successful = false;
-        else
+        try {
+            recSysEJB.registerUser(name, surname, email, username, password);
             successful = true;
-        
-        if(!successful) {
-            switch(statusCode) {
-                case 1: errorMessage = "Could not register user, invalid input";
-                    break;
-                case 2: errorMessage = "Could not register user, user already exists";
-                    break;
-                case 3: errorMessage = "Could not register, unexpected error.";
-                    break;
-                default: errorMessage = "Unkown event occurred";
-                    break;
-            }
+        } catch (IllegalArgumentException ex) {
+            successful = false;
+            errorMessage = "Invalid input. Make sure your user information is valid.";
+        } catch (ExistingUserException ex) {
+            successful = false;
+            errorMessage = ex.getMessage();
+        } catch (RecsysException ex) {
+            successful = false;
+            errorMessage = "An unexpected error has occurred. Make sure"
+                    + " your input information is valid.";
         }
     }
     /**

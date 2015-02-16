@@ -7,6 +7,8 @@
 package se.kth.ict.iv1201.recsys.controller;
 
 import javax.ejb.Local;
+import se.kth.ict.iv1201.recsys.model.ExistingUserException;
+import se.kth.ict.iv1201.recsys.model.RecsysException;
 
 /**
  *
@@ -16,18 +18,19 @@ import javax.ejb.Local;
 public interface RecSysBean {
     
     /**
-     * Registers a new user in the system
-     * 
-     * @param name Users first name
-     * @param surname Users last name
-     * @param email Users email
-     * @param username Users desired username
-     * @param password Users desired password
-     * @return int code representing status of the operation. 
-     *  0 = Registration successful
-     *  1 = Registration failed. Invalid input.
-     *  2 = Registration failed. User exists.
-     *  3 = Registration failed. Unexpected error.
+     * Registers a new user in the database and sets a role for the user
+     * @param name
+     * @param surname
+     * @param email
+     * @param username
+     * @param password
+     * @throws IllegalArgumentException Thrown when input data does not match
+     * validation requirements
+     * @throws ExistingUserException Thrown when a user with the same username 
+     * already exists
+     * @throws RecsysException Thrown when database errors or unexpected errors
+     * occur
      */
-    public int registerUser(String name, String surname, String email, String username, String password);
+    public void registerUser(String name, String surname, String email, String username, String password)
+            throws IllegalArgumentException, ExistingUserException, RecsysException;
 }
