@@ -1,8 +1,6 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -41,7 +39,7 @@ public class RegisterBean implements Serializable {
    /**
     * Attempt to register a new user through the controller bean
     */
-    public void register() {
+    public void register() throws RecsysException {
         try {
             recSysEJB.registerUser(name, surname, email, username, password);
             successful = true;

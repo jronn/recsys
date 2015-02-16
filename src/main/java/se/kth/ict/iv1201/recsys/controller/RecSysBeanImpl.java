@@ -8,16 +8,19 @@ package se.kth.ict.iv1201.recsys.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
+import se.kth.ict.iv1201.recsys.integration.CompetenceDao;
 import se.kth.ict.iv1201.recsys.integration.PersonDao;
 import se.kth.ict.iv1201.recsys.integration.RoleDao;
 import se.kth.ict.iv1201.recsys.integration.UserGroupDao;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
 import se.kth.ict.iv1201.recsys.model.RecSysUtil;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
+import se.kth.ict.iv1201.recsys.model.entities.Competence;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 import se.kth.ict.iv1201.recsys.model.entities.Role;
 import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
@@ -36,7 +39,8 @@ public class RecSysBeanImpl implements RecSysBean {
     UserGroupDao userGroupDao;
     @EJB
     RoleDao roleDao;
-    
+    @EJB
+    CompetenceDao competenceDao;
 
     public void registerUser(String name, String surname, String email, String username, String password) 
         throws IllegalArgumentException, ExistingUserException, RecsysException {
@@ -60,11 +64,8 @@ public class RecSysBeanImpl implements RecSysBean {
             Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
             personDao.persist(person);
                 
-            Role role = roleDao.findById("applicant");
-            if(role == null) {
-                role = new Role("applicant");
-                roleDao.persist(role);
-            }
+            Role role = new Role("applicant");
+            roleDao.persist(role);
             
             UserGroup userGroup = new UserGroup(person,role);
             userGroupDao.persist(userGroup);
@@ -74,8 +75,23 @@ public class RecSysBeanImpl implements RecSysBean {
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             throw new RecsysException("Unexpected error has occurred.");
         } catch (EJBTransactionRolledbackException e) {
-            throw new RecsysException("Input does not match database structure. Make sure"
-                    + "input is valid.");
+            throw new RecsysException("Database error occurred.");
         }
-    } 
+    }
+    
+    
+    public List<String> getCompetenceList() throws RecsysException {
+        
+        List<String> list = new ArrayList();
+        try {
+            List<Competence> clist = competenceDao.findAll();
+            for(Competence c : clist)
+                list.add(c.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RecsysException("Unexpected error has occurred.");
+            
+        }
+        return list;
+    }
 }
