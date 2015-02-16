@@ -7,20 +7,34 @@
 package se.kth.ict.iv1201.recsys.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import se.kth.ict.iv1201.recsys.integration.ApplicationDao;
+import se.kth.ict.iv1201.recsys.integration.AvailabilityDao;
 import se.kth.ict.iv1201.recsys.integration.CompetenceDao;
+import se.kth.ict.iv1201.recsys.integration.CompetenceProfileDao;
 import se.kth.ict.iv1201.recsys.integration.PersonDao;
 import se.kth.ict.iv1201.recsys.integration.RoleDao;
 import se.kth.ict.iv1201.recsys.integration.UserGroupDao;
+import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
+import se.kth.ict.iv1201.recsys.model.AvailabilityListing;
+import se.kth.ict.iv1201.recsys.model.CompetenceListing;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
+import se.kth.ict.iv1201.recsys.model.NotLoggedInException;
 import se.kth.ict.iv1201.recsys.model.RecSysUtil;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
+import se.kth.ict.iv1201.recsys.model.entities.Application;
+import se.kth.ict.iv1201.recsys.model.entities.Availability;
 import se.kth.ict.iv1201.recsys.model.entities.Competence;
+import se.kth.ict.iv1201.recsys.model.entities.CompetenceProfile;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 import se.kth.ict.iv1201.recsys.model.entities.Role;
 import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
@@ -41,6 +55,12 @@ public class RecSysBeanImpl implements RecSysBean {
     RoleDao roleDao;
     @EJB
     CompetenceDao competenceDao;
+    @EJB
+    CompetenceProfileDao competenceProfileDao;
+    @EJB
+    AvailabilityDao availabilityDao;
+    @EJB
+    ApplicationDao applicationDao;
 
     public void registerUser(String name, String surname, String email, String username, String password) 
         throws IllegalArgumentException, ExistingUserException, RecsysException {
@@ -64,8 +84,7 @@ public class RecSysBeanImpl implements RecSysBean {
             Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
             personDao.persist(person);
                 
-            Role role = new Role("applicant");
-            roleDao.persist(role);
+            Role role = roleDao.findById("applicant");
             
             UserGroup userGroup = new UserGroup(person,role);
             userGroupDao.persist(userGroup);
@@ -88,10 +107,65 @@ public class RecSysBeanImpl implements RecSysBean {
             for(Competence c : clist)
                 list.add(c.getName());
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RecsysException("Unexpected error has occurred.");
-            
         }
         return list;
+    }
+    
+    
+    public void registerApplication(ApplicationDTO applicationDto) 
+            throws NotLoggedInException, RecsysException {
+        try {
+            List<CompetenceListing> competences = applicationDto.getCompetences();
+            List<AvailabilityListing> availabilities = applicationDto.getAvailabilities();
+
+            // Get current date
+            Date date = new Date();
+            
+            // Get logged in username
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
+            String username = request.getRemoteUser();
+
+            if(username == null)
+                throw new NotLoggedInException("You need to be logged in.");
+                
+            Person person = personDao.findById(username);
+
+            Application application = applicationDao.findByPerson(person);
+            
+            if(application == null)
+                application = new Application(person,date);
+            
+            // Update submitdate to current date
+            application.setSubmitDate(new Date());
+            applicationDao.persist(application);
+
+            // Go through competenceProfiles, if already exists update yearsOfExperience
+            for(CompetenceListing c : competences) {
+                Competence comp = competenceDao.findById(c.competence);
+                
+                CompetenceProfile cp = competenceProfileDao.findByApplicationAndCompetence(application,comp);
+                if(cp == null)
+                    cp = new CompetenceProfile(application, comp, new BigDecimal(c.yearsOfExperience));
+                else
+                    cp.setYearsOfExperience(new BigDecimal(c.yearsOfExperience));
+                
+                competenceProfileDao.persist(cp);
+            }
+
+            // Check to see if same availability already exists
+            for(AvailabilityListing a : availabilities) {
+                Availability avail = availabilityDao.findByApplicationAndDates(application, a.fromDate, a.toDate);
+                if(avail == null)
+                    avail = new Availability(application, a.fromDate, a.toDate);
+                availabilityDao.persist(avail);
+            }
+            
+            // Called inside try block so we can catch JPA exceptions
+            personDao.flush();
+            
+        } catch(EJBTransactionRolledbackException e) {
+            throw new RecsysException("Unexpected error occurred.");
+        }
     }
 }

@@ -8,7 +8,9 @@ package se.kth.ict.iv1201.recsys.controller;
 
 import java.util.List;
 import javax.ejb.Local;
+import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
+import se.kth.ict.iv1201.recsys.model.NotLoggedInException;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
 
 /**
@@ -42,4 +44,8 @@ public interface RecSysBean {
      * @throws RecsysException Thrown when an unexpected error occurs.
      */
     public List<String> getCompetenceList() throws RecsysException;
+    
+    
+    public void registerApplication(ApplicationDTO application)
+            throws NotLoggedInException, RecsysException;
 }

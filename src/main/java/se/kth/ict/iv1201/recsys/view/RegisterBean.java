@@ -1,10 +1,14 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
+import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
+import se.kth.ict.iv1201.recsys.model.AvailabilityListing;
+import se.kth.ict.iv1201.recsys.model.CompetenceListing;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
 
@@ -39,7 +43,7 @@ public class RegisterBean implements Serializable {
    /**
     * Attempt to register a new user through the controller bean
     */
-    public void register() throws RecsysException {
+    public void register() {
         try {
             recSysEJB.registerUser(name, surname, email, username, password);
             successful = true;
@@ -55,6 +59,7 @@ public class RegisterBean implements Serializable {
                     + " your input information is valid.";
         }
     }
+    
     /**
      * Used to get the error message if registration fails.
      * 
