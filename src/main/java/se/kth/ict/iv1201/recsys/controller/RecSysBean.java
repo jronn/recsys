@@ -6,9 +6,11 @@
 
 package se.kth.ict.iv1201.recsys.controller;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
+import se.kth.ict.iv1201.recsys.model.CompetenceListing;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
 import se.kth.ict.iv1201.recsys.model.NotLoggedInException;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
@@ -45,7 +47,28 @@ public interface RecSysBean {
      */
     public List<String> getCompetenceList() throws RecsysException;
     
-    
+    /**
+     * Registers a new application with the information supplied in the 
+     * applicationDTO
+     * @param application ApplicationDTO containing competences and availabilities
+     * @throws NotLoggedInException Thrown when user is not logged in
+     * @throws RecsysException Thrown on unexpected errors
+     */
     public void registerApplication(ApplicationDTO application)
             throws NotLoggedInException, RecsysException;
+            
+    /**
+     * Returns a list of applications based on input search arguments.
+     * 
+     * @param name Name of applicant. May be null.
+     * @param competence CompetenceListing search parameter, with name of competence
+     * and yearsOfExperience. May be null.
+     * @param fromDate Availability fromDate. May be null.
+     * @param toDate Availability toDate. May be null.
+     * @param regDate Application registration date. May be null.
+     * @return List of applicationDTOs based on search parameters. Include information
+     * regarding approvance, submission date and first/last name
+     */
+    public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
+                    Date fromDate, Date toDate, Date regDate);
 }

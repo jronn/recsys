@@ -16,6 +16,10 @@ import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import se.kth.ict.iv1201.recsys.integration.ApplicationDao;
 import se.kth.ict.iv1201.recsys.integration.AvailabilityDao;
@@ -167,5 +171,23 @@ public class RecSysBeanImpl implements RecSysBean {
         } catch(EJBTransactionRolledbackException e) {
             throw new RecsysException("Unexpected error occurred.");
         }
+    }
+    
+    
+    public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
+                    Date fromDate, Date toDate, Date regDate) {
+        List<Application> applications = applicationDao.findBySearchCriterias(name, competence, fromDate, toDate, regDate);
+        List<ApplicationDTO> returnList = new ArrayList<>();
+        
+        for(Application a : applications) {
+            ApplicationDTO aDTO = new ApplicationDTO();
+            aDTO.setApproved(a.getApproved());
+            aDTO.setApplicantFirstName(a.getPerson().getName());
+            aDTO.setApplicantLastName(a.getPerson().getSurname());
+            aDTO.setSubmitDate(a.getSubmitDate());
+            returnList.add(aDTO);
+        }
+        
+        return returnList;
     }
 }

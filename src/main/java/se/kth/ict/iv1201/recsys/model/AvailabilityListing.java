@@ -18,6 +18,7 @@ public class AvailabilityListing {
     public Date fromDate;
     public Date toDate;
     
+    
     public AvailabilityListing(Date fromDate, Date toDate) {
         this.fromDate = fromDate;
         this.toDate = toDate;

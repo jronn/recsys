@@ -7,7 +7,9 @@
 package se.kth.ict.iv1201.recsys.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import se.kth.ict.iv1201.recsys.model.entities.Person;
 
 /**
  * DTO used to send to controller when registering an application
@@ -18,9 +20,47 @@ public class ApplicationDTO {
     final private List<CompetenceListing> competences;
     final private List<AvailabilityListing> availabilities;
     
+    private Date submitDate;
+    private Boolean approved;
+    
+    private String applicantFirstName;
+    private String applicantLastName;
+    
     public ApplicationDTO() {
        competences = new ArrayList(); 
        availabilities = new ArrayList();
+    }
+
+    public String getApplicantFirstName() {
+        return applicantFirstName;
+    }
+
+    public void setApplicantFirstName(String applicantFirstName) {
+        this.applicantFirstName = applicantFirstName;
+    }
+
+    public String getApplicantLastName() {
+        return applicantLastName;
+    }
+
+    public void setApplicantLastName(String applicantLastName) {
+        this.applicantLastName = applicantLastName;
+    }
+
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+
+    public Boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
     
     public void addCompetence(CompetenceListing competence) {
