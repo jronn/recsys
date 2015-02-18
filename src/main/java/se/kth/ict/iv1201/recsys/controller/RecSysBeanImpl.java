@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -274,7 +275,10 @@ public class RecSysBeanImpl implements RecSysBean {
         try {
             app.setApproved(status);
             applicationDao.flush();
-        } catch (EJBTransactionRolledbackException e) {
+        } catch (OptimisticLockException e) {
+            throw new RecsysException("Someone else has modified the application.");
+        } 
+        catch (EJBTransactionRolledbackException e) {
             throw new RecsysException("Unexpected error occurred");
         }
     }

@@ -22,6 +22,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,6 +39,10 @@ public class Application implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
+    
+    @Version
+    @Column(name = "version")
+    protected int version;
     
     @Basic(optional = false)
     @NotNull
@@ -66,6 +71,14 @@ public class Application implements Serializable {
         this.submitDate = submitDate;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+    
     public Long getId() {
         return id;
     }

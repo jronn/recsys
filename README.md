@@ -21,6 +21,7 @@ PRIMARY KEY (username)
 
 CREATE TABLE application (
 id BIGINT NOT NULL AUTO_INCREMENT,
+version INT,
 person VARCHAR(255) NOT NULL UNIQUE,
 submit_date DATE NOT NULL,
 approved BOOLEAN,

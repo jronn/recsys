@@ -6,6 +6,7 @@
 
 package se.kth.ict.iv1201.recsys.integration;
 
+import java.util.List;
 import se.kth.ict.iv1201.recsys.model.entities.Application;
 import se.kth.ict.iv1201.recsys.model.entities.Competence;
 import se.kth.ict.iv1201.recsys.model.entities.CompetenceProfile;
