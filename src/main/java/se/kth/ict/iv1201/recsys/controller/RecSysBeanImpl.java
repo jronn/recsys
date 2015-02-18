@@ -223,8 +223,7 @@ public class RecSysBeanImpl implements RecSysBean {
     }
     
     
-    public ApplicationDTO getSpecificApplication(String username) throws IllegalArgumentException {
-        
+    public ApplicationDTO getSpecificApplication(String username) throws IllegalArgumentException {   
         Person person = null;
         
         if(username != null)
@@ -256,5 +255,27 @@ public class RecSysBeanImpl implements RecSysBean {
         }
         
         return applicationDTO;
+    }
+    
+    
+    public void setApproved(String username, boolean status) throws RecsysException,IllegalArgumentException{
+        Person person = null;
+        
+        if(username != null)
+            person = personDao.findById(username);
+        
+        if(username == null || person == null)
+            throw new IllegalArgumentException("User does not exist");
+        
+        Application app = applicationDao.findByPerson(person);
+        if(app == null)
+            throw new IllegalArgumentException("User does not have an application");
+        
+        try {
+            app.setApproved(status);
+            applicationDao.flush();
+        } catch (EJBTransactionRolledbackException e) {
+            throw new RecsysException("Unexpected error occurred");
+        }
     }
 }

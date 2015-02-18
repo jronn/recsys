@@ -81,4 +81,13 @@ public interface RecSysBean {
      * @throws IllegalArgumentException Thrown when username is null or doesnt exist
      */
     public ApplicationDTO getSpecificApplication(String username) throws IllegalArgumentException;
+    
+    /**
+     * Sets the approved value in the application related to user
+     * @param username
+     * @param status Status of approval. True = approved.
+     * @throws RecsysException Thrown on unexpected errors
+     * @throws IllegalArgumentException Thrown when username is invalid or doesnt have an application
+     */
+    public void setApproved(String username, boolean status)throws RecsysException,IllegalArgumentException;
 }
