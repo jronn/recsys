@@ -7,6 +7,7 @@
 package se.kth.ict.iv1201.recsys.integration;
 
 import java.util.Date;
+import java.util.List;
 import se.kth.ict.iv1201.recsys.model.entities.Application;
 import se.kth.ict.iv1201.recsys.model.entities.Availability;
 
@@ -16,5 +17,19 @@ import se.kth.ict.iv1201.recsys.model.entities.Availability;
  */
 public interface AvailabilityDao extends GenericDao<Availability, Long> {
     
+    /**
+     * Find availabilities based on application and start/end dates
+     * @param application
+     * @param start
+     * @param end
+     * @return Availability
+     */
     public Availability findByApplicationAndDates(Application application, Date start, Date end);
+    
+    /**
+     * Find all availabilities tied to specified application
+     * @param application
+     * @return 
+     */
+    public List<Availability> findByApplication(Application application);
 }

@@ -23,4 +23,11 @@ public interface CompetenceProfileDao extends GenericDao<CompetenceProfile,Long>
      * @return CompetenceProfile matching input values
      */
     public CompetenceProfile findByApplicationAndCompetence(Application application, Competence competence);
+    
+    /**
+     * Find all competenceProfiles based on application
+     * @param application
+     * @return List of all competenceProfiles tied to specified application
+     */
+    public List<CompetenceProfile> findByApplication(Application application);
 }

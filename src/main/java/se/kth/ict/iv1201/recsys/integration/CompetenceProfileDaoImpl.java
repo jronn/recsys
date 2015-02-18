@@ -6,6 +6,7 @@
 
 package se.kth.ict.iv1201.recsys.integration;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import se.kth.ict.iv1201.recsys.model.entities.Application;
@@ -29,5 +30,11 @@ public class CompetenceProfileDaoImpl extends GenericJpaDao<CompetenceProfile,Lo
         query.setParameter("application", application);
         query.setParameter("competence", competence);
         return (CompetenceProfile)query.getSingleResult();
+    }
+    
+    public List<CompetenceProfile> findByApplication(Application application) {
+        Query query = em.createQuery("SELECT cp FROM CompetenceProfile cp WHERE cp.application = :app");
+        query.setParameter("app", application);
+        return query.getResultList();
     }
 }

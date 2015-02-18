@@ -120,7 +120,7 @@ public class RecSysBeanImpl implements RecSysBean {
     
     
     public void registerApplication(ApplicationDTO applicationDto) 
-            throws NotLoggedInException, RecsysException {
+            throws NotLoggedInException, RecsysException, IllegalArgumentException {
         try {
             List<CompetenceListing> competences = applicationDto.getCompetences();
             List<AvailabilityListing> availabilities = applicationDto.getAvailabilities();
@@ -150,6 +150,9 @@ public class RecSysBeanImpl implements RecSysBean {
             for(CompetenceListing c : competences) {
                 Competence comp = competenceDao.findById(c.competence);
                 
+                if(comp == null)
+                    throw new IllegalArgumentException("Invalid competence types detected.");
+                
                 CompetenceProfile cp = competenceProfileDao.findByApplicationAndCompetence(application,comp);
                 if(cp == null)
                     cp = new CompetenceProfile(application, comp, new BigDecimal(c.yearsOfExperience));
@@ -161,6 +164,9 @@ public class RecSysBeanImpl implements RecSysBean {
 
             // Check to see if same availability already exists
             for(AvailabilityListing a : availabilities) {
+                if(!a.fromDate.before(a.toDate))
+                    throw new IllegalArgumentException("Invalid availablility date. fromDate is after toDate");
+                
                 Availability avail = availabilityDao.findByApplicationAndDates(application, a.fromDate, a.toDate);
                 if(avail == null)
                     avail = new Availability(application, a.fromDate, a.toDate);
@@ -177,7 +183,7 @@ public class RecSysBeanImpl implements RecSysBean {
     
 
     public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
-                    String fromDate, String toDate, String regDate) throws RecsysException, IllegalArgumentException {
+                    Date fromDate, Date toDate, Date regDate) throws RecsysException, IllegalArgumentException {
         
         List<ApplicationDTO> returnList = new ArrayList<>();
         
@@ -196,25 +202,11 @@ public class RecSysBeanImpl implements RecSysBean {
         }
         
         // Validate dates
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDateD = null;
-        Date toDateD = null;
-        Date regDateD = null;
+        if(fromDate != null && toDate != null && fromDate.after(toDate))
+            throw new IllegalArgumentException("Invalid dates. fromDate is after toDate");
         
         try {
-            if(fromDate != null)
-                fromDateD = format.parse(fromDate);
-            if(toDate != null)
-                toDateD = format.parse(toDate);
-            if(regDate != null)
-                regDateD = format.parse(regDate);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Date invalid. Make sure you enter it "
-                    + "in format 'yyyy-MM-dd'");
-        }
-        
-        try {
-            List<Application> applications = applicationDao.findBySearchCriterias(name, competence, fromDateD, toDateD, regDateD);
+            List<Application> applications = applicationDao.findBySearchCriterias(name, competence, fromDate, toDate, regDate);
         
             for(Application a : applications) {
                 ApplicationDTO aDTO = new ApplicationDTO();
@@ -228,5 +220,41 @@ public class RecSysBeanImpl implements RecSysBean {
             throw new RecsysException("Unexpected error occurred.");
         }
         return returnList;
+    }
+    
+    
+    public ApplicationDTO getSpecificApplication(String username) throws IllegalArgumentException {
+        
+        Person person = null;
+        
+        if(username != null)
+            person = personDao.findById(username);
+        
+        if(username == null || person == null)
+            throw new IllegalArgumentException("Invalid username");
+        
+        
+        Application application = applicationDao.findByPerson(person);
+        if(application == null)
+            throw new IllegalArgumentException("Application for that user does not exist");
+        
+        ApplicationDTO applicationDTO = new ApplicationDTO();
+        applicationDTO.setApplicantFirstName(application.getPerson().getName());
+        applicationDTO.setApplicantLastName(application.getPerson().getSurname());
+        applicationDTO.setSubmitDate(application.getSubmitDate());
+        applicationDTO.setApproved(application.getApproved());
+        
+        List<Availability> availabilities = availabilityDao.findByApplication(application);
+        List<CompetenceProfile> competences = competenceProfileDao.findByApplication(application);
+        
+        for(Availability a : availabilities) {
+            applicationDTO.addAvailability(new AvailabilityListing(a.getFromDate(), a.getToDate()));
+        }
+        
+        for(CompetenceProfile cp : competences) {
+            applicationDTO.addCompetence(new CompetenceListing(cp.getCompetence().getName(),cp.getYearsOfExperience().intValue()));
+        }
+        
+        return applicationDTO;
     }
 }

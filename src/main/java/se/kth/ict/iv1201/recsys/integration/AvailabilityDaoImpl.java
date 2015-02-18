@@ -7,6 +7,7 @@
 package se.kth.ict.iv1201.recsys.integration;
 
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import se.kth.ict.iv1201.recsys.model.entities.Application;
@@ -33,5 +34,9 @@ public class AvailabilityDaoImpl extends GenericJpaDao<Availability,Long>
         return (Availability)query.getSingleResult();
     }
     
-    
+    public List<Availability> findByApplication(Application application) {
+        Query query = em.createQuery("SELECT av FROM Availability av WHERE av.application = :app");
+        query.setParameter("app", application);
+        return query.getResultList();
+    }
 }
