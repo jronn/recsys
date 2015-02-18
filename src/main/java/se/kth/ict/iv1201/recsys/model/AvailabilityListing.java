@@ -23,4 +23,26 @@ public class AvailabilityListing {
         this.fromDate = fromDate;
         this.toDate = toDate;
     }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+    
+    @Override
+    public String toString(){
+        return "From: " + fromDate + " To: " + toDate;
+        
+    }
 }

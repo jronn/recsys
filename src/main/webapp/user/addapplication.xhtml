@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>Add Application</title>
+        <link rel="stylesheet" type="text/css" href="mystyle.css"/>
+        <meta name="viewport" content="width=device-width"/>
+    </h:head>
+    <h:body>
+        <header>
+            <h2>Add Application</h2>
+            <p>Create your applications here by filling out the required fields.</p>
+        </header>
+        <h:form rendered="#{AddAppBean.clicked_next == false}">
+            <h:outputLabel value="Area of expertise:" />
+            <h:selectOneMenu value="#{AddAppBean.expertise}">
+                <f:selectItem itemValue="Animals" itemLabel="Animals"/>
+                <f:selectItem itemValue="Math" itemLabel="Math"/>
+                <f:selectItem itemValue="Biography" itemLabel="Biology"/>
+            </h:selectOneMenu>
+            <br/>
+            <h:outputLabel value="Years of experience: "/>
+            <h:inputText value="#{AddAppBean.years_experience}"/>
+            <h:commandButton value="Add" action="#{AddAppBean.addExpertise}"/>
+            <hr/>
+            <h:outputLabel value="Periods of availability: "/>
+            <br/>
+            <h:outputLabel value="From "/>
+            <h:inputText value="#{AddAppBean.date_from}">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </h:inputText>
+            <h:outputLabel value="To "/>
+            <h:inputText value="#{AddAppBean.date_to}">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </h:inputText>
+            <h:outputLabel value="Use this pattern: yyyy-MM-dd(Example: 2015-01-22)" style="font-size: 10px;"/>
+            <h:commandButton value="Add" action="#{AddAppBean.addAvailability}"/>
+            <hr/>
+            <h:commandButton value="Next" action="#{AddAppBean.clickNext}"/>
+        </h:form>
+        <hr/>
+        <h:panelGroup rendered="#{AddAppBean.clicked_next == true}">
+            <h3>Competence:</h3>
+            <h:dataTable value="#{AddAppBean.expertise_list}" var="expertise">
+                <h:column>
+                    Expertise: #{expertise.competence}<br/>
+                    Years of Experience: #{expertise.yearsOfExperience}<br/>
+                </h:column>
+            </h:dataTable>
+            <br />
+            <h3>Availability:</h3>
+            <h:dataTable value="#{AddAppBean.availability_list}" var="avail">
+                <h:column>
+                    From: #{avail.fromDate}<br/>
+                    To: #{avail.toDate}<br/>
+                </h:column>
+            </h:dataTable>
+            <h:form>
+                <h:commandButton value="Cancel" action="#{AddAppBean.cancel}"/>
+                <h:commandButton value="Send" action="#{AddAppBean.send}"/>
+            </h:form>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{AddAppBean.clicked_sent == true}">
+        Application sent!
+        <h:form><h:commandButton value="Go back" action="#{AddAppBean.goBack}"/></h:form>
+        </h:panelGroup>
+    </h:body>
+</html>

@@ -9,7 +9,6 @@ package se.kth.ict.iv1201.recsys.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import se.kth.ict.iv1201.recsys.model.entities.Person;
 
 /**
  * DTO used to send to controller when registering an application
