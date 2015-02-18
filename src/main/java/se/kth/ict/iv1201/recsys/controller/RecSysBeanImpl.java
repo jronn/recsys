@@ -9,6 +9,8 @@ package se.kth.ict.iv1201.recsys.controller;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -173,21 +175,58 @@ public class RecSysBeanImpl implements RecSysBean {
         }
     }
     
-    
+
     public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
-                    Date fromDate, Date toDate, Date regDate) {
-        List<Application> applications = applicationDao.findBySearchCriterias(name, competence, fromDate, toDate, regDate);
+                    String fromDate, String toDate, String regDate) throws RecsysException, IllegalArgumentException {
+        
         List<ApplicationDTO> returnList = new ArrayList<>();
         
-        for(Application a : applications) {
-            ApplicationDTO aDTO = new ApplicationDTO();
-            aDTO.setApproved(a.getApproved());
-            aDTO.setApplicantFirstName(a.getPerson().getName());
-            aDTO.setApplicantLastName(a.getPerson().getSurname());
-            aDTO.setSubmitDate(a.getSubmitDate());
-            returnList.add(aDTO);
+        // Validate name
+        if(name != null) {
+            Person person = personDao.findById(name);
+            if(person == null)
+                throw new IllegalArgumentException("Username invalid");
         }
         
+        // Validate competence
+        if(competence != null) {
+            Competence comp = competenceDao.findById(competence.competence);
+            if(comp == null)
+                throw new IllegalArgumentException("Invalid competence type");
+        }
+        
+        // Validate dates
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date fromDateD = null;
+        Date toDateD = null;
+        Date regDateD = null;
+        
+        try {
+            if(fromDate != null)
+                fromDateD = format.parse(fromDate);
+            if(toDate != null)
+                toDateD = format.parse(toDate);
+            if(regDate != null)
+                regDateD = format.parse(regDate);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Date invalid. Make sure you enter it "
+                    + "in format 'yyyy-MM-dd'");
+        }
+        
+        try {
+            List<Application> applications = applicationDao.findBySearchCriterias(name, competence, fromDateD, toDateD, regDateD);
+        
+            for(Application a : applications) {
+                ApplicationDTO aDTO = new ApplicationDTO();
+                aDTO.setApproved(a.getApproved());
+                aDTO.setApplicantFirstName(a.getPerson().getName());
+                aDTO.setApplicantLastName(a.getPerson().getSurname());
+                aDTO.setSubmitDate(a.getSubmitDate());
+                returnList.add(aDTO);
+            } 
+        }catch(Exception e) {
+            throw new RecsysException("Unexpected error occurred.");
+        }
         return returnList;
     }
 }

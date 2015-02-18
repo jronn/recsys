@@ -63,12 +63,14 @@ public interface RecSysBean {
      * @param name Name of applicant. May be null.
      * @param competence CompetenceListing search parameter, with name of competence
      * and yearsOfExperience. May be null.
-     * @param fromDate Availability fromDate. May be null.
-     * @param toDate Availability toDate. May be null.
-     * @param regDate Application registration date. May be null.
+     * @param fromDate Availability fromDate string. Must be in format yyyy-MM-dd. May be null.
+     * @param toDate Availability toDate string. Must be in format yyyy-MM-dd. May be null.
+     * @param regDate Application registration date string. Must be in format yyyy-MM-dd. May be null.
+     * @throws RecsysException Thrown on unexpected errors
+     * @throws IllegalArgumentException Thrown when input is invalid.
      * @return List of applicationDTOs based on search parameters. Include information
      * regarding approvance, submission date and first/last name
      */
     public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
-                    Date fromDate, Date toDate, Date regDate);
+                    String fromDate, String toDate, String regDate) throws RecsysException, IllegalArgumentException;
 }
