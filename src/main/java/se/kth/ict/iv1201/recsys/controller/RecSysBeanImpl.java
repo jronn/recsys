@@ -33,7 +33,8 @@ public class RecSysBeanImpl implements RecSysBean {
     RoleDao roleDao;
     
 
-    public int registerUser(String name, String surname, String email, String username, String password) {
+    @Override
+    public void registerUser(String name, String surname, String email, String username, String password) {
         try {
             // Validate input
             if(!RecSysUtil.validateString(name, 2, 20, true) ||
@@ -41,11 +42,11 @@ public class RecSysBeanImpl implements RecSysBean {
                     !RecSysUtil.validateEmail(email) ||
                     !RecSysUtil.validateString(username, 2, 20, false) ||
                     !RecSysUtil.validateString(password, 2, 20, false)) 
-                return 1; 
+                throw new ControllerException("invalidinput"); 
             
             Person existingUser = personDao.findById(username);
             if(existingUser != null)
-                return 2;
+                throw new ControllerException("existinguser");
             
             Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
             personDao.persist(person);
@@ -61,10 +62,8 @@ public class RecSysBeanImpl implements RecSysBean {
             
             // Flushes all changes, done within clause to catch JPA exceptions
             personDao.flush();           
-            return 0;
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
-            return 3;
         } 
     } 
 }
