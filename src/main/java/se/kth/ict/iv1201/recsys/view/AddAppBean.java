@@ -71,8 +71,8 @@ public class AddAppBean implements Serializable {
         date_from = null;
         expertise = "Animals";
         years_experience = 0;
-        expertise_list = null;
-        availability_list = null;
+        expertise_list = new ArrayList<>();
+        availability_list = new ArrayList<>();
         clicked_next = false;
     }
     
