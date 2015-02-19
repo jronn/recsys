@@ -76,7 +76,7 @@ public class RecSysBeanImpl implements RecSysBean {
             if(!RecSysUtil.validateString(name, 2, 20, true) ||
                     !RecSysUtil.validateString(surname, 2, 20, true) ||
                     !RecSysUtil.validateEmail(email) ||
-                    !RecSysUtil.validateString(username, 2, 20, false) ||
+                    !RecSysUtil.validateString(username, 2, 20, true) ||
                     !RecSysUtil.validateString(password, 2, 20, false)) 
                 throw new IllegalArgumentException("Invalid user input"); 
             
