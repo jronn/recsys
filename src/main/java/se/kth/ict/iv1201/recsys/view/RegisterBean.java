@@ -5,6 +5,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
+import se.kth.ict.iv1201.recsys.model.ExistingUserException;
+import se.kth.ict.iv1201.recsys.model.RecsysException;
 
 /**
  * Backing bean for register.xhtml
@@ -36,20 +38,24 @@ public class RegisterBean implements Serializable {
    /**
     * Attempt to register a new user through the controller bean
     */
-    public void register(){
+
+    public void register() {
         try {
             recSysEJB.registerUser(name, surname, email, username, password);
             successful = true;
-        } catch(Exception e){
+        } catch (IllegalArgumentException ex) {
             successful = false;
-            if(e.getMessage().equals("invalidinput"))
-                errorMessage = "Could not register user, invalid input.";
-            if(e.getMessage().equals("existinguser"))
-                errorMessage = "Could not register user, user already exists.";
-            else
-                errorMessage = "Unknown error occured. User was not registered.";
+            errorMessage = "Invalid input. Make sure your user information is valid.";
+        } catch (ExistingUserException ex) {
+            successful = false;
+            errorMessage = ex.getMessage();
+        } catch (RecsysException ex) {
+            successful = false;
+            errorMessage = "An unexpected error has occurred. Make sure"
+                    + " your input information is valid.";
         }
     }
+    
     /**
      * Used to get the error message if registration fails.
      * 

@@ -16,13 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity class representing an availability entry
@@ -57,12 +54,8 @@ public class Availability implements Serializable {
     public Availability() {
     }
 
-    public Availability(Long id) {
-        this.id = id;
-    }
-
-    public Availability(Long id, Date fromDate, Date toDate) {
-        this.id = id;
+    public Availability(Application application, Date fromDate, Date toDate) {
+        this.application = application;
         this.fromDate = fromDate;
         this.toDate = toDate;
     }

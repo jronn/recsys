@@ -7,6 +7,7 @@
 package se.kth.ict.iv1201.recsys.integration;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * A generic Dao interface containing base functions, intended to be extended
@@ -35,6 +36,7 @@ public interface GenericDao<E,ID extends Serializable> {
      * @return Entity with primary key matching the given id
      */
     public E findById(ID id);
+  
     
     /**
      * Flushes all changes (for all entities, not just the related entity)

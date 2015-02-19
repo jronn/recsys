@@ -57,8 +57,9 @@ public class CompetenceProfile implements Serializable {
         this.id = id;
     }
 
-    public CompetenceProfile(Long id, BigDecimal yearsOfExperience) {
-        this.id = id;
+    public CompetenceProfile(Application application, Competence competence, BigDecimal yearsOfExperience) {
+        this.application = application;
+        this.competence = competence;
         this.yearsOfExperience = yearsOfExperience;
     }
 
