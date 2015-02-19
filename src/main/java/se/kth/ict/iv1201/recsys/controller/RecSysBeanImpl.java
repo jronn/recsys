@@ -76,17 +76,18 @@ public class RecSysBeanImpl implements RecSysBean {
             if(!RecSysUtil.validateString(name, 2, 20, true) ||
                     !RecSysUtil.validateString(surname, 2, 20, true) ||
                     !RecSysUtil.validateEmail(email) ||
-                    !RecSysUtil.validateString(username, 2, 20, false) ||
+                    !RecSysUtil.validateString(username, 2, 20, true) ||
                     !RecSysUtil.validateString(password, 2, 20, false)) 
                 throw new IllegalArgumentException("Invalid user input"); 
             
             Person existingUser = personDao.findById(username);
             if(existingUser != null) 
                 throw new ExistingUserException("User already exists");
-                
+
             List personList = personDao.findByEmail(email);
-            if(!personList.isEmpty()) 
+            if(!personList.isEmpty()){ 
                 throw new ExistingUserException("Specified email is already in use");
+            }
 
             Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
             personDao.persist(person);

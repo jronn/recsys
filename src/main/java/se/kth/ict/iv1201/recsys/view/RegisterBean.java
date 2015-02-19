@@ -1,6 +1,7 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
