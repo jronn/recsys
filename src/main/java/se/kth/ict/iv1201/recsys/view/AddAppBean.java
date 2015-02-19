@@ -44,16 +44,6 @@ public class AddAppBean implements Serializable {
         availability_list = new ArrayList<>();
     }
     
-    @PostConstruct
-    public void init(){
-        try {
-            myApp = new ApplicationDTO();
-            recSysEJB.registerApplication(myApp);
-        } catch (NotLoggedInException | RecsysException ex) {
-            Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     public void clickNext(){
         clicked_next = true;
     }
@@ -78,6 +68,12 @@ public class AddAppBean implements Serializable {
     
     public void send() {
         clicked_next = false;
+        myApp = new ApplicationDTO();
+        try {
+            recSysEJB.registerApplication(myApp);
+        } catch (NotLoggedInException | RecsysException ex) {
+            Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(int i = 0; i < availability_list.size(); i++){
             myApp.addAvailability(availability_list.get(i));
         }
