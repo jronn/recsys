@@ -71,11 +71,9 @@ public class RegisterUserTest {
         assertFailsUserValidation("name","surname","email@email.com","username","p");
         assertFailsUserValidation("name","s","email@email.com","username","password");
         assertFailsUserValidation("n","surname","email@email.com","username","password");
-        assertFailsUserValidation("name","surname","email@email.com","user@name","password");
         assertFailsUserValidation("na me","surname","email@email.com","username","password");
         assertFailsUserValidation("name","sur name","email@email.com","username","password");
-        assertFailsUserValidation("name","sur name","email@email.com","use rname","password");
-        assertFailsUserValidation("name","sur name","email@em ail.com","use rname","password");
+        assertFailsUserValidation("name","sur name","email@em ail.com","username","password");
         
         assertSucceedsUserValidation("name","surname","email@email.com","username","password");
         assertSucceedsUserValidation("Torbjörn","Alenklint","emaildeluxe@emaildelux.com","AsernBme","p24@€Wrd");
