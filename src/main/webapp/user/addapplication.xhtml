@@ -18,37 +18,37 @@ and open the template in the editor.
             <h2>Add Application</h2>
             <p>Create your applications here by filling out the required fields.</p>
         </header>
-        <h:form rendered="#{AddAppBean.clicked_next == false}">
+        <h:form rendered="#{addAppBean.clicked_next == false}">
             <h:outputLabel value="Area of expertise:" />
-            <h:selectOneMenu value="#{AddAppBean.expertise}">
+            <h:selectOneMenu value="#{addAppBean.expertise}">
                 <f:selectItem itemValue="Animals" itemLabel="Animals"/>
                 <f:selectItem itemValue="Math" itemLabel="Math"/>
                 <f:selectItem itemValue="Biography" itemLabel="Biology"/>
             </h:selectOneMenu>
             <br/>
             <h:outputLabel value="Years of experience: "/>
-            <h:inputText value="#{AddAppBean.years_experience}"/>
-            <h:commandButton value="Add" action="#{AddAppBean.addExpertise}"/>
+            <h:inputText value="#{addAppBean.years_experience}"/>
+            <h:commandButton value="Add" action="#{addAppBean.addExpertise}"/>
             <hr/>
             <h:outputLabel value="Periods of availability: "/>
             <br/>
             <h:outputLabel value="From "/>
-            <h:inputText value="#{AddAppBean.date_from}">
+            <h:inputText value="#{addAppBean.date_from}">
                 <f:convertDateTime pattern="yyyy-MM-dd"/>
             </h:inputText>
             <h:outputLabel value="To "/>
-            <h:inputText value="#{AddAppBean.date_to}">
+            <h:inputText value="#{addAppBean.date_to}">
                 <f:convertDateTime pattern="yyyy-MM-dd"/>
             </h:inputText>
             <h:outputLabel value="Use this pattern: yyyy-MM-dd(Example: 2015-01-22)" style="font-size: 10px;"/>
-            <h:commandButton value="Add" action="#{AddAppBean.addAvailability}"/>
+            <h:commandButton value="Add" action="#{addAppBean.addAvailability}"/>
             <hr/>
-            <h:commandButton value="Next" action="#{AddAppBean.clickNext}"/>
+            <h:commandButton value="Next" action="#{addAppBean.clickNext}"/>
         </h:form>
         <hr/>
-        <h:panelGroup rendered="#{AddAppBean.clicked_next == true}">
+        <h:panelGroup rendered="#{addAppBean.clicked_next == true}">
             <h3>Competence:</h3>
-            <h:dataTable value="#{AddAppBean.expertise_list}" var="expertise">
+            <h:dataTable value="#{addAppBean.expertise_list}" var="expertise">
                 <h:column>
                     Expertise: #{expertise.competence}<br/>
                     Years of Experience: #{expertise.yearsOfExperience}<br/>
@@ -56,20 +56,20 @@ and open the template in the editor.
             </h:dataTable>
             <br />
             <h3>Availability:</h3>
-            <h:dataTable value="#{AddAppBean.availability_list}" var="avail">
+            <h:dataTable value="#{addAppBean.availability_list}" var="avail">
                 <h:column>
                     From: #{avail.fromDate}<br/>
                     To: #{avail.toDate}<br/>
                 </h:column>
             </h:dataTable>
             <h:form>
-                <h:commandButton value="Cancel" action="#{AddAppBean.cancel}"/>
-                <h:commandButton value="Send" action="#{AddAppBean.send}"/>
+                <h:commandButton value="Cancel" action="#{addAppBean.cancel}"/>
+                <h:commandButton value="Send" action="#{addAppBean.send}"/>
             </h:form>
         </h:panelGroup>
-        <h:panelGroup rendered="#{AddAppBean.clicked_sent == true}">
+        <h:panelGroup rendered="#{addAppBean.clicked_sent == true}">
         Application sent!
-        <h:form><h:commandButton value="Go back" action="#{AddAppBean.goBack}"/></h:form>
+        <h:form><h:commandButton value="Go back" action="#{addAppBean.goBack}"/></h:form>
         </h:panelGroup>
     </h:body>
 </html>

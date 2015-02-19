@@ -22,7 +22,7 @@ import se.kth.ict.iv1201.recsys.model.RecsysException;
  * 
  * @author christoffer
  */
-@Named("AddAppBean")
+@Named("addAppBean")
 @SessionScoped
 public class AddAppBean implements Serializable {
     
@@ -148,7 +148,7 @@ public class AddAppBean implements Serializable {
         return expertise_list;
     }
 
-    public void setExpertise_list(ArrayList<CompetenceListing> expertise_list) {
+    public void setExpertise_list(List<CompetenceListing> expertise_list) {
         this.expertise_list = expertise_list;
     }
 
@@ -156,7 +156,7 @@ public class AddAppBean implements Serializable {
         return availability_list;
     }
 
-    public void setAvailability_list(ArrayList<AvailabilityListing> availability_list) {
+    public void setAvailability_list(List<AvailabilityListing> availability_list) {
         this.availability_list = availability_list;
     }
 
