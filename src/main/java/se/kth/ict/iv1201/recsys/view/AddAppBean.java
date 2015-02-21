@@ -29,62 +29,75 @@ public class AddAppBean implements Serializable {
     @EJB
     RecSysBean recSysEJB;
 
-    private Date date_from;
-    private Date date_to;
-    private int years_experience;
+    private Date dateFrom;
+    private Date dateTo;
+    private int yearsExperience;
     private String expertise;
-    private boolean clicked_next = false;
-    private boolean clicked_sent = false;
-    private List<CompetenceListing> expertise_list;
-    private List<AvailabilityListing> availability_list;
+    private boolean clickedSent = false;
+    private List<CompetenceListing> expertiseList;
+    private List<AvailabilityListing> availabilityList;
     private ApplicationDTO myApp;
+    private List<String> comp;
+
+    public List<String> getComp() {
+        return comp;
+    }
+
+    public void setComp(List<String> comp) {
+        this.comp = comp;
+    }
+    
+    @PostConstruct
+    public void init(){
+        try {
+            comp = recSysEJB.getCompetenceList();
+        } catch (RecsysException ex) {
+            Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     public AddAppBean(){
-        expertise_list = new ArrayList<>();
-        availability_list = new ArrayList<>();
+        expertiseList = new ArrayList<>();
+        availabilityList = new ArrayList<>();
     }
     
-    public void clickNext(){
-        clicked_next = true;
-    }
     
     public void addExpertise(){
-        expertise_list.add(new CompetenceListing(expertise, years_experience));
+        expertiseList.add(new CompetenceListing(expertise, yearsExperience));
     }
     
     public void addAvailability(){
-        availability_list.add(new AvailabilityListing(date_from, date_to));
+        availabilityList.add(new AvailabilityListing(dateFrom, dateTo));
     }
     
     public void cancel(){
-        date_to = null;
-        date_from = null;
+        dateTo = null;
+        dateFrom = null;
         expertise = "Animals";
-        years_experience = 0;
-        expertise_list = new ArrayList<>();
-        availability_list = new ArrayList<>();
-        clicked_next = false;
+        yearsExperience = 0;
+        expertiseList = new ArrayList<>();
+        availabilityList = new ArrayList<>();
     }
     
     public void send() {
-        clicked_next = false;
         myApp = new ApplicationDTO();
         try {
             recSysEJB.registerApplication(myApp);
         } catch (NotLoggedInException | RecsysException ex) {
             Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(int i = 0; i < availability_list.size(); i++){
-            myApp.addAvailability(availability_list.get(i));
+        for(int i = 0; i < availabilityList.size(); i++){
+            myApp.addAvailability(availabilityList.get(i));
         }
-        for(int i = 0; i < expertise_list.size(); i++){
-            myApp.addCompetence(expertise_list.get(i));
+        for(int i = 0; i < expertiseList.size(); i++){
+            myApp.addCompetence(expertiseList.get(i));
         }
-        clicked_sent = true;
+        clickedSent = true;
     }
     
     public void goBack(){
-        clicked_sent = false;
+        clickedSent = false;
         cancel();
     }
     
@@ -96,28 +109,28 @@ public class AddAppBean implements Serializable {
         this.recSysEJB = recSysEJB;
     }
 
-    public Date getDate_from() {
-        return date_from;
+    public Date getDateFrom() {
+        return dateFrom;
     }
 
-    public void setDate_from(Date date_from) {
-        this.date_from = date_from;
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public Date getDate_to() {
-        return date_to;
+    public Date getDateTo() {
+        return dateTo;
     }
 
-    public void setDate_to(Date date_to) {
-        this.date_to = date_to;
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
-    public int getYears_experience() {
-        return years_experience;
+    public int getYearsExperience() {
+        return yearsExperience;
     }
 
-    public void setYears_experience(int years_experience) {
-        this.years_experience = years_experience;
+    public void setYearsExperience(int yearsExperience) {
+        this.yearsExperience = yearsExperience;
     }
 
     public String getExpertise() {
@@ -128,36 +141,28 @@ public class AddAppBean implements Serializable {
         this.expertise = expertise;
     }
     
-    public boolean isClicked_next() {
-        return clicked_next;
+    public boolean isClickedSent() {
+        return clickedSent;
     }
 
-    public void setClicked_next(boolean clicked_next) {
-        this.clicked_next = clicked_next;
+    public void setClickedSent(boolean clickedSent) {
+        this.clickedSent = clickedSent;
     }
-    
-    public boolean isClicked_sent() {
-        return clicked_sent;
-    }
-
-    public void setClicked_sent(boolean clicked_sent) {
-        this.clicked_sent = clicked_sent;
-    }
-    
-    public List<CompetenceListing> getExpertise_list() {
-        return expertise_list;
+   
+    public List<CompetenceListing> getExpertiseList() {
+        return expertiseList;
     }
 
-    public void setExpertise_list(List<CompetenceListing> expertise_list) {
-        this.expertise_list = expertise_list;
+    public void setExpertise_list(List<CompetenceListing> expertiseList) {
+        this.expertiseList = expertiseList;
     }
 
-    public List<AvailabilityListing> getAvailability_list() {
-        return availability_list;
+    public List<AvailabilityListing> getAvailabilityList() {
+        return availabilityList;
     }
 
-    public void setAvailability_list(List<AvailabilityListing> availability_list) {
-        this.availability_list = availability_list;
+    public void setAvailabilityList(List<AvailabilityListing> availabilityList) {
+        this.availabilityList = availabilityList;
     }
 
     public ApplicationDTO getMyApp() {
