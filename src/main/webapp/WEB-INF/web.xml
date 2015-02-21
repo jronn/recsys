@@ -19,7 +19,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/register.xhtml</welcome-file>
+        <welcome-file>faces/login.xhtml</welcome-file>
     </welcome-file-list>
     <!-- 
     <security-constraint>
@@ -55,8 +55,8 @@
         <auth-method>FORM</auth-method>
         <realm-name>testrealm</realm-name>
         <form-login-config>
-            <form-login-page>/login.xhtml</form-login-page>
-            <form-error-page>/faces/register.xhtml</form-error-page>
+            <form-login-page>/faces/login.xhtml</form-login-page>
+            <form-error-page>/faces/login_error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
 </web-app>

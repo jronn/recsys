@@ -22,4 +22,5 @@ public interface PersonDao extends GenericDao<Person, String> {
      * @return List of persons with matching email
      */
     public List findByEmail(String email);
+
 }
