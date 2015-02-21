@@ -34,9 +34,9 @@ public class ApplicationDaoImpl extends GenericJpaDao<Application,Long> implemen
         super(Application.class);
     }
     
-    public Application findByPerson(Person person) {
-        return (Application)em.createQuery("SELECT a FROM Application a WHERE a.person = :person")
-                .setParameter("person", person).getSingleResult();
+    public List<Application> findByPerson(Person person) {
+        return em.createQuery("SELECT a FROM Application a WHERE a.person = :person")
+                .setParameter("person", person).getResultList();
     }
 
     public List<Application> findBySearchCriterias(String name, CompetenceListing competenceIn, Date fromDate, Date toDate, Date regDate) {

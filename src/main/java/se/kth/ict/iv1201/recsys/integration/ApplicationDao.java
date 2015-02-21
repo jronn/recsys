@@ -19,11 +19,11 @@ import se.kth.ict.iv1201.recsys.model.entities.Person;
 public interface ApplicationDao extends GenericDao<Application,Long>{
     
     /**
-     * Finds an application based on person
+     * Finds applications based on person
      * @param person
      * @return Application entity
      */
-    public Application findByPerson(Person person);
+    public List<Application> findByPerson(Person person);
     
     /**
      * Finds a list of applications based on the search criteria

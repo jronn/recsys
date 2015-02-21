@@ -139,10 +139,12 @@ public class RecSysBeanImpl implements RecSysBean {
                 
             Person person = personDao.findById(username);
 
-            Application application = applicationDao.findByPerson(person);
-            
-            if(application == null)
+            Application application;
+            List<Application> apps = applicationDao.findByPerson(person);
+            if(apps.size() < 1)
                 application = new Application(person,date);
+            else
+                application = apps.get(0);
             
             // Update submitdate to current date
             application.setSubmitDate(new Date());
@@ -235,9 +237,12 @@ public class RecSysBeanImpl implements RecSysBean {
             throw new IllegalArgumentException("Invalid username");
         
         
-        Application application = applicationDao.findByPerson(person);
-        if(application == null)
-            throw new IllegalArgumentException("Application for that user does not exist");
+        Application application;
+            List<Application> apps = applicationDao.findByPerson(person);
+            if(apps.size() < 1)
+                throw new IllegalArgumentException("Application for that user does not exist");
+            else
+                application = apps.get(0);
         
         ApplicationDTO applicationDTO = new ApplicationDTO();
         applicationDTO.setApplicantFirstName(application.getPerson().getName());
@@ -269,9 +274,13 @@ public class RecSysBeanImpl implements RecSysBean {
         if(username == null || person == null)
             throw new IllegalArgumentException("User does not exist");
         
-        Application app = applicationDao.findByPerson(person);
-        if(app == null)
+        Application app;
+        List<Application> apps = applicationDao.findByPerson(person);
+        if(apps.size() < 1)
             throw new IllegalArgumentException("User does not have an application");
+        else
+            app = apps.get(0);
+            
         
         try {
             app.setApproved(status);
