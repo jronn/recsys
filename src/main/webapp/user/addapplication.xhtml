@@ -4,30 +4,34 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
       xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>Add Application</title>
-        <link rel="stylesheet" type="text/css" href="mystyle.css"/>
-        <meta name="viewport" content="width=device-width"/>
+        <link rel="stylesheet" type="text/css" href="../mystyle.css"/>
     </h:head>
     <h:body>
         <header>
             <h2>Add Application</h2>
             <p>Create your applications here by filling out the required fields.</p>
         </header>
+        <nav>
+            <h:link value="User" outcome="user"/> |
+            <h:link value="Add Application" outcome="addapplication"/>
+        </nav>
         <h:form rendered="#{!addAppBean.clickedSent}">
             <h:outputLabel value="Area of expertise:" />
-            <h:selectOneMenu value="#{addAppBean.expertise}">
+            <h:selectOneMenu value='#{addAppBean.expertise}'>
                 <f:selectItems value="#{addAppBean.comp}"/>
             </h:selectOneMenu>
             <br/>
             <h:outputLabel value="Years of experience: "/>
-            <h:inputText value="#{addAppBean.yearsExperience}"/>
+            <h:inputText value='#{addAppBean.yearsExperience}' />
             <h:commandButton value="Add" action="#{addAppBean.addExpertise}">
-                <f:ajax execute="@form" render="@all" />
+                <f:ajax execute="@form" render=":outPutPG" />
             </h:commandButton>
             <hr/>
             <h:outputLabel value="Periods of availability: "/>
@@ -42,11 +46,11 @@ and open the template in the editor.
             </h:inputText>
             <h:outputLabel value="Use this pattern: yyyy-MM-dd(Example: 2015-01-22)" style="font-size: 10px;"/>
             <h:commandButton value="Add" action="#{addAppBean.addAvailability}">
-                <f:ajax execute="@form" render="@all" />
+                <f:ajax execute="@form" render=":outPutPG" />
             </h:commandButton>
         </h:form>
         <hr/>
-        <h:panelGroup rendered="#{!addAppBean.clickedSent}">
+        <h:panelGroup id="outPutPG" rendered="#{!addAppBean.clickedSent}">
             <h3>Competence:</h3>
             <h:dataTable value="#{addAppBean.expertiseList}" var="expertise">
                 <h:column>
@@ -62,14 +66,18 @@ and open the template in the editor.
                     To: #{avail.toDate}<br/>
                 </h:column>
             </h:dataTable>
-            <h:form>
-                <h:commandButton value="Cancel" action="#{addAppBean.cancel}"/>
-                <h:commandButton value="Send" action="#{addAppBean.send}"/>
-            </h:form>
         </h:panelGroup>
+        <h:panelGroup rendered="#{!addAppBean.clickedSent}">
+            <p style="color: red; font-weight: bold; font-size: 13px;">#{addAppBean.errorMessage}</p>
+        </h:panelGroup>
+        <h:form rendered="#{!addAppBean.clickedSent}">
+            <h:commandButton value="Cancel" action="#{addAppBean.cancel}"/>
+            <h:commandButton value="Send" action="#{addAppBean.send}"/>
+        </h:form>
+        <hr />
         <h:panelGroup rendered="#{addAppBean.clickedSent}">
-        Application sent!
-        <h:form><h:commandButton value="Go back" action="#{addAppBean.goBack}"/></h:form>
+            Application sent!
+            <h:form><h:commandButton value="Go back" action="#{addAppBean.goBack}"/></h:form>
         </h:panelGroup>
     </h:body>
 </html>

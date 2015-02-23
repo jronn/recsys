@@ -26,4 +26,5 @@ public class PersonDaoImpl extends GenericJpaDao<Person,String> implements Perso
         return em.createQuery("SELECT p FROM Person p WHERE p.email LIKE :persEmail")
                 .setParameter("persEmail", email).getResultList();
     }
+    
 }

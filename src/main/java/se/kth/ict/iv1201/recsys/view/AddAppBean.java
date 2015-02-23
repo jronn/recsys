@@ -38,14 +38,7 @@ public class AddAppBean implements Serializable {
     private List<AvailabilityListing> availabilityList;
     private ApplicationDTO myApp;
     private List<String> comp;
-
-    public List<String> getComp() {
-        return comp;
-    }
-
-    public void setComp(List<String> comp) {
-        this.comp = comp;
-    }
+    private String errorMessage;
     
     @PostConstruct
     public void init(){
@@ -85,6 +78,7 @@ public class AddAppBean implements Serializable {
         try {
             recSysEJB.registerApplication(myApp);
         } catch (NotLoggedInException | RecsysException ex) {
+            errorMessage = ex.getMessage();
             Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         for(int i = 0; i < availabilityList.size(); i++){
@@ -171,6 +165,22 @@ public class AddAppBean implements Serializable {
 
     public void setMyApp(ApplicationDTO myApp) {
         this.myApp = myApp;
+    }
+    
+        public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public List<String> getComp() {
+        return comp;
+    }
+
+    public void setComp(List<String> comp) {
+        this.comp = comp;
     }
     
 }
