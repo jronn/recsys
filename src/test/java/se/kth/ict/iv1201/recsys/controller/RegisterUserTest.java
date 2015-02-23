@@ -17,6 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.kth.ict.iv1201.recsys.integration.PersonDao;
 import se.kth.ict.iv1201.recsys.integration.RoleDao;
 import se.kth.ict.iv1201.recsys.integration.UserGroupDao;
+import se.kth.ict.iv1201.recsys.model.BadInputException;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
@@ -50,7 +51,7 @@ public class RegisterUserTest {
      * Test that persist methods are called on a new person and usergroup
      */
     @Test
-    public void testPersistence() throws IllegalArgumentException, ExistingUserException, RecsysException {
+    public void testPersistence() throws BadInputException, ExistingUserException, RecsysException {
         recSysBean.registerUser("name", "name", "email@email.com", "username", "password");
         Mockito.verify(personDao).persist(any(Person.class));
         Mockito.verify(userGroupDao).persist(any(UserGroup.class));
@@ -84,7 +85,7 @@ public class RegisterUserTest {
                                             String username, String password) throws ExistingUserException, RecsysException {
         try {
             recSysBean.registerUser(name, surname, email, username, password);
-        } catch (IllegalArgumentException ex) {
+        } catch (BadInputException ex) {
                         fail(name + "," + surname + "," + email + "," + username + "," + password
             + " should NOT be a valid input");
         }
@@ -96,6 +97,6 @@ public class RegisterUserTest {
             recSysBean.registerUser(name, surname, email, username, password);
             fail(name + "," + surname + "," + email + "," + username + "," + password
             + " should be a valid input");
-        } catch (IllegalArgumentException ex) {}
+        } catch (BadInputException ex) {}
     }
 }

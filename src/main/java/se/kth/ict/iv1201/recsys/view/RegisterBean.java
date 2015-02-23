@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
+import se.kth.ict.iv1201.recsys.model.BadInputException;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
 
@@ -44,7 +45,7 @@ public class RegisterBean implements Serializable {
         try {
             recSysEJB.registerUser(name, surname, email, username, password);
             successful = true;
-        } catch (IllegalArgumentException ex) {
+        } catch (BadInputException ex) {
             successful = false;
             errorMessage = "Invalid input. Make sure your user information is valid.";
         } catch (ExistingUserException ex) {

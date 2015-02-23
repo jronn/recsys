@@ -14,6 +14,7 @@ import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
 import se.kth.ict.iv1201.recsys.model.AvailabilityListing;
+import se.kth.ict.iv1201.recsys.model.BadInputException;
 import se.kth.ict.iv1201.recsys.model.CompetenceListing;
 import se.kth.ict.iv1201.recsys.model.NotLoggedInException;
 import se.kth.ict.iv1201.recsys.model.RecsysException;
@@ -111,7 +112,7 @@ public class AddAppBean implements Serializable {
         } catch (RecsysException ex) {
             clickedSent = false;
             errorMessage = "Error: Some Error";
-        } catch (IllegalArgumentException ex) {
+        } catch (BadInputException ex) {
             clickedSent = false;
             errorMessage = "Error: SomeOtherError";
         }
