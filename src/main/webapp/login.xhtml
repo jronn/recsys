@@ -14,10 +14,6 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="mystyle.css"/> 
         <meta name="viewport" content="width=device-width"/>
     </h:head>
-    <f:metadata>
-        <f:viewParam name="action" value="#{auth.action}" />
-        <f:event type="preRenderView" listener="#{auth.logout()}"/>
-    </f:metadata>
     <h:body>
         <header>
             <h2>Login page</h2>
@@ -27,11 +23,21 @@ and open the template in the editor.
             <link value="Login" outcome="login"/> |
             <link value="Register" outcome="register"/>
         </nav>
-        <form method="POST" action="j_security_check">
-            <input type="text" name="j_username"/>
-            <input type="password" name="j_password"/>
-            <input type="submit"/>
-        </form>
+        <h:form>
+            <h:outputLabel for="username" value="Username" />
+            <h:inputText id="username" value="#{auth.username}" required="true" />
+            <h:message for="username" />
+            <br />
+            <h:outputLabel for="password" value="Password" />
+            <h:inputSecret id="password" value="#{auth.password}" required="true" />
+            <h:message for="password" />
+            <br />
+            <h:commandButton value="Login" action="#{auth.login}" />
+            <h:messages globalOnly="true" />
+        </h:form>
+        <h:form>
+            <h:commandButton value="Log out" action="#{auth.logout}" />
+        </h:form>
         <footer>
             <p>Posted by: Josef, Niclas, Christoffer</p>
             <p>Contact information: <a href="mailto:cyalcin@kth.se">cyalcin@kth.se</a></p>
