@@ -5,13 +5,13 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
       xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>Add Application</title>
-        <link rel="stylesheet" type="text/css" href="../mystyle.css"/>
+        <h:outputStylesheet library="css" name="mystyle.css" /> 
     </h:head>
     <h:body>
         <header>
@@ -19,8 +19,9 @@ and open the template in the editor.
             <p>Create your applications here by filling out the required fields.</p>
         </header>
         <nav>
-            <h:link value="User" outcome="user"/> |
-            <h:link value="Add Application" outcome="addapplication"/>
+            <h:link value="Home" outcome="home"/> | 
+            <h:link value="Add Application" outcome="addapplication"/> | 
+            <h:link value="Log out" outcome="#{auth.logout}"/>
         </nav>
         <h:form rendered="#{!addAppBean.clickedSent}">
             <h:outputLabel value="Area of expertise:" />
@@ -71,12 +72,13 @@ and open the template in the editor.
             <p style="color: red; font-weight: bold; font-size: 13px;">#{addAppBean.errorMessage}</p>
         </h:panelGroup>
         <h:form rendered="#{!addAppBean.clickedSent}">
-            <h:commandButton value="Cancel" action="#{addAppBean.cancel}"/>
-            <h:commandButton value="Send" action="#{addAppBean.send}"/>
+            <h:commandButton value="Remove all" action="#{addAppBean.cancel}"/>
+            <h:commandButton value="Reset" action="#{addAppBean.reset}"/>
+            <h:commandButton value="Save" action="#{addAppBean.send}"/>
         </h:form>
         <hr />
         <h:panelGroup rendered="#{addAppBean.clickedSent}">
-            Application sent!
+            Application saved!
             <h:form><h:commandButton value="Go back" action="#{addAppBean.goBack}"/></h:form>
         </h:panelGroup>
     </h:body>
