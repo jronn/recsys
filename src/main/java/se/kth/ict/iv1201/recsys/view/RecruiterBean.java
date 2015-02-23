@@ -7,7 +7,7 @@ import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 
 /**
- * Backing bean for addapplication.xhtml
+ * Backing bean for findapplications.xhtml
  * 
  * @author christoffer
  */
@@ -17,5 +17,6 @@ public class RecruiterBean implements Serializable {
     
     @EJB
     RecSysBean recSysEJB;
+    
     
 }
