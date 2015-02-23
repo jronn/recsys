@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
+import se.kth.ict.iv1201.recsys.model.BadInputException;
 import se.kth.ict.iv1201.recsys.model.CompetenceListing;
 import se.kth.ict.iv1201.recsys.model.ExistingUserException;
 import se.kth.ict.iv1201.recsys.model.NotLoggedInException;
@@ -29,7 +30,7 @@ public interface RecSysBean {
      * @param email
      * @param username
      * @param password
-     * @throws IllegalArgumentException Thrown when input data does not match
+     * @throws BadInputException Thrown when input data does not match
      * validation requirements
      * @throws ExistingUserException Thrown when a user with the same username 
      * or email already exists
@@ -37,7 +38,7 @@ public interface RecSysBean {
      * occur
      */
     public void registerUser(String name, String surname, String email, String username, String password)
-            throws IllegalArgumentException, ExistingUserException, RecsysException;
+            throws BadInputException, ExistingUserException, RecsysException;
     
    
     /**
@@ -53,10 +54,10 @@ public interface RecSysBean {
      * @param application ApplicationDTO containing competences and availabilities
      * @throws NotLoggedInException Thrown when user is not logged in
      * @throws RecsysException Thrown on unexpected errors
-     * @throws IllegalArgumentException ...
+     * @throws BadInputException ...
      */
     public void registerApplication(ApplicationDTO application)
-            throws NotLoggedInException, RecsysException, IllegalArgumentException;
+            throws NotLoggedInException, RecsysException, BadInputException;
             
     /**
      * Returns a list of applications based on input search arguments.
@@ -68,27 +69,27 @@ public interface RecSysBean {
      * @param toDate Availability toDate. May be null.
      * @param regDate Application registration date. May be null.
      * @throws RecsysException Thrown on unexpected errors
-     * @throws IllegalArgumentException Thrown when input is invalid.
+     * @throws BadInputException Thrown when input is invalid.
      * @return List of applicationDTOs based on search parameters. Include information
      * regarding approvance, submission date and first/last name
      */
     public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
-                    Date fromDate, Date toDate, Date regDate) throws RecsysException, IllegalArgumentException;
+                    Date fromDate, Date toDate, Date regDate) throws RecsysException, BadInputException;
     
     /**
      * Gets a specific application based on username
      * @param username
      * @return ApplicationDTO
-     * @throws IllegalArgumentException Thrown when username is null or doesnt exist
+     * @throws BadInputException Thrown when username is null or doesnt exist
      */
-    public ApplicationDTO getSpecificApplication(String username) throws IllegalArgumentException;
+    public ApplicationDTO getSpecificApplication(String username) throws BadInputException;
     
     /**
      * Sets the approved value in the application related to user
      * @param username
      * @param status Status of approval. True = approved.
      * @throws RecsysException Thrown on unexpected errors
-     * @throws IllegalArgumentException Thrown when username is invalid or doesnt have an application
+     * @throws BadInputException Thrown when username is invalid or doesnt have an application
      */
-    public void setApproved(String username, boolean status)throws RecsysException,IllegalArgumentException;
+    public void setApproved(String username, boolean status)throws RecsysException,BadInputException;
 }

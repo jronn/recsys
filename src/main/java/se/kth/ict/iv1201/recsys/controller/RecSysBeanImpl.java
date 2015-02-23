@@ -50,7 +50,7 @@ public class RecSysBeanImpl implements RecSysBean {
     private static final Logger log = Logger.getLogger(RecSysBeanImpl.class.getName());
     
     public void registerUser(String name, String surname, String email, String username, String password) 
-        throws IllegalArgumentException, ExistingUserException, RecsysException {
+        throws BadInputException, ExistingUserException, RecsysException {
             try {
             // Validate input
             if(!RecSysUtil.validateString(name, 2, 20, true) ||
@@ -58,7 +58,7 @@ public class RecSysBeanImpl implements RecSysBean {
                     !RecSysUtil.validateEmail(email) ||
                     !RecSysUtil.validateString(username, 2, 20, false) ||
                     !RecSysUtil.validateString(password, 2, 20, false)) {
-                throw new IllegalArgumentException("Invalid user input");
+                throw new BadInputException("Invalid user input");
             }
             
             Person existingUser = personDao.findById(username);
@@ -109,7 +109,7 @@ public class RecSysBeanImpl implements RecSysBean {
     
     
     public void registerApplication(ApplicationDTO applicationDto) 
-            throws NotLoggedInException, RecsysException, IllegalArgumentException {
+            throws NotLoggedInException, RecsysException, BadInputException {
         try {
             List<CompetenceListing> competences = applicationDto.getCompetences();
             List<AvailabilityListing> availabilities = applicationDto.getAvailabilities();
@@ -142,7 +142,7 @@ public class RecSysBeanImpl implements RecSysBean {
                 Competence comp = competenceDao.findById(c.competence);
                 
                 if(comp == null)
-                    throw new IllegalArgumentException("Invalid competence types detected.");
+                    throw new BadInputException("Invalid competence types detected.");
                 
                 CompetenceProfile cp;
                 List<CompetenceProfile> cpList = competenceProfileDao.findByApplicationAndCompetence(application,comp);
@@ -160,7 +160,7 @@ public class RecSysBeanImpl implements RecSysBean {
             // Check to see if same availability already exists
             for(AvailabilityListing a : availabilities) {
                 if(!a.fromDate.before(a.toDate))
-                    throw new IllegalArgumentException("Invalid availablility date. fromDate is after toDate");
+                    throw new BadInputException("Invalid availablility date. fromDate is after toDate");
                 
                 Availability avail;
                 List<Availability> availList = availabilityDao.findByApplicationAndDates(application, a.fromDate, a.toDate);
@@ -183,7 +183,7 @@ public class RecSysBeanImpl implements RecSysBean {
     
 
     public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
-                    Date fromDate, Date toDate, Date regDate) throws RecsysException, IllegalArgumentException {
+                    Date fromDate, Date toDate, Date regDate) throws RecsysException, BadInputException {
         
         List<ApplicationDTO> returnList = new ArrayList<>();
         
@@ -191,19 +191,19 @@ public class RecSysBeanImpl implements RecSysBean {
         if(name != null) {
             Person person = personDao.findById(name);
             if(person == null)
-                throw new IllegalArgumentException("Username invalid");
+                throw new BadInputException("Username invalid");
         }
         
         // Validate competence
         if(competence != null) {
             Competence comp = competenceDao.findById(competence.competence);
             if(comp == null)
-                throw new IllegalArgumentException("Invalid competence type");
+                throw new BadInputException("Invalid competence type");
         }
         
         // Validate dates
         if(fromDate != null && toDate != null && fromDate.after(toDate))
-            throw new IllegalArgumentException("Invalid dates. fromDate is after toDate");
+            throw new BadInputException("Invalid dates. fromDate is after toDate");
         
         try {
             List<Application> applications = applicationDao.findBySearchCriterias(name, competence, fromDate, toDate, regDate);
@@ -225,20 +225,20 @@ public class RecSysBeanImpl implements RecSysBean {
     }
     
     
-    public ApplicationDTO getSpecificApplication(String username) throws IllegalArgumentException {   
+    public ApplicationDTO getSpecificApplication(String username) throws BadInputException {   
         Person person = null;
         
         if(username != null)
             person = personDao.findById(username);
         
         if(username == null || person == null)
-            throw new IllegalArgumentException("Invalid username");
+            throw new BadInputException("Invalid username");
         
         
         Application application;
             List<Application> apps = applicationDao.findByPerson(person);
             if(apps.size() < 1)
-                throw new IllegalArgumentException("Application for that user does not exist");
+                throw new BadInputException("Application for that user does not exist");
             else
                 application = apps.get(0);
         
@@ -263,19 +263,19 @@ public class RecSysBeanImpl implements RecSysBean {
     }
     
     
-    public void setApproved(String username, boolean status) throws RecsysException,IllegalArgumentException{
+    public void setApproved(String username, boolean status) throws RecsysException,BadInputException{
         Person person = null;
         
         if(username != null)
             person = personDao.findById(username);
         
         if(username == null || person == null)
-            throw new IllegalArgumentException("User does not exist");
+            throw new BadInputException("User does not exist");
         
         Application app;
         List<Application> apps = applicationDao.findByPerson(person);
         if(apps.size() < 1)
-            throw new IllegalArgumentException("User does not have an application");
+            throw new BadInputException("User does not have an application");
         else
             app = apps.get(0);
             
