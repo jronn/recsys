@@ -16,24 +16,9 @@ import javax.inject.Named;
 @RequestScoped
 public class Auth implements Serializable {
     
-   private String action; 
-    
    public void logout() throws IOException {
-        if("logout".equals(action)) {
-            
-            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(ec.getRequestContextPath() + "/faces/register.xhtml");
-        }
-   }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-   
-   
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/faces/register.xhtml");
+   }   
 }
