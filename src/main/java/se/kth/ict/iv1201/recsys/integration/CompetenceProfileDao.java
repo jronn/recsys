@@ -18,12 +18,12 @@ import se.kth.ict.iv1201.recsys.model.entities.CompetenceProfile;
 public interface CompetenceProfileDao extends GenericDao<CompetenceProfile,Long> {
     
     /**
-     * Returns a competenceProfile linked to specified application and competence
+     * Returns a List of CompetenceProfile linked to specified application and competence
      * @param application
      * @param competence
-     * @return CompetenceProfile matching input values
+     * @return List of CompetenceProfile matching input values
      */
-    public CompetenceProfile findByApplicationAndCompetence(Application application, Competence competence);
+    public List<CompetenceProfile> findByApplicationAndCompetence(Application application, Competence competence);
     
     /**
      * Find all competenceProfiles based on application
