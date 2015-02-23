@@ -3,11 +3,13 @@ package se.kth.ict.iv1201.recsys.view;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,19 +21,19 @@ import javax.servlet.http.HttpServletRequest;
  * @author jronn
  */
 @Named("auth")
-@RequestScoped
+@ViewScoped
 public class Auth implements Serializable {
-   
+
+    
     private String username;
     private String password;
-    private String originalURL;
-    
+    private String originalURL; 
     
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         originalURL = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
-
+        System.out.println("AUTH INITIATED WITH" + originalURL);
         if (originalURL == null) {
             originalURL = externalContext.getRequestContextPath() + "/home.xhtml";
         } else {
