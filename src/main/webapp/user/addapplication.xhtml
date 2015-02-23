@@ -4,14 +4,14 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
       xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>Add Application</title>
         <link rel="stylesheet" type="text/css" href="../mystyle.css"/>
-        <meta name="viewport" content="width=device-width"/>
     </h:head>
     <h:body>
         <header>
@@ -24,12 +24,12 @@ and open the template in the editor.
         </nav>
         <h:form rendered="#{!addAppBean.clickedSent}">
             <h:outputLabel value="Area of expertise:" />
-            <h:selectOneMenu value="#{addAppBean.expertise}">
+            <h:selectOneMenu value='#{addAppBean.expertise}'>
                 <f:selectItems value="#{addAppBean.comp}"/>
             </h:selectOneMenu>
             <br/>
             <h:outputLabel value="Years of experience: "/>
-            <h:inputText value="#{addAppBean.yearsExperience}"/>
+            <h:inputText value='#{addAppBean.yearsExperience}' />
             <h:commandButton value="Add" action="#{addAppBean.addExpertise}">
                 <f:ajax execute="@form" render=":outPutPG" />
             </h:commandButton>
@@ -66,6 +66,9 @@ and open the template in the editor.
                     To: #{avail.toDate}<br/>
                 </h:column>
             </h:dataTable>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{!addAppBean.clickedSent}">
+            <p style="color: red; font-weight: bold; font-size: 13px;">#{addAppBean.errorMessage}</p>
         </h:panelGroup>
         <h:form rendered="#{!addAppBean.clickedSent}">
             <h:commandButton value="Cancel" action="#{addAppBean.cancel}"/>

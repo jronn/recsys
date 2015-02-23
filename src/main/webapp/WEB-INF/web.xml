@@ -35,6 +35,7 @@
     </security-constraint>
     -->
     <security-constraint>
+        <display-name>UserConstraints</display-name>
         <web-resource-collection>
             <web-resource-name>User resource</web-resource-name>
             <url-pattern>/user/*</url-pattern>
@@ -46,11 +47,24 @@
             <role-name>applicant</role-name>
         </auth-constraint>
     </security-constraint>
-    
     <security-role>
         <role-name>applicant</role-name>
     </security-role>
-    
+    <security-constraint>
+        <display-name>RecruiterConstraints</display-name>
+        <web-resource-collection>
+            <web-resource-name>Recruiter</web-resource-name>
+            <description/>
+            <url-pattern>/recruiter/*</url-pattern>
+            <url-pattern>/faces/recruiter/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>recruiter</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>testrealm</realm-name>
@@ -59,4 +73,8 @@
             <form-error-page>/faces/login_error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    <security-role>
+        <description/>
+        <role-name>recruiter</role-name>
+    </security-role>
 </web-app>
