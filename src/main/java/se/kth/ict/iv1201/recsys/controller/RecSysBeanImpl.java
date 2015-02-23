@@ -133,11 +133,15 @@ public class RecSysBeanImpl implements RecSysBean {
                 if(comp == null)
                     throw new IllegalArgumentException("Invalid competence types detected.");
                 
-                CompetenceProfile cp = competenceProfileDao.findByApplicationAndCompetence(application,comp);
-                if(cp == null)
+                CompetenceProfile cp;
+                List<CompetenceProfile> cpList = competenceProfileDao.findByApplicationAndCompetence(application,comp);
+                
+                if(cpList.size() < 1)
                     cp = new CompetenceProfile(application, comp, new BigDecimal(c.yearsOfExperience));
-                else
+                else {
+                    cp = cpList.get(0);
                     cp.setYearsOfExperience(new BigDecimal(c.yearsOfExperience));
+                }   
                 
                 competenceProfileDao.persist(cp);
             }
@@ -147,10 +151,13 @@ public class RecSysBeanImpl implements RecSysBean {
                 if(!a.fromDate.before(a.toDate))
                     throw new IllegalArgumentException("Invalid availablility date. fromDate is after toDate");
                 
-                Availability avail = availabilityDao.findByApplicationAndDates(application, a.fromDate, a.toDate);
-                if(avail == null)
+                Availability avail;
+                List<Availability> availList = availabilityDao.findByApplicationAndDates(application, a.fromDate, a.toDate);
+                
+                if(availList.size() < 1) {
                     avail = new Availability(application, a.fromDate, a.toDate);
-                availabilityDao.persist(avail);
+                    availabilityDao.persist(avail);
+                }
             }
             
             // Called inside try block so we can catch JPA exceptions

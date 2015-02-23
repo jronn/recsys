@@ -25,13 +25,13 @@ public class AvailabilityDaoImpl extends GenericJpaDao<Availability,Long>
         super(Availability.class);
     }
 
-    public Availability findByApplicationAndDates(Application application, Date start, Date end) {
+    public List<Availability> findByApplicationAndDates(Application application, Date start, Date end) {
         Query query = em.createQuery("SELECT av FROM Availability av WHERE av.application = :app AND"
                 + " av.fromDate = :start AND av.toDate = :end");
         query.setParameter("app", application);
         query.setParameter("start", start);
         query.setParameter("end", end);
-        return (Availability)query.getSingleResult();
+        return query.getResultList();
     }
     
     public List<Availability> findByApplication(Application application) {

@@ -24,12 +24,12 @@ public class CompetenceProfileDaoImpl extends GenericJpaDao<CompetenceProfile,Lo
         super(CompetenceProfile.class);
     }
     
-    public CompetenceProfile findByApplicationAndCompetence(Application application, Competence competence) {
+    public List<CompetenceProfile> findByApplicationAndCompetence(Application application, Competence competence) {
         Query query = em.createQuery("SELECT cp FROM CompetenceProfile cp WHERE cp.application = :application AND"
                 + " cp.competence = :competence");
         query.setParameter("application", application);
         query.setParameter("competence", competence);
-        return (CompetenceProfile)query.getSingleResult();
+        return query.getResultList();
     }
     
     public List<CompetenceProfile> findByApplication(Application application) {

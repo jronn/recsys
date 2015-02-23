@@ -50,6 +50,7 @@
     <security-role>
         <role-name>applicant</role-name>
     </security-role>
+
     <security-constraint>
         <display-name>RecruiterConstraints</display-name>
         <web-resource-collection>
@@ -65,6 +66,12 @@
             <role-name>recruiter</role-name>
         </auth-constraint>
     </security-constraint>
+    
+    <security-role>
+        <description/>
+        <role-name>recruiter</role-name>
+    </security-role>
+
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>testrealm</realm-name>
@@ -73,8 +80,5 @@
             <form-error-page>/faces/login_error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-    <security-role>
-        <description/>
-        <role-name>recruiter</role-name>
-    </security-role>
+
 </web-app>
