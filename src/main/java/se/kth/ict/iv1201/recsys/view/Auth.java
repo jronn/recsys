@@ -51,7 +51,7 @@ public class Auth implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-
+        
         try {
             request.login(username, password);
             // user = userService.find(username, password);

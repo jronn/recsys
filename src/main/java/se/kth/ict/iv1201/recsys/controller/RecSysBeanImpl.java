@@ -137,7 +137,19 @@ public class RecSysBeanImpl implements RecSysBean {
             application.setSubmitDate(new Date());
             applicationDao.persist(application);
 
-            // Go through competenceProfiles, if already exists update yearsOfExperience
+            // Find all old competenceProfiles and availabilities from db
+            List<CompetenceProfile> oldComp = competenceProfileDao.findByApplication(application);
+            List<Availability> oldAvail = availabilityDao.findByApplication(application);
+            
+            // Remove all old competenceProfiles
+            for(CompetenceProfile cp : oldComp) 
+                competenceProfileDao.remove(cp);
+            
+            // Remove all old Availabilities 
+            for(Availability avail : oldAvail)
+                availabilityDao.remove(avail);
+            
+            // Go through competenceProfiles, add new competences
             for(CompetenceListing c : competences) {
                 Competence comp = competenceDao.findById(c.competence);
                 
@@ -157,7 +169,7 @@ public class RecSysBeanImpl implements RecSysBean {
                 competenceProfileDao.persist(cp);
             }
 
-            // Check to see if same availability already exists
+            // Go throuh availabilities and add them to the database
             for(AvailabilityListing a : availabilities) {
                 if(!a.fromDate.before(a.toDate))
                     throw new BadInputException("Invalid availablility date. fromDate is after toDate");
