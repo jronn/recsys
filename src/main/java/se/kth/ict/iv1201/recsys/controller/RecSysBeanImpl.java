@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
@@ -45,6 +47,8 @@ public class RecSysBeanImpl implements RecSysBean {
     @EJB
     ApplicationDao applicationDao;
 
+    private static final Logger log = Logger.getLogger(RecSysBeanImpl.class.getName());
+    
     public void registerUser(String name, String surname, String email, String username, String password) 
         throws IllegalArgumentException, ExistingUserException, RecsysException {
             try {
@@ -53,8 +57,9 @@ public class RecSysBeanImpl implements RecSysBean {
                     !RecSysUtil.validateString(surname, 2, 20, true) ||
                     !RecSysUtil.validateEmail(email) ||
                     !RecSysUtil.validateString(username, 2, 20, false) ||
-                    !RecSysUtil.validateString(password, 2, 20, false)) 
-                throw new IllegalArgumentException("Invalid user input"); 
+                    !RecSysUtil.validateString(password, 2, 20, false)) {
+                throw new IllegalArgumentException("Invalid user input");
+            }
             
             Person existingUser = personDao.findById(username);
             if(existingUser != null) 
@@ -76,8 +81,12 @@ public class RecSysBeanImpl implements RecSysBean {
             // Flushes all changes, done within clause to catch JPA exceptions
             personDao.flush();           
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            log.log(Level.SEVERE, "Error with hashing algorithm or encoding "
+                    + "when hashing password in registerUser function", e);
             throw new RecsysException("Unexpected error has occurred.");
         } catch (EJBTransactionRolledbackException e) {
+            log.log(Level.SEVERE, "A unkown database error occurred in "
+                    + "registerUser function", e);
             throw new RecsysException("Database error occurred.");
         }
     }
@@ -91,6 +100,8 @@ public class RecSysBeanImpl implements RecSysBean {
             for(Competence c : clist)
                 list.add(c.getName());
         } catch (Exception e) {
+            log.log(Level.SEVERE, "getCompetenceList function encountered "
+                    + "an unexpected error", e);
             throw new RecsysException("Unexpected error has occurred.");
         }
         return list;
@@ -164,6 +175,8 @@ public class RecSysBeanImpl implements RecSysBean {
             personDao.flush();
             
         } catch(EJBTransactionRolledbackException e) {
+            log.log(Level.SEVERE, "RegisterApplication encountered an unexpected"
+                    + " error, possibly linked to the database", e);
             throw new RecsysException("Unexpected error occurred.");
         }
     }
@@ -204,6 +217,8 @@ public class RecSysBeanImpl implements RecSysBean {
                 returnList.add(aDTO);
             } 
         }catch(Exception e) {
+            log.log(Level.SEVERE, "An unexpected error occurred in "
+                    + "getApplication function", e);
             throw new RecsysException("Unexpected error occurred.");
         }
         return returnList;
@@ -272,6 +287,8 @@ public class RecSysBeanImpl implements RecSysBean {
             throw new RecsysException("Someone else has modified the application.");
         } 
         catch (EJBTransactionRolledbackException e) {
+            log.log(Level.SEVERE, "setApproved encountered unexpected error, "
+                    + "possibly linked to the database",e);
             throw new RecsysException("Unexpected error occurred");
         }
     }
