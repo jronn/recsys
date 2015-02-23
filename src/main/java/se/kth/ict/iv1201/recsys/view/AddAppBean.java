@@ -19,13 +19,13 @@ import se.kth.ict.iv1201.recsys.model.RecsysException;
 
 /**
  * Backing bean for addapplication.xhtml
- * 
+ *
  * @author christoffer
  */
 @Named("addAppBean")
 @SessionScoped
 public class AddAppBean implements Serializable {
-    
+
     @EJB
     RecSysBean recSysEJB;
 
@@ -39,40 +39,58 @@ public class AddAppBean implements Serializable {
     private ApplicationDTO myApp;
     private List<String> comp;
     private String errorMessage;
-    
+
+    /**
+     * Called upon at first, to populate the comp list that is containing the
+     * fields of expertise available.
+     */
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
             comp = recSysEJB.getCompetenceList();
         } catch (RecsysException ex) {
             Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    public AddAppBean(){
+
+    /**
+     * Called upon on start.
+     */
+    public AddAppBean() {
         expertiseList = new ArrayList<>();
         availabilityList = new ArrayList<>();
     }
-    
-    
-    public void addExpertise(){
+
+    /**
+     * Add a new CompetenceListing to our competenceList.
+     */
+    public void addExpertise() {
         expertiseList.add(new CompetenceListing(expertise, yearsExperience));
     }
-    
-    public void addAvailability(){
+
+    /**
+     * Add a new AvailabilityListing to our availabiltyList.
+     */
+    public void addAvailability() {
         availabilityList.add(new AvailabilityListing(dateFrom, dateTo));
     }
-    
-    public void cancel(){
+
+    /**
+     * Cancel, sets everything back to where it started.
+     */
+    public void cancel() {
         dateTo = null;
         dateFrom = null;
-        expertise = "Animals";
+        expertise = "";
         yearsExperience = 0;
         expertiseList = new ArrayList<>();
         availabilityList = new ArrayList<>();
     }
-    
+
+    /**
+     * Registers the application and adds the competence/availability to the application.
+     * Sets clickedSent to true which triggers the "application sent" message in the page.
+     */
     public void send() {
         myApp = new ApplicationDTO();
         try {
@@ -81,20 +99,23 @@ public class AddAppBean implements Serializable {
             errorMessage = ex.getMessage();
             Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(int i = 0; i < availabilityList.size(); i++){
+        for (int i = 0; i < availabilityList.size(); i++) {
             myApp.addAvailability(availabilityList.get(i));
         }
-        for(int i = 0; i < expertiseList.size(); i++){
+        for (int i = 0; i < expertiseList.size(); i++) {
             myApp.addCompetence(expertiseList.get(i));
         }
         clickedSent = true;
     }
-    
-    public void goBack(){
+
+    /**
+     *
+     */
+    public void goBack() {
         clickedSent = false;
         cancel();
     }
-    
+
     public RecSysBean getRecSysEJB() {
         return recSysEJB;
     }
@@ -134,7 +155,7 @@ public class AddAppBean implements Serializable {
     public void setExpertise(String expertise) {
         this.expertise = expertise;
     }
-    
+
     public boolean isClickedSent() {
         return clickedSent;
     }
@@ -142,7 +163,7 @@ public class AddAppBean implements Serializable {
     public void setClickedSent(boolean clickedSent) {
         this.clickedSent = clickedSent;
     }
-   
+
     public List<CompetenceListing> getExpertiseList() {
         return expertiseList;
     }
@@ -166,8 +187,8 @@ public class AddAppBean implements Serializable {
     public void setMyApp(ApplicationDTO myApp) {
         this.myApp = myApp;
     }
-    
-        public String getErrorMessage() {
+
+    public String getErrorMessage() {
         return errorMessage;
     }
 
@@ -182,5 +203,5 @@ public class AddAppBean implements Serializable {
     public void setComp(List<String> comp) {
         this.comp = comp;
     }
-    
+
 }
