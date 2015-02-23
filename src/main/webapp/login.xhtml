@@ -8,19 +8,23 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
       xmlns:h="http://java.sun.com/jsf/html">
-    <head>
+    <h:head>
         <title>Login page</title>
         <link rel="stylesheet" type="text/css" href="mystyle.css"/> 
         <meta name="viewport" content="width=device-width"/>
-    </head>
-    <body>
+    </h:head>
+    <f:metadata>
+        <f:viewParam name="action" value="#{auth.action}" />
+        <f:event type="preRenderView" listener="#{auth.logout()}"/>
+    </f:metadata>
+    <h:body>
         <header>
             <h2>Login page</h2>
             <p>Use your username and password to login</p>
         </header>
         <nav>
-            <h:link value="Login" outcome="login"/> |
-            <h:link value="Register" outcome="register"/>
+            <link value="Login" outcome="login"/> |
+            <link value="Register" outcome="register"/>
         </nav>
         <form method="POST" action="j_security_check">
             <input type="text" name="j_username"/>
@@ -31,5 +35,5 @@ and open the template in the editor.
             <p>Posted by: Josef, Niclas, Christoffer</p>
             <p>Contact information: <a href="mailto:cyalcin@kth.se">cyalcin@kth.se</a></p>
         </footer>
-    </body>
+    </h:body>
 </html>
