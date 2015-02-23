@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
@@ -85,31 +86,40 @@ public class AddAppBean implements Serializable {
         yearsExperience = 0;
         expertiseList = new ArrayList<>();
         availabilityList = new ArrayList<>();
+        errorMessage = null;
     }
 
     /**
-     * Registers the application and adds the competence/availability to the application.
-     * Sets clickedSent to true which triggers the "application sent" message in the page.
+     * Registers the application and adds the competence/availability to the
+     * application. Sets clickedSent to true which triggers the "application
+     * sent" message in the page.
      */
     public void send() {
         myApp = new ApplicationDTO();
-        try {
-            recSysEJB.registerApplication(myApp);
-        } catch (NotLoggedInException | RecsysException ex) {
-            errorMessage = ex.getMessage();
-            Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
         for (int i = 0; i < availabilityList.size(); i++) {
             myApp.addAvailability(availabilityList.get(i));
         }
         for (int i = 0; i < expertiseList.size(); i++) {
             myApp.addCompetence(expertiseList.get(i));
         }
-        clickedSent = true;
+        try {
+            clickedSent = true;
+            recSysEJB.registerApplication(myApp);
+        } catch (NotLoggedInException ex) {
+            clickedSent = false;
+            errorMessage = "Error: NotLoggedIn";
+        } catch (RecsysException ex) {
+            clickedSent = false;
+            errorMessage = "Error: Some Error";
+        } catch (IllegalArgumentException ex) {
+            clickedSent = false;
+            errorMessage = "Error: SomeOtherError";
+        }
     }
 
     /**
-     *
+     * Calls upon the cancel() method and sets the clickedSent parameter to
+     * false. Used for the go back button after clicking "send".
      */
     public void goBack() {
         clickedSent = false;

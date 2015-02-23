@@ -53,9 +53,10 @@ public interface RecSysBean {
      * @param application ApplicationDTO containing competences and availabilities
      * @throws NotLoggedInException Thrown when user is not logged in
      * @throws RecsysException Thrown on unexpected errors
+     * @throws IllegalArgumentException ...
      */
     public void registerApplication(ApplicationDTO application)
-            throws NotLoggedInException, RecsysException;
+            throws NotLoggedInException, RecsysException, IllegalArgumentException;
             
     /**
      * Returns a list of applications based on input search arguments.

@@ -14,18 +14,14 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="mystyle.css"/> 
         <meta name="viewport" content="width=device-width"/>
     </h:head>
-    <f:metadata>
-        <f:viewParam name="action" value="#{auth.action}" />
-        <f:event type="preRenderView" listener="#{auth.logout()}"/>
-    </f:metadata>
     <h:body>
         <header>
             <h2>Login page</h2>
             <p>Use your username and password to login</p>
         </header>
         <nav>
-            <link value="Login" outcome="login"/> |
-            <link value="Register" outcome="register"/>
+            <h:link value="Login" outcome="login"/> |
+            <h:link value="Register" outcome="register"/>
         </nav>
         <form method="POST" action="j_security_check">
             <input type="text" name="j_username"/>
