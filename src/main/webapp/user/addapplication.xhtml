@@ -15,13 +15,16 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <header>
-            <h2>Add Application</h2>
-            <p>Create your applications here by filling out the required fields.</p>
+            <h2>User area</h2>
+            <p>Use the navigation bar to do whatever you want...</p>
+            <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
         </header>
         <nav>
             <h:link value="Home" outcome="user"/> | 
-            <h:link value="Add Application" outcome="addapplication"/> | 
+            <h:link value="Add Application" outcome="addapplication"/> 
         </nav>
+        <h2>Add Application</h2>
+        <p>Create your applications here by filling out the required fields.</p>
         <h:form rendered="#{!addAppBean.clickedSent}">
             <h:outputLabel value="Area of expertise:" />
             <h:selectOneMenu value='#{addAppBean.expertise}'>

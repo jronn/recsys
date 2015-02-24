@@ -11,14 +11,15 @@ and open the template in the editor.
     <h:head>
         <title>Recruiter's page</title>
         <link rel="stylesheet" type="text/css" href="../mystyle.css"/>
+        <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
     </h:head>
     <h:body>
         <header>
-            <h2>Find applications</h2>
-            <p>Fill in the necessary information to make a search.</p>
+            <h2>Recruiter Area</h2>
+            <p>Use the navigation bar to find your desired function.</p>
         </header>
         <nav>
-            <h:link value="Home" outcome="recruiter"/> |
+            <h:link value="Home" outcome="recruiter"/> | 
             <h:link value="Find Applications" outcome="findapplications"/>
         </nav>
     </h:body>

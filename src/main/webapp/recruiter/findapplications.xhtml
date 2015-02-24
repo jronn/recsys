@@ -14,12 +14,13 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <header>
-            <h2>Find applications</h2>
-            <p>Fill in the necessary information to make a search.</p>
+            <h2>Recruiter Area</h2>
+            <p>Use the navigation bar to find your desired function.</p>
+            <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
         </header>
         <nav>
             <h:link value="Home" outcome="recruiter"/> | 
-            <h:link value="Find Applications" outcome="findapplications"/>
+            <h:link value="Find Applications" outcome="findapplications"/> 
         </nav>
     </h:body>
 </html>
