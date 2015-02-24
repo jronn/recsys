@@ -33,7 +33,7 @@ public class Auth implements Serializable {
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         originalURL = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
-        System.out.println("AUTH INITIATED WITH" + originalURL);
+
         if (originalURL == null) {
             originalURL = externalContext.getRequestContextPath() + "/home.xhtml";
         } else {
