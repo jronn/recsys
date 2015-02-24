@@ -35,7 +35,7 @@ public class Auth implements Serializable {
         originalURL = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
 
         if (originalURL == null) {
-            originalURL = externalContext.getRequestContextPath() + "/home.xhtml";
+            originalURL = externalContext.getRequestContextPath();
         } else {
             String originalQuery = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_QUERY_STRING);
 
@@ -50,14 +50,19 @@ public class Auth implements Serializable {
      * @throws IOException 
      */
     public void login() throws IOException {
+
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         
         try {
             request.login(username, password);
-            // user = userService.find(username, password);
-            //externalContext.getSessionMap().put("user", user);
+            
+            if(request.isUserInRole("recruiter"))
+                originalURL = externalContext.getRequestContextPath() + "/recruiter/recruiter.xhtml";
+            else if(request.isUserInRole("applicant"))
+                originalURL = externalContext.getRequestContextPath() + "/user/user.xhtml";
+            
             externalContext.redirect(originalURL);
         } catch (ServletException e) {
             // Handle unknown username/password in request.login().
