@@ -1,16 +1,15 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
 import se.kth.ict.iv1201.recsys.model.AvailabilityListing;
@@ -41,6 +40,8 @@ public class AddAppBean implements Serializable {
     private ApplicationDTO myApp;
     private List<String> comp;
     private String errorMessage;
+    private final HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    private final String username = request.getRemoteUser();
 
     /**
      * Called upon at first, to populate the comp list that is containing the
@@ -50,17 +51,11 @@ public class AddAppBean implements Serializable {
     public void init() {
         try {
             comp = recSysEJB.getCompetenceList();
-        } catch (RecsysException ex) {
+            availabilityList = recSysEJB.getSpecificApplication(username).getAvailabilities();
+            expertiseList = recSysEJB.getSpecificApplication(username).getCompetences();
+        } catch (RecsysException | BadInputException ex) {
             Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    /**
-     * Called upon on start.
-     */
-    public AddAppBean() {
-        expertiseList = new ArrayList<>();
-        availabilityList = new ArrayList<>();
     }
 
     /**
@@ -90,6 +85,15 @@ public class AddAppBean implements Serializable {
         errorMessage = null;
     }
 
+    public void reset() {
+        try {
+            availabilityList = recSysEJB.getSpecificApplication(username).getAvailabilities();
+            expertiseList = recSysEJB.getSpecificApplication(username).getCompetences();
+        } catch (BadInputException ex) {
+            Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Registers the application and adds the competence/availability to the
      * application. Sets clickedSent to true which triggers the "application
@@ -108,13 +112,13 @@ public class AddAppBean implements Serializable {
             recSysEJB.registerApplication(myApp);
         } catch (NotLoggedInException ex) {
             clickedSent = false;
-            errorMessage = "Error: NotLoggedIn";
+            errorMessage = ex.getMessage();
         } catch (RecsysException ex) {
             clickedSent = false;
-            errorMessage = "Error: Some Error";
+            errorMessage = ex.getMessage();
         } catch (BadInputException ex) {
             clickedSent = false;
-            errorMessage = "Error: SomeOtherError";
+            errorMessage = ex.getMessage();
         }
     }
 
@@ -124,7 +128,6 @@ public class AddAppBean implements Serializable {
      */
     public void goBack() {
         clickedSent = false;
-        cancel();
     }
 
     public RecSysBean getRecSysEJB() {
@@ -179,7 +182,7 @@ public class AddAppBean implements Serializable {
         return expertiseList;
     }
 
-    public void setExpertise_list(List<CompetenceListing> expertiseList) {
+    public void setExpertiseList(List<CompetenceListing> expertiseList) {
         this.expertiseList = expertiseList;
     }
 
