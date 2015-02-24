@@ -59,9 +59,9 @@ public class Auth implements Serializable {
             request.login(username, password);
             
             if(request.isUserInRole("recruiter"))
-                originalURL = externalContext.getRequestContextPath() + "/recruiter/recruiter.xhtml";
+                originalURL = externalContext.getRequestContextPath() + "/faces/recruiter/recruiter.xhtml";
             else if(request.isUserInRole("applicant"))
-                originalURL = externalContext.getRequestContextPath() + "/user/user.xhtml";
+                originalURL = externalContext.getRequestContextPath() + "/faces/user/user.xhtml";
             
             externalContext.redirect(originalURL);
         } catch (ServletException e) {
