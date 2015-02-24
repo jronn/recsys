@@ -10,7 +10,7 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>Recruiter's page</title>
-        <link rel="stylesheet" type="text/css" href="../mystyle.css"/>
+        <h:outputStylesheet library="css" name="mystyle.css" /> 
         <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
     </h:head>
     <h:body>
