@@ -19,9 +19,8 @@ and open the template in the editor.
             <p>Create your applications here by filling out the required fields.</p>
         </header>
         <nav>
-            <h:link value="Home" outcome="home"/> | 
+            <h:link value="Home" outcome="login"/> | 
             <h:link value="Add Application" outcome="addapplication"/> | 
-            <!---<h:link value="Log out" outcome="#{auth.logout}"/>-->
         </nav>
         <h:form rendered="#{!addAppBean.clickedSent}">
             <h:outputLabel value="Area of expertise:" />
