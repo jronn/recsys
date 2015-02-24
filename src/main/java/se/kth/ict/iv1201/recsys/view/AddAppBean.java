@@ -42,6 +42,7 @@ public class AddAppBean implements Serializable {
     private String errorMessage;
     private final HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private final String username = request.getRemoteUser();
+    private final Timer timer = new Timer();
 
     /**
      * Called upon at first, to populate the comp list that is containing the
@@ -109,6 +110,7 @@ public class AddAppBean implements Serializable {
         }
         try {
             clickedSent = true;
+            clickedSend();
             recSysEJB.registerApplication(myApp);
         } catch (NotLoggedInException ex) {
             clickedSent = false;
@@ -120,14 +122,6 @@ public class AddAppBean implements Serializable {
             clickedSent = false;
             errorMessage = ex.getMessage();
         }
-    }
-
-    /**
-     * Calls upon the cancel() method and sets the clickedSent parameter to
-     * false. Used for the go back button after clicking "send".
-     */
-    public void goBack() {
-        clickedSent = false;
     }
 
     public RecSysBean getRecSysEJB() {
@@ -216,6 +210,15 @@ public class AddAppBean implements Serializable {
 
     public void setComp(List<String> comp) {
         this.comp = comp;
+    }
+
+    private void clickedSend() {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                clickedSent = false;
+            }
+        }, 2000);
     }
 
 }

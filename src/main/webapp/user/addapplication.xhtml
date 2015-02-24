@@ -23,9 +23,12 @@ and open the template in the editor.
             <h:link value="Home" outcome="user"/> | 
             <h:link value="Add Application" outcome="addapplication"/> 
         </nav>
+        <h:panelGroup rendered="#{addAppBean.clickedSent}">
+            <p style="font-weight: bold; font-size: 13px;">Application saved!</p>
+        </h:panelGroup>
         <h2>Add Application</h2>
         <p>Create your applications here by filling out the required fields.</p>
-        <h:form rendered="#{!addAppBean.clickedSent}">
+        <h:form>
             <h:outputLabel value="Area of expertise:" />
             <h:selectOneMenu value='#{addAppBean.expertise}'>
                 <f:selectItems value="#{addAppBean.comp}"/>
@@ -53,7 +56,7 @@ and open the template in the editor.
             </h:commandButton>
         </h:form>
         <hr/>
-        <h:panelGroup id="outPutPG" rendered="#{!addAppBean.clickedSent}">
+        <h:panelGroup id="outPutPG">
             <h3>Competence:</h3>
             <h:dataTable value="#{addAppBean.expertiseList}" var="expertise">
                 <h:column>
@@ -70,18 +73,12 @@ and open the template in the editor.
                 </h:column>
             </h:dataTable>
         </h:panelGroup>
-        <h:panelGroup rendered="#{!addAppBean.clickedSent}">
-            <p style="color: red; font-weight: bold; font-size: 13px;">#{addAppBean.errorMessage}</p>
-        </h:panelGroup>
-        <h:form rendered="#{!addAppBean.clickedSent}">
+        <p style="color: red; font-weight: bold; font-size: 13px;">#{addAppBean.errorMessage}</p>
+        <h:form>
             <h:commandButton value="Remove all" action="#{addAppBean.cancel}"/>
             <h:commandButton value="Reset" action="#{addAppBean.reset}"/>
             <h:commandButton value="Save" action="#{addAppBean.send}"/>
         </h:form>
         <hr />
-        <h:panelGroup rendered="#{addAppBean.clickedSent}">
-            Application saved!
-            <h:form><h:commandButton value="Go back" action="#{addAppBean.goBack}"/></h:form>
-        </h:panelGroup>
     </h:body>
 </html>
