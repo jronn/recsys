@@ -1,7 +1,8 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -12,13 +13,13 @@ import se.kth.ict.iv1201.recsys.model.RecsysException;
 
 /**
  * Backing bean for register.xhtml
- * 
+ *
  * @author jronn
  */
 @Named("registerBean")
 @SessionScoped
 public class RegisterBean implements Serializable {
-    
+
     @EJB
     RecSysBean recSysEJB;
 
@@ -27,9 +28,12 @@ public class RegisterBean implements Serializable {
     private String email;
     private String username;
     private String password;
-    
+
     private String errorMessage;
     private boolean successful;
+    
+    private final Timer timer = new Timer();
+
     /**
      * Called upon creation. Initializes the variables.
      */
@@ -37,14 +41,15 @@ public class RegisterBean implements Serializable {
         errorMessage = "";
         successful = false;
     }
-   /**
-    * Attempt to register a new user through the controller bean
-    */
 
+    /**
+     * Attempt to register a new user through the controller bean
+     */
     public void register() {
         try {
             recSysEJB.registerUser(name, surname, email, username, password);
             successful = true;
+            goBack();
         } catch (BadInputException ex) {
             successful = false;
             errorMessage = "Invalid input. Make sure your user information is valid.";
@@ -57,24 +62,25 @@ public class RegisterBean implements Serializable {
                     + " your input information is valid.";
         }
     }
-    
+
     /**
      * Used to get the error message if registration fails.
-     * 
+     *
      * @return String containing information about the error that has occured.
      */
     public String getErrorMessage() {
         return errorMessage;
     }
+
     /**
      * A method that checks if registration was successful
-     * 
+     *
      * @return boolean that is only true if registration was successful
      */
     public boolean isSuccessful() {
         return successful;
     }
-    
+
     /**
      *
      * @return string that contains the name of the registered user
@@ -153,5 +159,20 @@ public class RegisterBean implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private void goBack() {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                name = null;
+                surname = null;
+                email = null;
+                username = null;
+                password = null;
+                errorMessage = null;
+                successful = false;
+            }
+        }, 1000);
     }
 }

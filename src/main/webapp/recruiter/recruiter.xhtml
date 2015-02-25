@@ -11,12 +11,12 @@ and open the template in the editor.
     <h:head>
         <title>Recruiter's page</title>
         <h:outputStylesheet library="css" name="mystyle.css" /> 
-        <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
     </h:head>
     <h:body>
         <header>
             <h2>Recruiter Area</h2>
             <p>Use the navigation bar to find your desired function.</p>
+            <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
         </header>
         <nav>
             <h:link value="Home" outcome="recruiter"/> | 

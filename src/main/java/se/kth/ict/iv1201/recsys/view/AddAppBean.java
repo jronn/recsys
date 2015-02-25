@@ -51,6 +51,8 @@ public class AddAppBean implements Serializable {
     @PostConstruct
     public void init() {
         try {
+            expertiseList = new ArrayList<>();
+            availabilityList = new ArrayList<>();
             comp = recSysEJB.getCompetenceList();
             availabilityList = recSysEJB.getSpecificApplication(username).getAvailabilities();
             expertiseList = recSysEJB.getSpecificApplication(username).getCompetences();
@@ -79,7 +81,6 @@ public class AddAppBean implements Serializable {
     public void cancel() {
         dateTo = null;
         dateFrom = null;
-        expertise = "";
         yearsExperience = 0;
         expertiseList = new ArrayList<>();
         availabilityList = new ArrayList<>();
@@ -122,14 +123,6 @@ public class AddAppBean implements Serializable {
             clickedSent = false;
             errorMessage = ex.getMessage();
         }
-    }
-
-    public RecSysBean getRecSysEJB() {
-        return recSysEJB;
-    }
-
-    public void setRecSysEJB(RecSysBean recSysEJB) {
-        this.recSysEJB = recSysEJB;
     }
 
     public Date getDateFrom() {
