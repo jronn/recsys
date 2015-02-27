@@ -17,18 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Backing bean for authentication when logging in / out
- * 
+ *
  * @author jronn
  */
 @Named("auth")
 @ViewScoped
 public class Auth implements Serializable {
 
-    
     private String username;
     private String password;
-    private String originalURL; 
-    
+    private String originalURL;
+    private String role;
+
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -44,41 +44,64 @@ public class Auth implements Serializable {
             }
         }
     }
- 
+
+    /**
+     * Gets the current user's role
+     *
+     * @return String of user role
+     */
+    public String getRole() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+        if (request.isUserInRole("applicant")) {
+            return "applicant";
+        }
+        if (request.isUserInRole("recruiter")) {
+            return "recruiter";
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Logs the user in and redirects to previous searched page
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void login() throws IOException {
 
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-        
+
         try {
             request.login(username, password);
-            
-            if(request.isUserInRole("recruiter"))
+
+            if (request.isUserInRole("recruiter")) {
                 originalURL = externalContext.getRequestContextPath() + "/faces/recruiter/recruiter.xhtml";
-            else if(request.isUserInRole("applicant"))
+            } else if (request.isUserInRole("applicant")) {
                 originalURL = externalContext.getRequestContextPath() + "/faces/user/user.xhtml";
-            
+            }
+
             externalContext.redirect(originalURL);
         } catch (ServletException e) {
+            externalContext.redirect(externalContext.getRequestContextPath() + "/faces/login_error.xhtml");
             // Handle unknown username/password in request.login().
-            context.addMessage(null, new FacesMessage("Unknown login"));
+            //context.addMessage(null, new FacesMessage("Unknown login"));
         }
     }
-    
+
     /**
      * Logs the user out by invalidating the session and redirects to login page
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void logout() throws IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.invalidateSession();
         externalContext.redirect(externalContext.getRequestContextPath() + "/faces/login.xhtml");
-    }   
+    }
 
     public String getUsername() {
         return username;
@@ -95,7 +118,9 @@ public class Auth implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
+
+    public void setRole(String role) {
+        this.role = role;
+    }
     
 }

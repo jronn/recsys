@@ -7,59 +7,50 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Recruiter's page</title>
-        <h:outputStylesheet library="css" name="mystyle.css" />
-    </h:head>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:body>
-        <header>
-            <h2>Recruiter Area</h2>
-            <p>Use the navigation bar to find your desired function.</p>
-            <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
-        </header>
-        <nav>
-            <h:link value="Home" outcome="recruiter"/> | 
-            <h:link value="Find Applications" outcome="findapplications"/> 
-        </nav>
-        <h2>Find Application</h2>
-        <p>Find your desired applications using the input fields below.</p>
-        <h:form rendered="#{!findAppBean.searched}">
-            <h:outputLabel value="Name: " for="name"/>
-            <h:inputText id="name" value="#{findAppBean.name}"/>
-            <br />
-            <h:outputLabel value="Area of expertise: " for="expertise"/>
-            <h:selectOneMenu id="expertise" value='#{findAppBean.competence}'>
-                <f:selectItems value="#{findAppBean.comp}"/>
-            </h:selectOneMenu>
-            <br />
-            <h:outputLabel value="Date of registration: " for="regDate"/>
-            <h:inputText id="regDate" class="datepicker" value="#{findAppBean.dateReg}" />
-            <br />
-            <h:outputLabel value="Period: "/>
-            <h:inputText id="fromDate" value="#{findAppBean.dateFrom}" />
-            <h:inputText id="toDate" value="#{findAppBean.dateTo}" />
-            <h:commandButton value="Search" action="#{findAppBean.search}" />
-        </h:form>
-        <hr />
-        <h:panelGroup rendered="#{findAppBean.searched}">
-            <h:form>
-                <h:commandButton value="Cancel" action="#{findAppBean.cancel}" />
+        <ui:composition template="../templates/default_template.xhtml">
+            <ui:define name="content">
+                <h2>Find Application</h2>
+                <p>Find your desired applications using the input fields below.</p>
+                <h:form rendered="#{!findAppBean.searched}">
+                    <h:outputLabel value="Name: " for="name"/>
+                    <h:inputText id="name" value="#{findAppBean.name}"/>
+                    <br />
+                    <h:outputLabel value="Area of expertise: " for="expertise"/>
+                    <h:selectOneMenu id="expertise" value='#{findAppBean.competence}'>
+                        <f:selectItems value="#{findAppBean.comp}"/>
+                    </h:selectOneMenu>
+                    <br />
+                    <h:outputLabel value="Date of registration: " for="regDate"/>
+                    <h:inputText id="regDate" class="datepicker" value="#{findAppBean.dateReg}" />
+                    <br />
+                    <h:outputLabel value="Period: "/>
+                    <h:inputText id="fromDate" value="#{findAppBean.dateFrom}" />
+                    <h:inputText id="toDate" value="#{findAppBean.dateTo}" />
+                    <h:commandButton value="Search" action="#{findAppBean.search}" />
+                </h:form>
                 <hr />
-                <h2>Search results</h2>
-                <h:dataTable value="#{findAppBean.apps}" var="app">
-                    <h:column>
+                <h:panelGroup rendered="#{findAppBean.searched}">
+                    <h:form>
+                        <h:commandButton value="Cancel" action="#{findAppBean.cancel}" />
                         <hr />
-                        First Name: #{app.applicantFirstName}<br/>
-                        Surname: #{app.applicantLastName}<br/>
-                        Registered: 
-                        <h:outputText value="#{app.submitDate}">
-                            <f:convertDateTime pattern="MM/dd/yyyy" type="date"/>
-                        </h:outputText>
-                    </h:column>
-                </h:dataTable>
-            </h:form>
-        </h:panelGroup>
-
+                        <h2>Search results</h2>
+                        <h:dataTable value="#{findAppBean.apps}" var="app">
+                            <h:column>
+                                <hr />
+                                First Name: #{app.applicantFirstName}<br/>
+                                Surname: #{app.applicantLastName}<br/>
+                                Registered: 
+                                <h:outputText value="#{app.submitDate}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy" type="date"/>
+                                </h:outputText>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

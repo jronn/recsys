@@ -7,36 +7,24 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Login page</title>
-        <h:outputStylesheet library="css" name="mystyle.css" /> 
-        <meta name="viewport" content="width=device-width"/>
-    </h:head>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:body>
-        <header>
-            <h2>Login page</h2>
-            <p>Use your username and password to login</p>
-        </header>
-        <nav>
-            <h:link value="Login" outcome="login"/> |
-            <h:link value="Register" outcome="register"/>
-        </nav>
-        <h:form>
-            <h:outputLabel for="username" value="Username" />
-            <h:inputText id="username" value="#{auth.username}" required="true" />
-            <h:message for="username" />
-            <br />
-            <h:outputLabel for="password" value="Password" />
-            <h:inputSecret id="password" value="#{auth.password}" required="true" />
-            <h:message for="password" />
-            <br />
-            <h:commandButton value="Login" action="#{auth.login}" />
-            <h:messages globalOnly="true" />
-        </h:form>
-        <footer>
-            <p>Posted by: Josef, Niclas, Christoffer</p>
-            <p>Contact information: <a href="mailto:cyalcin@kth.se">cyalcin@kth.se</a></p>
-        </footer>
+        <ui:composition template="templates/default_template.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h:outputLabel for="username" value="Username" />
+                    <h:inputText id="username" value="#{auth.username}" required="true" />
+                    <h:message for="username" />
+                    <br />
+                    <h:outputLabel for="password" value="Password" />
+                    <h:inputSecret id="password" value="#{auth.password}" required="true" />
+                    <h:message for="password" />
+                    <br />
+                    <h:commandButton value="Login" action="#{auth.login}" />
+                    <h:messages globalOnly="true" />
+                </h:form>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

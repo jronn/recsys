@@ -8,21 +8,9 @@ and open the template in the editor.
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Add Application</title>
-        <h:outputStylesheet library="css" name="mystyle.css" /> 
-    </h:head>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:body>
-        <header>
-            <h2>User area</h2>
-            <p>Use the navigation bar to do whatever you want...</p>
-            <h:form><h:commandLink value="Log out" action="#{auth.logout}"/></h:form>
-        </header>
-        <nav>
-            <h:link value="Home" outcome="user"/> | 
-            <h:link value="Add Application" outcome="addapplication"/>
-        </nav>
-
+        <ui:composition template="../templates/default_template.xhtml"/>
     </h:body>
 </html>
