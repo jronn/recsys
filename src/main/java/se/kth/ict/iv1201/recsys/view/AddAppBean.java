@@ -62,9 +62,15 @@ public class AddAppBean implements Serializable {
     }
 
     /**
-     * Add a new CompetenceListing to our competenceList.
+     * Add a new CompetenceListing to our competenceList. Removes the earlier expertise
+     * in the application if the specified field already is added.
      */
     public void addExpertise() {
+        for(int i = 0; i < expertiseList.size(); i++){
+            if(expertiseList.get(i).competence.equals(expertise)){
+                expertiseList.remove(i);
+            }
+        }
         expertiseList.add(new CompetenceListing(expertise, yearsExperience));
     }
 

@@ -6,6 +6,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <h:body>
+        <h:outputScript library="scripts" name="regjs.js"/>
         <ui:composition template="templates/default_template.xhtml">
             <ui:define name="content">
                 <h:form id="myForm" onsubmit="return validate()" rendered='#{!registerBean.successful}'>
