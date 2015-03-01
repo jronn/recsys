@@ -80,5 +80,8 @@
             <form-error-page>/faces/login_error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-
+    <context-param>
+        <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+        <param-value>true</param-value>
+    </context-param>
 </web-app>

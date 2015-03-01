@@ -1,55 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:body>
+        <h:outputScript library="scripts" name="findappjs.js"/>
         <ui:composition template="../templates/default_template.xhtml">
             <ui:define name="content">
                 <h2>Find Application</h2>
                 <p>Find your desired applications using the input fields below.</p>
-                <h:form rendered="#{!findAppBean.searched}">
+                <hr/>
+                <h:form id="findForm" rendered="#{!findAppBean.searched}">
                     <h:outputLabel value="Name: " for="name"/>
                     <h:inputText id="name" value="#{findAppBean.name}"/>
                     <br />
                     <h:outputLabel value="Area of expertise: " for="expertise"/>
                     <h:selectOneMenu id="expertise" value='#{findAppBean.competence}'>
+                        <f:selectItem value="#{null}"/>
                         <f:selectItems value="#{findAppBean.comp}"/>
                     </h:selectOneMenu>
                     <br />
                     <h:outputLabel value="Date of registration: " for="regDate"/>
-                    <h:inputText id="regDate" class="datepicker" value="#{findAppBean.dateReg}" />
+                    <h:inputText id="regDate" value="#{findAppBean.dateReg}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
                     <br />
                     <h:outputLabel value="Period: "/>
-                    <h:inputText id="fromDate" value="#{findAppBean.dateFrom}" />
-                    <h:inputText id="toDate" value="#{findAppBean.dateTo}" />
-                    <h:commandButton value="Search" action="#{findAppBean.search}" />
+                    <h:inputText id="fromDate" value="#{findAppBean.dateFrom}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                    <h:inputText id="toDate" value="#{findAppBean.dateTo}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                    <h:commandButton value="Search" action="#{findAppBean.search}">
+                        <f:ajax execute="@form" render="@all" />
+                    </h:commandButton>
                 </h:form>
-                <hr />
-                <h:panelGroup rendered="#{findAppBean.searched}">
-                    <h:form>
-                        <h:commandButton value="Cancel" action="#{findAppBean.cancel}" />
-                        <hr />
-                        <h2>Search results</h2>
-                        <h:dataTable value="#{findAppBean.apps}" var="app">
-                            <h:column>
-                                <hr />
-                                First Name: #{app.applicantFirstName}<br/>
-                                Surname: #{app.applicantLastName}<br/>
-                                Registered: 
-                                <h:outputText value="#{app.submitDate}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy" type="date"/>
-                                </h:outputText>
-                            </h:column>
-                        </h:dataTable>
-                    </h:form>
-                </h:panelGroup>
+                <h:form rendered="#{findAppBean.searched}">
+                    <h:commandButton type="button" value="Cancel" action="#{findAppBean.cancel}">
+                        <f:ajax execute="@form" render="@all" />
+                    </h:commandButton>
+                    <h2>Search results</h2>
+                    <h:dataTable value="#{findAppBean.apps}" var="app">
+                        <h:column>
+                            <hr />
+                            First Name: #{app.applicantFirstName}<br/>
+                            Surname: #{app.applicantLastName}<br/>
+                            Registered: 
+                            <h:outputText value="#{app.submitDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" type="date"/>
+                            </h:outputText>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>

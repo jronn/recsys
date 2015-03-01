@@ -45,7 +45,6 @@ public class FindAppBean implements Serializable {
     public void init() {
         try {
             searched = false;
-            nullify();
             comp = recSysEJB.getCompetenceList();
         } catch (RecsysException ex) {
             Logger.getLogger(FindAppBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,14 +53,17 @@ public class FindAppBean implements Serializable {
 
     public void search() {
         try {
-            apps = recSysEJB.getApplications(name, expertise, dateFrom, dateTo, dateReg);
             searched = true;
+            if(name.isEmpty()){
+                name = null;
+            }
+            apps = recSysEJB.getApplications(name, expertise, dateFrom, dateTo, dateReg);
         } catch (RecsysException | BadInputException ex) {
             Logger.getLogger(FindAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
+
     public void cancel() {
         searched = false;
     }
@@ -146,8 +148,4 @@ public class FindAppBean implements Serializable {
         this.searched = searched;
     }
 
-    private void nullify() {
-        
-    }
-    
 }
