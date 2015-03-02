@@ -64,6 +64,7 @@ public interface RecSysBean {
      * Returns a list of applications based on input search arguments.
      * 
      * @param name Name of applicant. May be null.
+     * @param surname Surname of applicant. May be null.
      * @param competence CompetenceListing search parameter, with name of competence
      * and yearsOfExperience. May be null.
      * @param fromDate Availability fromDate. May be null.
@@ -74,7 +75,7 @@ public interface RecSysBean {
      * @return List of applicationDTOs based on search parameters. Include information
      * regarding approvance, submission date and first/last name
      */
-    public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
+    public List<ApplicationDTO> getApplications(String name, String surname, CompetenceListing competence,
                     Date fromDate, Date toDate, Date regDate) throws RecsysException, BadInputException;
     
     /**

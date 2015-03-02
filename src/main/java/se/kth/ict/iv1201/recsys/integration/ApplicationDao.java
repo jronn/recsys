@@ -29,12 +29,13 @@ public interface ApplicationDao extends GenericDao<Application,Long>{
      * Finds a list of applications based on the search criteria
      * 
      * @param name Name of applicant. May be null
+     * @param surname Surname of applicant. May be null
      * @param competence Competence name and minimum years of experience. May be null
-     * @param fromDate Start date of time period search. May be null
-     * @param toDate End date of time period search. May be null
+     * @param fromAvailDate Start date of time period search. May be null
+     * @param toAvailDate End date of time period search. May be null
      * @param regDate Date of application registration. May be null
      * @return List of applications matching criteria
      */
-    public List<Application> findBySearchCriterias(String name, CompetenceListing competence,
-                    Date fromDate, Date toDate, Date regDate);
+    public List<Application> findBySearchCriterias(String name, String surname, 
+            CompetenceListing competence, Date fromAvailDate, Date toAvailDate, Date regDate);
 }

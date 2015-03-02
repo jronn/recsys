@@ -190,17 +190,10 @@ public class RecSysBeanImpl implements RecSysBean {
     }
     
 
-    public List<ApplicationDTO> getApplications(String name, CompetenceListing competence,
+    public List<ApplicationDTO> getApplications(String name, String surname, CompetenceListing competence,
                     Date fromDate, Date toDate, Date regDate) throws RecsysException, BadInputException {
         
         List<ApplicationDTO> returnList = new ArrayList<>();
-        
-        // Validate name
-        if(name != null) {
-            Person person = personDao.findById(name);
-            if(person == null)
-                throw new BadInputException("Username invalid");
-        }
         
         // Validate competence
         if(competence != null) {
@@ -214,7 +207,8 @@ public class RecSysBeanImpl implements RecSysBean {
             throw new BadInputException("Invalid dates. fromDate is after toDate");
         
         try {
-            List<Application> applications = applicationDao.findBySearchCriterias(name, competence, fromDate, toDate, regDate);
+            List<Application> applications = 
+                    applicationDao.findBySearchCriterias(name, surname, competence, fromDate, toDate, regDate);
         
             for(Application a : applications) {
                 ApplicationDTO aDTO = new ApplicationDTO();
