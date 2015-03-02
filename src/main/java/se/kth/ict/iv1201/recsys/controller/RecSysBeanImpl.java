@@ -108,21 +108,17 @@ public class RecSysBeanImpl implements RecSysBean {
     }
     
     
-    public void registerApplication(ApplicationDTO applicationDto) 
+    public void registerApplication(String username, ApplicationDTO applicationDto) 
             throws NotLoggedInException, RecsysException, BadInputException {
         try {
+            if(username == null)
+                throw new NotLoggedInException("You need to be logged in.");
+            
             List<CompetenceListing> competences = applicationDto.getCompetences();
             List<AvailabilityListing> availabilities = applicationDto.getAvailabilities();
 
             // Get current date
-            Date date = new Date();
-            
-            // Get logged in username
-            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
-            String username = request.getRemoteUser();
-
-            if(username == null)
-                throw new NotLoggedInException("You need to be logged in.");
+            Date date = new Date();           
                 
             Person person = personDao.findById(username);
 

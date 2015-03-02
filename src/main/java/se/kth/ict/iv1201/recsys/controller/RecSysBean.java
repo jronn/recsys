@@ -50,13 +50,14 @@ public interface RecSysBean {
     
     /**
      * Registers a new application with the information supplied in the 
-     * applicationDTO
+     * applicationDTO to the supplied user
      * @param application ApplicationDTO containing competences and availabilities
+     * @param username User to link application to
      * @throws NotLoggedInException Thrown when user is not logged in
      * @throws RecsysException Thrown on unexpected errors
      * @throws BadInputException ...
      */
-    public void registerApplication(ApplicationDTO application)
+    public void registerApplication(String username, ApplicationDTO application)
             throws NotLoggedInException, RecsysException, BadInputException;
             
     /**

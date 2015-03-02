@@ -118,7 +118,11 @@ public class AddAppBean implements Serializable {
         try {
             clickedSent = true;
             clickedSend();
-            recSysEJB.registerApplication(myApp);
+            
+            // Get logged in username
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
+            String username = request.getRemoteUser();
+            recSysEJB.registerApplication(username,myApp);
         } catch (NotLoggedInException ex) {
             clickedSent = false;
             errorMessage = ex.getMessage();
