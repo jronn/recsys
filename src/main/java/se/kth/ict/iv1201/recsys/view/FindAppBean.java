@@ -15,10 +15,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
-import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
-import se.kth.ict.iv1201.recsys.model.BadInputException;
-import se.kth.ict.iv1201.recsys.model.CompetenceListing;
-import se.kth.ict.iv1201.recsys.model.RecsysException;
+import se.kth.ict.iv1201.recsys.model.*;
 
 /**
  *
@@ -35,8 +32,8 @@ public class FindAppBean implements Serializable {
     private Date dateTo;
     private Date dateReg;
     private List<String> comp;
-    private CompetenceListing expertise;
     private String name;
+    private String surname;
     private String competence;
     private List<ApplicationDTO> apps;
     private boolean searched;
@@ -54,10 +51,18 @@ public class FindAppBean implements Serializable {
     public void search() {
         try {
             searched = true;
-            if(name.isEmpty()){
+            if (name.isEmpty()) {
                 name = null;
             }
-            apps = recSysEJB.getApplications(name, expertise, dateFrom, dateTo, dateReg);
+            if (surname.isEmpty()) {
+                surname = null;
+            }
+
+            CompetenceListing compListing = new CompetenceListing(competence, 0);
+            if(competence.isEmpty()){
+                compListing = null;
+            }
+            apps = recSysEJB.getApplications(name, surname, compListing, dateFrom, dateTo, dateReg);
         } catch (RecsysException | BadInputException ex) {
             Logger.getLogger(FindAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -65,6 +70,7 @@ public class FindAppBean implements Serializable {
     }
 
     public void cancel() {
+        nullify();
         searched = false;
     }
 
@@ -108,12 +114,12 @@ public class FindAppBean implements Serializable {
         this.comp = comp;
     }
 
-    public CompetenceListing getExpertise() {
-        return expertise;
+    public String getCompetence() {
+        return competence;
     }
 
-    public void setExpertise(CompetenceListing expertise) {
-        this.expertise = expertise;
+    public void setCompetence(String competence) {
+        this.competence = competence;
     }
 
     public String getName() {
@@ -132,20 +138,29 @@ public class FindAppBean implements Serializable {
         this.apps = apps;
     }
 
-    public String getCompetence() {
-        return competence;
-    }
-
-    public void setCompetence(String competence) {
-        this.competence = competence;
-    }
-
     public boolean isSearched() {
         return searched;
     }
 
     public void setSearched(boolean searched) {
         this.searched = searched;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    private void nullify() {
+        name = null;
+        surname = null;
+        dateReg = null;
+        dateFrom = null;
+        dateTo = null;
+        competence = null;
     }
 
 }

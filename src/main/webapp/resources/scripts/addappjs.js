@@ -23,7 +23,7 @@ function validateExpertise() {
 function validateDates() {
     var from = document.getElementById('addForm:from').value;
     var to = document.getElementById('addForm:to').value;
-    date_pattern = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
+    var date_pattern = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
 
     if (!date_pattern.test(from)) {
         alert('From date is faulty.');

@@ -14,6 +14,9 @@
                 <h:form id="findForm" rendered="#{!findAppBean.searched}">
                     <h:outputLabel value="Name: " for="name"/>
                     <h:inputText id="name" value="#{findAppBean.name}"/>
+                    <br/>
+                    <h:outputLabel value="Surname: " for="surname"/>
+                    <h:inputText id="surname" value="#{findAppBean.surname}"/>
                     <br />
                     <h:outputLabel value="Area of expertise: " for="expertise"/>
                     <h:selectOneMenu id="expertise" value='#{findAppBean.competence}'>
@@ -33,7 +36,7 @@
                     <h:inputText id="toDate" value="#{findAppBean.dateTo}">
                         <f:convertDateTime pattern="yyyy-MM-dd"/>
                     </h:inputText>
-                    <h:commandButton value="Search" action="#{findAppBean.search}">
+                    <h:commandButton onclick="return validate()" value="Search" action="#{findAppBean.search}">
                         <f:ajax execute="@form" render="@all" />
                     </h:commandButton>
                 </h:form>
@@ -41,17 +44,24 @@
                     <h:commandButton type="button" value="Cancel" action="#{findAppBean.cancel}">
                         <f:ajax execute="@form" render="@all" />
                     </h:commandButton>
-                    <h2>Search results</h2>
-                    <h:dataTable value="#{findAppBean.apps}" var="app">
+                    <h:dataTable value="#{findAppBean.apps}" var="app" border="1">
+                        <f:facet name="header">
+                            <h:outputText value="Search results" />
+                        </f:facet>
                         <h:column>
-                            <hr />
-                            First Name: #{app.applicantFirstName}<br/>
-                            Surname: #{app.applicantLastName}<br/>
-                            Registered: 
+                            <f:facet name="header">First name</f:facet>
+                            #{app.applicantFirstName}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Last name</f:facet>
+                            #{app.applicantLastName}</h:column>
+                        <h:column>
+                            <f:facet name="header">Submit date</f:facet>
                             <h:outputText value="#{app.submitDate}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" type="date"/>
+                                <f:convertDateTime pattern="dd/MM-yyyy" type="date"/>
                             </h:outputText>
                         </h:column>
+                        <h:column><h:commandButton value="Details"></h:commandButton></h:column>
                     </h:dataTable>
                 </h:form>
             </ui:define>
