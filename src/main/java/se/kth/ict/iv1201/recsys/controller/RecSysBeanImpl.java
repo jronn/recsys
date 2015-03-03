@@ -94,10 +94,7 @@ public class RecSysBeanImpl implements RecSysBean {
             log.log(Level.SEVERE, "A unkown database error occurred in "
                     + "registerUser function", e);
             throw new RecsysException("Database error occurred.");
-        } catch (NullPointerException e) {
-                        log.log(Level.SEVERE, "Unexpected NP exception occurred ", e);
-            throw new RecsysException("Unexpected null pointer exception occurred.");
-        }
+        } 
     }
     
     @TransactionAttribute(REQUIRED)
@@ -131,62 +128,62 @@ public class RecSysBeanImpl implements RecSysBean {
                 
             Person person = personDao.findById(username);
 
-            Application application;
-            List<Application> apps = applicationDao.findByPerson(person);
-            if(apps.size() < 1)
+            Application application = person.getApplication();
+            if(application == null)
                 application = new Application(person,date);
-            else
-                application = apps.get(0);
             
-            // Update submitdate to current date
             application.setSubmitDate(new Date());
-            applicationDao.persist(application);
-
-            // Find all old competenceProfiles and availabilities from db
-            List<CompetenceProfile> oldComp = competenceProfileDao.findByApplication(application);
-            List<Availability> oldAvail = availabilityDao.findByApplication(application);
+            application.setCompetenceProfileCollection(null);
+            application.setAvailabilityCollection(null);
             
-            // Remove all old competenceProfiles
-            for(CompetenceProfile cp : oldComp) 
-                competenceProfileDao.remove(cp);
-            
-            // Remove all old Availabilities 
-            for(Availability avail : oldAvail)
-                availabilityDao.remove(avail);
             
             // Go through competenceProfiles, add new competences
+            Collection<CompetenceProfile> clist = application.getCompetenceProfileCollection();
+            if(clist == null)
+                clist = new ArrayList<CompetenceProfile>();
+            
             for(CompetenceListing c : competences) {
                 Competence comp = competenceDao.findById(c.competence);
                 
                 if(comp == null)
                     throw new BadInputException("Invalid competence types detected.");
                 
-                CompetenceProfile cp;
-                List<CompetenceProfile> cpList = competenceProfileDao.findByApplicationAndCompetence(application,comp);
+                //CompetenceProfile cp;
+                boolean containsCompetence = false;
+                for(CompetenceProfile cp : clist) {
+                    if(cp.getCompetence().equals(comp)) {
+                        cp.setYearsOfExperience(new BigDecimal(c.getYearsOfExperience()));
+                        containsCompetence = true;
+                        break;
+                    }
+                }
                 
-                if(cpList.size() < 1)
-                    cp = new CompetenceProfile(application, comp, new BigDecimal(c.yearsOfExperience));
-                else {
-                    cp = cpList.get(0);
-                    cp.setYearsOfExperience(new BigDecimal(c.yearsOfExperience));
-                }   
-                
-                competenceProfileDao.persist(cp);
-            }
+                // If its a new competence, add it to the competenceProfile list
+                if(!containsCompetence) {
+                    clist.add(new CompetenceProfile(application, comp, new BigDecimal(c.yearsOfExperience)));   
+                }
+            }       
+            application.setCompetenceProfileCollection(clist);
 
+            
             // Go throuh availabilities and add them to the database
+            Collection<Availability> availList = application.getAvailabilityCollection();
+            if(availList == null)
+                availList = new ArrayList<Availability>();
+            
             for(AvailabilityListing a : availabilities) {
                 if(!a.fromDate.before(a.toDate))
                     throw new BadInputException("Invalid availablility date. fromDate is after toDate");
-                
-                Availability avail;
-                List<Availability> availList = availabilityDao.findByApplicationAndDates(application, a.fromDate, a.toDate);
-                
-                if(availList.size() < 1) {
-                    avail = new Availability(application, a.fromDate, a.toDate);
-                    availabilityDao.persist(avail);
+                             
+                if(!availList.contains(a)) {
+                    availList.add(new Availability(application, a.fromDate, a.toDate));
                 }
             }
+            application.setAvailabilityCollection(availList);
+            
+            
+            person.setApplication(application);
+            personDao.persist(person);
             
             // Called inside try block so we can catch JPA exceptions
             personDao.flush();
