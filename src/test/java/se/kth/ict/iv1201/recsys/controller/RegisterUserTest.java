@@ -54,7 +54,6 @@ public class RegisterUserTest {
     public void testPersistence() throws BadInputException, ExistingUserException, RecsysException {
         recSysBean.registerUser("name", "name", "email@email.com", "username", "password");
         Mockito.verify(personDao).persist(any(Person.class));
-        Mockito.verify(userGroupDao).persist(any(UserGroup.class));
     }
     
     /**

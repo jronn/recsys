@@ -85,8 +85,9 @@ public class ApplicationDaoImpl extends GenericJpaDao<Application,Long> implemen
                     cb.equal(a.<Date>get("submitDate"), regDate));
         }
         
+
         cq.select(a)
-                .where(predicates.toArray(new Predicate[]{}));
+                .where(predicates.toArray(new Predicate[]{})).distinct(true);
         
         return em.createQuery(cq).getResultList();
     }
