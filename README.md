@@ -32,12 +32,17 @@ Step 4. Resources->JDBC->JDBC Resources, add a new JDBC resource with the name '
 		in step 3.
 		
 Step 5. Under Configurations->server-config->Security->Realms, add a new realm named testrealm. Give it the following values:
+
+		Name | Value
+		________________________________________
+
 		JAAS Context | jdbcRealm
 		JNDI | jdbc/db4free
 		User Table | person
 		User name Column | username
 		Password Column | password
 		Group Table | user_group
+		Group Table User Name Column | person
 		Group Name Column | role
 		Password Encryption Algorithm | SHA-256
 		Digest Algorithm | SHA-256
