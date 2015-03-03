@@ -244,21 +244,18 @@ public class RecSysBeanImpl implements RecSysBean {
             throw new BadInputException("Invalid username");
         
         
-        Application application;
-            List<Application> apps = applicationDao.findByPerson(person);
-            if(apps.size() < 1)
-                throw new BadInputException("Application for that user does not exist");
-            else
-                application = apps.get(0);
-        
+        Application application = person.getApplication();
+        if(application == null)
+            throw new BadInputException("Application for that user does not exist");
+            
         ApplicationDTO applicationDTO = new ApplicationDTO();
         applicationDTO.setApplicantFirstName(application.getPerson().getName());
         applicationDTO.setApplicantLastName(application.getPerson().getSurname());
         applicationDTO.setSubmitDate(application.getSubmitDate());
         applicationDTO.setApproved(application.getApproved());
         
-        List<Availability> availabilities = availabilityDao.findByApplication(application);
-        List<CompetenceProfile> competences = competenceProfileDao.findByApplication(application);
+        Collection<Availability> availabilities = application.getAvailabilityCollection();
+        Collection<CompetenceProfile> competences = application.getCompetenceProfileCollection();
         
         for(Availability a : availabilities) {
             applicationDTO.addAvailability(new AvailabilityListing(a.getFromDate(), a.getToDate()));
@@ -281,17 +278,15 @@ public class RecSysBeanImpl implements RecSysBean {
         if(username == null || person == null)
             throw new BadInputException("User does not exist");
         
-        Application app;
-        List<Application> apps = applicationDao.findByPerson(person);
-        if(apps.size() < 1)
-            throw new BadInputException("User does not have an application");
-        else
-            app = apps.get(0);
-            
+        Application app = person.getApplication();
+        if(app == null)
+            throw new BadInputException("User does not have an application");           
         
         try {
             app.setApproved(status);
-            applicationDao.flush();
+            person.setApplication(app);
+            personDao.persist(person);
+            personDao.flush();
         } catch (OptimisticLockException e) {
             throw new RecsysException("Someone else has modified the application.");
         } 
