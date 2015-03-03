@@ -37,7 +37,10 @@ public class FindAppBean implements Serializable {
     private String competence;
     private List<ApplicationDTO> apps;
     private boolean searched;
-
+    
+    /**
+     * Called upon on start.
+     */
     @PostConstruct
     public void init() {
         try {
@@ -47,7 +50,10 @@ public class FindAppBean implements Serializable {
             Logger.getLogger(FindAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Called upon when a search is performed. Calls upon the controller and enables us
+     * to get search results.
+     */
     public void search() {
         try {
             searched = true;
@@ -68,7 +74,10 @@ public class FindAppBean implements Serializable {
         }
 
     }
-
+    
+    /**
+     * Nullifies the inputs, sets searched to false.
+     */
     public void cancel() {
         nullify();
         searched = false;

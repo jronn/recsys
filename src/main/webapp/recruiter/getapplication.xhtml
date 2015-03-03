@@ -6,6 +6,58 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:body>
         <ui:composition template="../templates/default_template.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <f:event type="preRenderView" listener="#{getAppBean.onPageLoad}"/>
+                </f:view>
+                <h:outputLabel value="First name: "/>
+                <h:outputLabel value="#{getAppBean.firstName}"/>
+                <br />
+                <h:outputLabel value="Last name: "/>
+                <h:outputLabel value="#{getAppBean.lastName}"/>
+                <br />
+                <h:outputLabel value="Submit date: "/>
+                <h:outputLabel value="#{getAppBean.submitDate}">
+                    <f:convertDateTime pattern="dd/MM-yyyy" type="date"/>
+                </h:outputLabel>
+                <br />
+                <h3>Competences</h3>
+                <h:dataTable value="#{getAppBean.competences}" var="comp">
+                    <h:column>
+                        Expertise: <h:outputLabel value="#{comp.competence}"/>
+                        Years of Experience: <h:outputLabel value="#{comp.yearsOfExperience}"/>
+                    </h:column>
+                    <br />
+                </h:dataTable>
+                <h3>Availabilites</h3>
+                <h:dataTable value="#{getAppBean.availabilities}" var="avail">
+                    <h:column>
+                        From: 
+                        <h:outputLabel value="#{avail.fromDate}">
+                            <f:convertDateTime pattern="dd/MM-yyyy" type="date"/>
+                        </h:outputLabel>
+                        <br />
+                        To: 
+                        <h:outputLabel value="#{avail.toDate}">
+                            <f:convertDateTime pattern="dd/MM-yyyy" type="date"/>
+                        </h:outputLabel>
+                    </h:column>
+                    <br />
+                </h:dataTable>
+                <h:outputLabel value="Approved status: "/>
+                <h:panelGroup rendered="#{!getAppBean.approved}">
+                    <h:outputLabel value="Not approved"/>
+                    <h:form>
+                        <h:commandButton value="Approve" action="#{getAppBean.approve}"/>
+                    </h:form>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{getAppBean.approved}">
+                    <h:outputLabel value="Approved"/>
+                    <h:form>
+                        <h:commandButton value="Unapprove" action="#{getAppBean.unapprove}"/>
+                    </h:form>
+                </h:panelGroup>
+            </ui:define>
         </ui:composition>
     </h:body>
 </html>

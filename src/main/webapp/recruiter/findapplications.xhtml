@@ -61,7 +61,11 @@
                                 <f:convertDateTime pattern="dd/MM-yyyy" type="date"/>
                             </h:outputText>
                         </h:column>
-                        <h:column><h:commandButton value="Details"></h:commandButton></h:column>
+                        <h:column>
+                            <h:link value="Details" outcome="getapplication">
+                                <f:param name="username" value="#{app.username}"/>
+                            </h:link>
+                        </h:column>
                     </h:dataTable>
                 </h:form>
             </ui:define>

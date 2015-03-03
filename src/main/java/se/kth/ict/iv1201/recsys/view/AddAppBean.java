@@ -92,7 +92,10 @@ public class AddAppBean implements Serializable {
         availabilityList = new ArrayList<>();
         errorMessage = null;
     }
-
+    /**
+     * Used for our reset button, which enables us to undo changes before the application
+     * is saved.
+     */
     public void reset() {
         try {
             availabilityList = recSysEJB.getSpecificApplication(username).getAvailabilities();
