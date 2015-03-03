@@ -8,6 +8,8 @@ package se.kth.ict.iv1201.recsys.integration;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.MANDATORY;
 import se.kth.ict.iv1201.recsys.model.entities.Person;
 
 /**
@@ -22,6 +24,7 @@ public class PersonDaoImpl extends GenericJpaDao<Person,String> implements Perso
         super(Person.class);
     }
     
+    @TransactionAttribute(MANDATORY)
     public List findByEmail(String email) {
         return em.createQuery("SELECT p FROM Person p WHERE p.email LIKE :persEmail")
                 .setParameter("persEmail", email).getResultList();

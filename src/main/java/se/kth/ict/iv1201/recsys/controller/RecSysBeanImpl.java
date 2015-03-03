@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
-import javax.faces.context.FacesContext;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 import javax.persistence.OptimisticLockException;
-import javax.servlet.http.HttpServletRequest;
 import se.kth.ict.iv1201.recsys.integration.*;
 import se.kth.ict.iv1201.recsys.model.*;
 import se.kth.ict.iv1201.recsys.model.entities.*;
@@ -49,6 +49,7 @@ public class RecSysBeanImpl implements RecSysBean {
 
     private static final Logger log = Logger.getLogger(RecSysBeanImpl.class.getName());
     
+    @TransactionAttribute(REQUIRED)
     public void registerUser(String name, String surname, String email, String username, String password) 
         throws BadInputException, ExistingUserException, RecsysException {
             try {
@@ -91,7 +92,7 @@ public class RecSysBeanImpl implements RecSysBean {
         }
     }
     
-    
+    @TransactionAttribute(REQUIRED)
     public List<String> getCompetenceList() throws RecsysException {
         
         List<String> list = new ArrayList();
@@ -107,7 +108,7 @@ public class RecSysBeanImpl implements RecSysBean {
         return list;
     }
     
-    
+    @TransactionAttribute(REQUIRED)
     public void registerApplication(String username, ApplicationDTO applicationDto) 
             throws NotLoggedInException, RecsysException, BadInputException {
         try {
@@ -189,7 +190,7 @@ public class RecSysBeanImpl implements RecSysBean {
         }
     }
     
-
+    @TransactionAttribute(REQUIRED)
     public List<ApplicationDTO> getApplications(String name, String surname, CompetenceListing competence,
                     Date fromDate, Date toDate, Date regDate) throws RecsysException, BadInputException {
         
@@ -226,7 +227,7 @@ public class RecSysBeanImpl implements RecSysBean {
         return returnList;
     }
     
-    
+    @TransactionAttribute(REQUIRED)
     public ApplicationDTO getSpecificApplication(String username) throws BadInputException {   
         Person person = null;
         
@@ -264,7 +265,7 @@ public class RecSysBeanImpl implements RecSysBean {
         return applicationDTO;
     }
     
-    
+    @TransactionAttribute(REQUIRED)
     public void setApproved(String username, boolean status) throws RecsysException,BadInputException{
         Person person = null;
         

@@ -8,6 +8,8 @@ package se.kth.ict.iv1201.recsys.integration;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.MANDATORY;
 import se.kth.ict.iv1201.recsys.model.entities.Competence;
 
 /**
@@ -21,6 +23,7 @@ public class CompetenceDaoImpl extends GenericJpaDao<Competence,String> implemen
         super(Competence.class);
     }
     
+    @TransactionAttribute(MANDATORY)
     public List<Competence> findAll() {
         return em.createQuery("SELECT c FROM Competence c").getResultList();
     }

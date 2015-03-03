@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.MANDATORY;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -31,11 +33,13 @@ public class ApplicationDaoImpl extends GenericJpaDao<Application,Long> implemen
         super(Application.class);
     }
     
+    @TransactionAttribute(MANDATORY)
     public List<Application> findByPerson(Person person) {
         return em.createQuery("SELECT a FROM Application a WHERE a.person = :person")
                 .setParameter("person", person).getResultList();
     }
-
+    
+    @TransactionAttribute(MANDATORY)
     public List<Application> findBySearchCriterias(String name, String surname, 
             CompetenceListing competenceIn, Date fromAvailDate, Date toAvailDate, Date regDate) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
