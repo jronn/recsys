@@ -80,7 +80,7 @@ id BIGINT NOT NULL AUTO_INCREMENT,
 version INT,
 person VARCHAR(255) NOT NULL UNIQUE,
 submit_date DATE NOT NULL,
-approved BOOLEAN,
+approved BOOLEAN NOT NULL DEFAULT false,
 PRIMARY KEY (id),
 FOREIGN KEY (person) REFERENCES person(username)
 );

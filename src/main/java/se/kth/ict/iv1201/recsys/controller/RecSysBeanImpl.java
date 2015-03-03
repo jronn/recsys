@@ -133,6 +133,7 @@ public class RecSysBeanImpl implements RecSysBean {
                 application = new Application(person,date);
             
             application.setSubmitDate(new Date());
+            application.setApproved(false);
             application.setCompetenceProfileCollection(null);
             application.setAvailabilityCollection(null);
             
