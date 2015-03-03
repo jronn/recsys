@@ -25,11 +25,21 @@ public class ApplicationDTO {
     private String applicantFirstName;
     private String applicantLastName;
     
+    private String username;
+    
     public ApplicationDTO() {
        competences = new ArrayList(); 
        availabilities = new ArrayList();
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
     public String getApplicantFirstName() {
         return applicantFirstName;
     }

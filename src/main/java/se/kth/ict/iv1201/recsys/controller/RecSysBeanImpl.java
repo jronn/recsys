@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -71,14 +72,18 @@ public class RecSysBeanImpl implements RecSysBean {
                 throw new ExistingUserException("Specified email is already in use");
             }
 
-            Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));
-            personDao.persist(person);
-                
+            Person person = new Person(username, name, surname, email, RecSysUtil.hashText(password));                   
             Role role = roleDao.findById("applicant");
             
-            UserGroup userGroup = new UserGroup(person,role);
-            userGroupDao.persist(userGroup);
+            Collection<UserGroup> roles = person.getUserGroupCollection();
             
+            if(roles == null)
+                roles = new ArrayList<UserGroup>();
+            
+            roles.add(new UserGroup(person,role));
+            person.setUserGroupCollection(roles);
+            
+            personDao.persist(person);
             // Flushes all changes, done within clause to catch JPA exceptions
             personDao.flush();           
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
@@ -89,6 +94,9 @@ public class RecSysBeanImpl implements RecSysBean {
             log.log(Level.SEVERE, "A unkown database error occurred in "
                     + "registerUser function", e);
             throw new RecsysException("Database error occurred.");
+        } catch (NullPointerException e) {
+                        log.log(Level.SEVERE, "Unexpected NP exception occurred ", e);
+            throw new RecsysException("Unexpected null pointer exception occurred.");
         }
     }
     
@@ -216,6 +224,7 @@ public class RecSysBeanImpl implements RecSysBean {
                 aDTO.setApproved(a.getApproved());
                 aDTO.setApplicantFirstName(a.getPerson().getName());
                 aDTO.setApplicantLastName(a.getPerson().getSurname());
+                aDTO.setUsername(a.getPerson().getUsername());
                 aDTO.setSubmitDate(a.getSubmitDate());
                 returnList.add(aDTO);
             } 
