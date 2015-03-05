@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -41,6 +40,9 @@ public class GetAppBean implements Serializable {
     private List<CompetenceListing> competences;
     private List<AvailabilityListing> availabilities;
     private boolean approved;
+    private String approved2;
+
+    private String errorMessage;
 
     Map<String, String> params;
     String user;
@@ -50,35 +52,38 @@ public class GetAppBean implements Serializable {
      */
     public void onPageLoad() {
         try {
-            params = FacesContext.getCurrentInstance().getExternalContext().
-                    getRequestParameterMap();
-            user = params.get("username");
+            errorMessage = null;
+            user = FacesContext.getCurrentInstance().getExternalContext().
+                    getRequestParameterMap().get("username");
+
             app = recSysEJB.getSpecificApplication(user);
+
             firstName = app.getApplicantFirstName();
             lastName = app.getApplicantLastName();
             submitDate = app.getSubmitDate();
             competences = app.getCompetences();
             availabilities = app.getAvailabilities();
             approved = app.isApproved();
+
+            try {
+                approved2 = FacesContext.getCurrentInstance().getExternalContext().
+                        getRequestParameterMap().get("approved");
+                if (approved2.equals("yes")) {
+                    approved = true;
+                    app.setApproved(approved);
+                }
+                if (approved2.equals("no")) {
+                    approved = false;
+                    app.setApproved(approved);
+                }
+            } catch (NullPointerException e) {
+                //Do nothing.
+            }
+
         } catch (BadInputException ex) {
+            errorMessage = ex.getMessage();
             Logger.getLogger(GetAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    /**
-     * Sets the application to being approved.
-     */
-    public void approve() {
-        approved = true;
-        app.setApproved(approved);
-    }
-
-    /**
-     * Sets the application to being unapproved.
-     */
-    public void unapprove() {
-        approved = false;
-        app.setApproved(approved);
     }
 
     public String getFirstName() {
@@ -121,12 +126,36 @@ public class GetAppBean implements Serializable {
         this.availabilities = availabilities;
     }
 
-    public boolean isApproved() {
+    public boolean getApproved() {
         return approved;
     }
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getApproved2() {
+        return approved2;
+    }
+
+    public void setApproved2(String approved2) {
+        this.approved2 = approved2;
     }
 
 }
