@@ -266,8 +266,7 @@ public class RecSysBeanImpl implements RecSysBean {
     @TransactionAttribute(REQUIRED)
     public void setApproved(String username, boolean status) throws RecsysException,BadInputException{
         Person person = null;
-        System.out.println("setApproved called with username " + username + ""
-                + "and status " + status);
+
         if(username != null)
             person = personDao.findById(username);
         
@@ -280,7 +279,6 @@ public class RecSysBeanImpl implements RecSysBean {
         
         try {
             app.setApproved(status);
-            System.out.println("Sätter status till " + status);
             person.setApplication(app);
             personDao.persist(person);
             personDao.flush();
