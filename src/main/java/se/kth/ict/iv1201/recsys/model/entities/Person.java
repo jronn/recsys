@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
+import org.eclipse.persistence.annotations.PrivateOwned;
 
 /**
  * Entity class representing a person
@@ -61,8 +62,11 @@ public class Person implements Serializable {
     private String username;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+    @PrivateOwned
     private Collection<UserGroup> userGroupCollection;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "person")
+    @PrivateOwned
     private Application application;
 
     public Person() {
