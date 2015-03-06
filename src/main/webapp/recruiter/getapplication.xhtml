@@ -10,6 +10,7 @@
                 <f:view>
                     <f:event type="preRenderView" listener="#{getAppBean.onPageLoad}"/>
                 </f:view>
+                <p style="color: red; font-weight: bold; font-size: 13px;">#{getAppBean.errorMessage}</p>
                 <h:outputLabel value="First name: "/>
                 <h:outputLabel value="#{getAppBean.firstName}"/>
                 <br />
@@ -24,7 +25,7 @@
                 <h3>Competences</h3>
                 <h:dataTable value="#{getAppBean.competences}" var="comp">
                     <h:column>
-                        Expertise: <h:outputLabel value="#{comp.competence}"/>
+                        Expertise: <h:outputLabel value="#{comp.competence}"/><br/>
                         Years of Experience: <h:outputLabel value="#{comp.yearsOfExperience}"/>
                     </h:column>
                     <br />
@@ -46,17 +47,20 @@
                 </h:dataTable>
                 <h:outputLabel value="Approved status: "/>
                 <h:panelGroup rendered="#{!getAppBean.approved}">
-                    <h:outputLabel value="Not approved"/>
-                    <h:form>
-                        <h:commandButton value="Approve" action="#{getAppBean.approve}"/>
-                    </h:form>
+                    <h:outputLabel value="Not approved" />
+                    <h:button value="Approve" outcome="getapplication">
+                        <f:param name="username" value="#{getAppBean.user}"/>
+                        <f:param name="approved" value="yes"/>
+                    </h:button>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{getAppBean.approved}">
                     <h:outputLabel value="Approved"/>
-                    <h:form>
-                        <h:commandButton value="Unapprove" action="#{getAppBean.unapprove}"/>
-                    </h:form>
+                    <h:button value="Unapprove" outcome="getapplication">
+                        <f:param name="username" value="#{getAppBean.user}"/>
+                        <f:param name="approved" value="no"/>
+                    </h:button>
                 </h:panelGroup>
+                <h:form><h:link value="Go back" outcome="findapplications"/></h:form>
             </ui:define>
         </ui:composition>
     </h:body>
