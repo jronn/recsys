@@ -24,7 +24,8 @@ import se.kth.ict.iv1201.recsys.model.entities.Person;
 import se.kth.ict.iv1201.recsys.model.entities.UserGroup;
 
 /**
- *
+ * Tests the registerUser function in the controller EJB
+ * 
  * @author jronn
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -74,6 +75,14 @@ public class RegisterUserTest {
         assertFailsUserValidation("na me","surname","email@email.com","username","password");
         assertFailsUserValidation("name","sur name","email@email.com","username","password");
         assertFailsUserValidation("name","sur name","email@em ail.com","username","password");
+        assertFailsUserValidation(null,"surname","email@email.com","username","password");
+        assertFailsUserValidation("name",null,"email@email.com","username","password");
+        assertFailsUserValidation("name","surname",null,"username","password");
+        assertFailsUserValidation("name","surname","email@email.com",null,"password");
+        assertFailsUserValidation("name","surname","email@email.com","username",null);
+        assertFailsUserValidation("name","321","email@email.com","username","password");
+        assertFailsUserValidation("1212","surname","email@email.com","username","password");
+        assertFailsUserValidation("12312","123123","email@email.com","username","password");
         
         assertSucceedsUserValidation("name","surname","email@email.com","username","password");
         assertSucceedsUserValidation("Torbjörn","Alenklint","emaildeluxe@emaildelux.com","AsernBme","p24@€Wrd");
