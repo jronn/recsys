@@ -25,6 +25,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
+import org.eclipse.persistence.annotations.PrivateOwned;
 
 /**
  * Entity class representing an application
@@ -58,9 +59,11 @@ public class Application implements Serializable {
     private Person person;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
+    @PrivateOwned
     private Collection<CompetenceProfile> competenceProfileCollection;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
+    @PrivateOwned
     private Collection<Availability> availabilityCollection;
 
     public Application() {

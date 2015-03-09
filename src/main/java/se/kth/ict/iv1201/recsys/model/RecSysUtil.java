@@ -48,6 +48,10 @@ public class RecSysUtil {
      */
     public static boolean validateString(String text, int min, int max,
                         boolean onlyAlphabetChars) {
+        
+        if(text == null)
+            return false;
+        
         if(onlyAlphabetChars && !text.matches("^[a-zA-ZåäöÅÄÖ]+$"))
             return false;
         
@@ -63,6 +67,8 @@ public class RecSysUtil {
      * @return boolean, true = valid
      */
     public static boolean validateEmail(String email) {
+        if(email == null)
+            return false;
         return email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*" +
             "@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
     }

@@ -134,20 +134,16 @@ public class RecSysBeanImpl implements RecSysBean {
             
             application.setSubmitDate(new Date());
             application.setApproved(false);
-            application.setCompetenceProfileCollection(null);
-            application.setAvailabilityCollection(null);
-            
             
             // Go through competenceProfiles, add new competences
-            Collection<CompetenceProfile> clist = application.getCompetenceProfileCollection();
-            if(clist == null)
-                clist = new ArrayList<CompetenceProfile>();
+            Collection<CompetenceProfile> clist = new ArrayList<>();
             
             for(CompetenceListing c : competences) {
                 Competence comp = competenceDao.findById(c.competence);
                 
                 if(comp == null)
                     throw new BadInputException("Invalid competence types detected.");
+
                 
                 //CompetenceProfile cp;
                 boolean containsCompetence = false;
@@ -168,9 +164,7 @@ public class RecSysBeanImpl implements RecSysBean {
 
             
             // Go throuh availabilities and add them to the database
-            Collection<Availability> availList = application.getAvailabilityCollection();
-            if(availList == null)
-                availList = new ArrayList<Availability>();
+            Collection<Availability> availList = new ArrayList<>();
             
             for(AvailabilityListing a : availabilities) {
                 if(!a.fromDate.before(a.toDate))
@@ -272,7 +266,7 @@ public class RecSysBeanImpl implements RecSysBean {
     @TransactionAttribute(REQUIRED)
     public void setApproved(String username, boolean status) throws RecsysException,BadInputException{
         Person person = null;
-        
+
         if(username != null)
             person = personDao.findById(username);
         
