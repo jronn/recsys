@@ -48,17 +48,19 @@
                 <h:outputLabel value="Approved status: "/>
                 <h:panelGroup rendered="#{!getAppBean.approved}">
                     <h:outputLabel value="Not approved" />
-                    <h:button value="Approve" outcome="getapplication">
-                        <f:param name="username" value="#{getAppBean.user}"/>
-                        <f:param name="approved" value="yes"/>
-                    </h:button>
+                    <h:form>
+                        <h:commandButton action="#{getAppBean.approve}" value="Approve">
+                            <f:param name="username" value="#{getAppBean.user}" />
+                        </h:commandButton>
+                    </h:form>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{getAppBean.approved}">
                     <h:outputLabel value="Approved"/>
-                    <h:button value="Unapprove" outcome="getapplication">
-                        <f:param name="username" value="#{getAppBean.user}"/>
-                        <f:param name="approved" value="no"/>
-                    </h:button>
+                    <h:form>
+                        <h:commandButton action="#{getAppBean.unapprove}" value="Unapprove">
+                            <f:param name="username" value="#{getAppBean.user}" />
+                        </h:commandButton>
+                    </h:form>
                 </h:panelGroup>
                 <h:form><h:link value="Go back" outcome="findapplications"/></h:form>
             </ui:define>
