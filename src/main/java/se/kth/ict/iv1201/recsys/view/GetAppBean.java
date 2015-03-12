@@ -5,7 +5,19 @@
  */
 package se.kth.ict.iv1201.recsys.view;
 
+import java.awt.event.ActionEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +25,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
 import se.kth.ict.iv1201.recsys.controller.RecSysBean;
 import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
 import se.kth.ict.iv1201.recsys.model.AvailabilityListing;
 import se.kth.ict.iv1201.recsys.model.BadInputException;
 import se.kth.ict.iv1201.recsys.model.CompetenceListing;
+import se.kth.ict.iv1201.recsys.model.RecsysException;
 
 /**
  *
@@ -44,6 +59,8 @@ public class GetAppBean implements Serializable {
 
     private String errorMessage;
 
+    private static final int DEFAULT_BUFFER_SIZE = 10240;
+
     Map<String, String> params;
     String user;
 
@@ -64,28 +81,38 @@ public class GetAppBean implements Serializable {
             competences = app.getCompetences();
             availabilities = app.getAvailabilities();
             approved = app.isApproved();
-
-            try {
-                approved2 = FacesContext.getCurrentInstance().getExternalContext().
-                        getRequestParameterMap().get("approved");
-                if (approved2.equals("yes")) {
-                    approved = true;
-                    app.setApproved(approved);
-                }
-                if (approved2.equals("no")) {
-                    approved = false;
-                    app.setApproved(approved);
-                }
-            } catch (NullPointerException e) {
-                //Do nothing.
-            }
-
         } catch (BadInputException ex) {
             errorMessage = ex.getMessage();
             Logger.getLogger(GetAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Approving the application sets the boolean value approved to true in the
+     * database
+     */
+    public void approve() {
+        try {
+            approved = true;
+            recSysEJB.setApproved(user, approved);
+        } catch (RecsysException | BadInputException ex) {
+            Logger.getLogger(GetAppBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Unapproving the application sets the boolean value approved to false in
+     * the database
+     */
+    public void unapprove() {
+        try {
+            approved = false;
+            recSysEJB.setApproved(user, approved);
+        } catch (RecsysException | BadInputException ex) {
+            Logger.getLogger(GetAppBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public String getFirstName() {
         return firstName;
     }
