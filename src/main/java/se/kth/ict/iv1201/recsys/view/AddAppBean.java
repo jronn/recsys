@@ -2,8 +2,6 @@ package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -57,7 +55,6 @@ public class AddAppBean implements Serializable {
             availabilityList = recSysEJB.getSpecificApplication(username).getAvailabilities();
             expertiseList = recSysEJB.getSpecificApplication(username).getCompetences();
         } catch (RecsysException | BadInputException ex) {
-            Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -101,7 +98,6 @@ public class AddAppBean implements Serializable {
             availabilityList = recSysEJB.getSpecificApplication(username).getAvailabilities();
             expertiseList = recSysEJB.getSpecificApplication(username).getCompetences();
         } catch (BadInputException ex) {
-            Logger.getLogger(AddAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

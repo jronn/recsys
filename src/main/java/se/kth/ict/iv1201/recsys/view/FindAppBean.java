@@ -8,8 +8,6 @@ package se.kth.ict.iv1201.recsys.view;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -47,7 +45,6 @@ public class FindAppBean implements Serializable {
             searched = false;
             comp = recSysEJB.getCompetenceList();
         } catch (RecsysException ex) {
-            Logger.getLogger(FindAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     /**
@@ -70,7 +67,6 @@ public class FindAppBean implements Serializable {
             }
             apps = recSysEJB.getApplications(name, surname, compListing, dateFrom, dateTo, dateReg);
         } catch (RecsysException | BadInputException ex) {
-            Logger.getLogger(FindAppBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
