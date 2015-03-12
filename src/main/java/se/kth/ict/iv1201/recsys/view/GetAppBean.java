@@ -6,6 +6,8 @@
 package se.kth.ict.iv1201.recsys.view;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +44,11 @@ public class GetAppBean implements Serializable {
     private String approved2;
 
     private String errorMessage;
+    
+    private String subString;
+    private String competenceString;
+    private String availString;
 
-    private static final int DEFAULT_BUFFER_SIZE = 10240;
-
-    Map<String, String> params;
     String user;
 
     /**
@@ -113,6 +116,11 @@ public class GetAppBean implements Serializable {
     public Date getSubmitDate() {
         return submitDate;
     }
+    
+    public String getSubString() {
+        subString = "" + submitDate;
+        return subString;
+    }
 
     public void setSubmitDate(Date submitDate) {
         this.submitDate = submitDate;
@@ -124,6 +132,35 @@ public class GetAppBean implements Serializable {
 
     public void setCompetences(List<CompetenceListing> competences) {
         this.competences = competences;
+    }
+    /**
+     * Converts the list of competences to something we can put in the search bar
+     * @return string of competences
+     */
+    public String getCompetencesString(){
+        competenceString = "";
+        
+        for(int i = 0; i < competences.size(); i++){
+            competenceString = competenceString + competences.get(i).competence + " " 
+                    + competences.get(i).yearsOfExperience 
+                    + "years_";
+        }
+        return competenceString;
+    }
+    
+    /**
+     * Converts the list of availabilities to something we can put in the search bar
+     * @return string of availabilities
+     */
+    public String getAvailString(){
+        availString = "";
+        
+        for(int i = 0; i < availabilities.size(); i++){
+            availString = availString + availabilities.get(i).fromDate + " to " 
+                    + availabilities.get(i).toDate
+                    + "_";
+        }
+        return availString;
     }
 
     public List<AvailabilityListing> getAvailabilities() {
@@ -166,4 +203,7 @@ public class GetAppBean implements Serializable {
         this.approved2 = approved2;
     }
 
+    public void setCompetenceString(String competenceString) {
+        this.competenceString = competenceString;
+    }
 }

@@ -10,6 +10,16 @@
                 <f:view>
                     <f:event type="preRenderView" listener="#{getAppBean.onPageLoad}"/>
                 </f:view>
+                <h:form>
+                    <h:outputLink value="/IV1201/PdfServlet">
+                        <h:outputText value="GetPDF"/>
+                        <f:param name="name" value="#{getAppBean.firstName}"/>
+                        <f:param name="surname" value="#{getAppBean.lastName}"/>
+                        <f:param name="submitdate" value="#{getAppBean.subString}"/>
+                        <f:param name="comp" value="#{getAppBean.competencesString}"/>
+                        <f:param name="avail" value="#{getAppBean.availString}" />
+                    </h:outputLink>
+                </h:form>
                 <p style="color: red; font-weight: bold; font-size: 13px;">#{getAppBean.errorMessage}</p>
                 <h:outputLabel value="First name: "/>
                 <h:outputLabel value="#{getAppBean.firstName}"/>
