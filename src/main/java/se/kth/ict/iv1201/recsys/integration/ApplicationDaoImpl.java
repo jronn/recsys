@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.MANDATORY;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import se.kth.ict.iv1201.recsys.model.CompetenceListing;
@@ -45,11 +46,11 @@ public class ApplicationDaoImpl extends GenericJpaDao<Application,Long> implemen
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         // Query for a List of objects.
-        CriteriaQuery cq = cb.createQuery();
+        CriteriaQuery<Application> cq = cb.createQuery(Application.class);
         Root<Application> a = cq.from(Application.class);
         
-        Join avail = a.join("availabilityCollection");
-        Join comp = a.join("competenceProfileCollection");
+        Join avail = a.join("availabilityCollection", JoinType.LEFT);
+        Join comp = a.join("competenceProfileCollection", JoinType.LEFT);
         Join person = a.join("person");
         
         //Constructing list of parameters
