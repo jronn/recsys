@@ -2,18 +2,17 @@ package se.kth.ict.iv1201.recsys.view;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import se.kth.ict.iv1201.recsys.controller.RecSysBeanImpl;
 
 /**
  * Backing bean for authentication when logging in / out
@@ -27,8 +26,9 @@ public class Auth implements Serializable {
     private String username;
     private String password;
     private String originalURL;
-    private String role;
 
+    private static final Logger log = Logger.getLogger(Auth.class.getName());
+    
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -77,18 +77,19 @@ public class Auth implements Serializable {
 
         try {
             request.login(username, password);
-
+            
             if (request.isUserInRole("recruiter")) {
+                log.log(Level.INFO, "Login completed by " + username + " as role recruiter");
                 originalURL = externalContext.getRequestContextPath() + "/faces/recruiter/recruiter.xhtml";
             } else if (request.isUserInRole("applicant")) {
+                log.log(Level.INFO, "Login completed by " + username + " as role applicant");
                 originalURL = externalContext.getRequestContextPath() + "/faces/user/user.xhtml";
             }
 
             externalContext.redirect(originalURL);
         } catch (ServletException e) {
+            log.log(Level.INFO, "Failed login attempt by " + username);
             externalContext.redirect(externalContext.getRequestContextPath() + "/faces/login_error.xhtml");
-            // Handle unknown username/password in request.login().
-            //context.addMessage(null, new FacesMessage("Unknown login"));
         }
     }
 
@@ -117,10 +118,5 @@ public class Auth implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-    
+    } 
 }

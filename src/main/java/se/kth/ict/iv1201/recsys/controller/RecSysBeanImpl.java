@@ -85,7 +85,9 @@ public class RecSysBeanImpl implements RecSysBean {
             
             personDao.persist(person);
             // Flushes all changes, done within clause to catch JPA exceptions
-            personDao.flush();           
+            personDao.flush(); 
+            
+            log.log(Level.INFO, "New user '" + username + "' registered.");
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             log.log(Level.SEVERE, "Error with hashing algorithm or encoding "
                     + "when hashing password in registerUser function", e);
@@ -183,6 +185,7 @@ public class RecSysBeanImpl implements RecSysBean {
             // Called inside try block so we can catch JPA exceptions
             personDao.flush();
             
+            log.log(Level.INFO, "New application for '" + username + "' registered.");
         } catch(EJBTransactionRolledbackException e) {
             log.log(Level.SEVERE, "RegisterApplication encountered an unexpected"
                     + " error, possibly linked to the database", e);
@@ -282,6 +285,7 @@ public class RecSysBeanImpl implements RecSysBean {
             person.setApplication(app);
             personDao.persist(person);
             personDao.flush();
+            log.log(Level.INFO, "Approved status of " + username + "'s application set to " + status);
         } catch (OptimisticLockException e) {
             throw new RecsysException("Someone else has modified the application.");
         } 
