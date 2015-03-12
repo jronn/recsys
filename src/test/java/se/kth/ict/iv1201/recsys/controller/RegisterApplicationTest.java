@@ -21,7 +21,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.kth.ict.iv1201.recsys.integration.CompetenceDao;
 import se.kth.ict.iv1201.recsys.integration.PersonDao;
 import se.kth.ict.iv1201.recsys.integration.RoleDao;
-import se.kth.ict.iv1201.recsys.integration.UserGroupDao;
 import se.kth.ict.iv1201.recsys.model.ApplicationDTO;
 import se.kth.ict.iv1201.recsys.model.AvailabilityListing;
 import se.kth.ict.iv1201.recsys.model.BadInputException;
@@ -57,6 +56,29 @@ public class RegisterApplicationTest {
         doReturn(new Person()).when(personDao).findById(any(String.class));
         doReturn(new Competence("test")).when(competenceDao).findById(any(String.class));
     }
+    
+    /**
+     * Tests setApproved with invalid input
+     */
+    @Test
+    public void testApproved() throws RecsysException {
+        try {
+            recSysBean.setApproved(null, true);
+            fail("Null value on username should thrown BadInputException");
+        } catch (BadInputException e) {}
+    }
+    
+    /**
+     * Test getSpecificApplication with invalid inputvalue
+     */
+    @Test
+    public void testGetSpecApp() {
+        try {
+            recSysBean.getSpecificApplication(null);
+            fail("Null value on username should thrown BadInputException");
+        } catch (BadInputException e) {}
+    }
+    
     
     /**
      * Test that persist methods are called on the person entity
