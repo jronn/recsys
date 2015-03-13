@@ -11,7 +11,7 @@
                     <f:event type="preRenderView" listener="#{getAppBean.onPageLoad}"/>
                 </f:view>
                 <h:form>
-                    <h:outputLink value="/IV1201/PdfServlet">
+                    <h:outputLink value="#{request.contextPath}/PdfServlet">
                         <h:outputText value="GetPDF"/>
                         <f:param name="name" value="#{getAppBean.firstName}"/>
                         <f:param name="surname" value="#{getAppBean.lastName}"/>

@@ -33,6 +33,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "PdfServlet", urlPatterns = {"/PdfServlet"})
 public class PdfServlet extends HttpServlet {
     
+    /**
+     * Servlet GET, returns a PDF with inforation specified as 
+     * parameters if the user is logged in and of right user role
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
