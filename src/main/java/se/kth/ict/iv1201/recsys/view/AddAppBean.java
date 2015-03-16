@@ -213,7 +213,9 @@ public class AddAppBean implements Serializable {
     public void setComp(List<String> comp) {
         this.comp = comp;
     }
-
+    /**
+    * Used to enable a new send after sending.
+    */
     private void clickedSend() {
         timer.schedule(new TimerTask() {
             @Override

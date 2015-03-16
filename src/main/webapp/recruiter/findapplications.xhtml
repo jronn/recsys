@@ -10,6 +10,7 @@
             <ui:define name="content">
                 <h2>Find Application</h2>
                 <p>Find your desired applications using the input fields below.</p>
+                <h:outputText value="#{findAppBean.errorMessage}"/>
                 <hr/>
                 <h:form id="findForm" rendered="#{!findAppBean.searched}">
                     <h:outputLabel value="Name: " for="name"/>

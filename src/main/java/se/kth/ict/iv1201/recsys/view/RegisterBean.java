@@ -161,6 +161,9 @@ public class RegisterBean implements Serializable {
         this.password = password;
     }
 
+    /**
+     * Used when register was successful, nullifies the fields. 
+     */
     private void goBack() {
         timer.schedule(new TimerTask() {
             @Override

@@ -35,6 +35,7 @@ public class FindAppBean implements Serializable {
     private String competence;
     private List<ApplicationDTO> apps;
     private boolean searched;
+    private String errorMessage;
     
     /**
      * Called upon on start.
@@ -67,6 +68,7 @@ public class FindAppBean implements Serializable {
             }
             apps = recSysEJB.getApplications(name, surname, compListing, dateFrom, dateTo, dateReg);
         } catch (RecsysException | BadInputException ex) {
+            errorMessage = ex.getMessage();
         }
 
     }
@@ -158,7 +160,9 @@ public class FindAppBean implements Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
+    /**
+     * Nullifies the parameters. Used when canceling the search. 
+     */
     private void nullify() {
         name = null;
         surname = null;
@@ -167,5 +171,14 @@ public class FindAppBean implements Serializable {
         dateTo = null;
         competence = null;
     }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    
 
 }
